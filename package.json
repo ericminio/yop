@@ -1,0 +1,19 @@
+{
+    "name": "yop",
+    "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ericminio/yop.git"
+    },
+    "main": "./app/lib/yop.js",
+    "private": false,
+    "devDependencies": {
+        "chai": "latest",
+        "mocha": "latest",
+        "sinon": "latest",
+        "sinon-chai": "latest"
+    },
+    "scripts": {
+        "test": "mocha app --recursive"
+    }
+}
