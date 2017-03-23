@@ -1,6 +1,7 @@
 {
     "name": "yop",
     "version": "0.1.0",
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/ericminio/yop.git"
@@ -9,11 +10,15 @@
     "private": false,
     "devDependencies": {
         "chai": "latest",
+        "coveralls": "latest",
+        "istanbul": "latest",
         "mocha": "latest",
         "sinon": "latest",
         "sinon-chai": "latest"
     },
     "scripts": {
-        "test": "mocha app --recursive"
+        "test": "mocha app --recursive",
+        "cover": "./node_modules/.bin/istanbul cover --root ./app/lib --report lcovonly ./node_modules/mocha/bin/_mocha -- app --recursive",
+        "coveralls": "npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
     }
 }
