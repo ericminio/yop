@@ -1,1 +1,3 @@
 # yop
+
+[![Build Status](https://travis-ci.org/ericminio/yop.svg?branch=master)](https://travis-ci.org/ericminio/yop)
