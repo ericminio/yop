@@ -7,11 +7,16 @@
         "url": "https://github.com/ericminio/yop.git"
     },
     "private": false,
+    "type": "module",
     "devDependencies": {
+        "c8": "latest",
         "chai": "latest",
         "mocha": "latest"
     },
     "scripts": {
-        "test": "mocha './{,!(node_modules)/**}/*.spec.js'"
+        "test": "c8 --100 mocha --recursive './{,!(node_modules)/**}/*.spec.js'"
+    },
+    "c8": {
+        "exclude": [ "**/*.spec.js" ]
     }
 }

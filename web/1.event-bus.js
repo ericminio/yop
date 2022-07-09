@@ -1,4 +1,4 @@
-class EventBus {
+export class EventBus {
     constructor() {
         this.listeners = {}
         this.id = 0;

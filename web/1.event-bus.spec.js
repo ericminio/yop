@@ -1,6 +1,5 @@
-const { expect } = require('chai');
-const { code } = require('../utils/files');
-const EventBus = code('/web/1.event-bus.js', 'EventBus');
+import { expect } from 'chai';
+import { EventBus } from './1.event-bus.js';
 
 describe('events bus', ()=> {
 
