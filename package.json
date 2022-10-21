@@ -9,14 +9,11 @@
     "private": false,
     "type": "module",
     "devDependencies": {
-        "c8": "latest",
-        "chai": "latest",
-        "mocha": "latest"
+        "chai": "^4.3.6",
+        "jsdom": "^20.0.1",
+        "mocha": "^10.1.0"
     },
     "scripts": {
-        "test": "c8 --100 --reporter=text-summary mocha --recursive './{,!(node_modules)/**}/*.spec.js'"
-    },
-    "c8": {
-        "exclude": [ "**/*.spec.js" ]
+        "test": "mocha --recursive './{,!(node_modules)/**}/*.spec.js'"
     }
 }
