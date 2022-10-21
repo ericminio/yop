@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { EventBus } from './1.event-bus.js';
+import { EventBus } from '../dist/event-bus.js';
 
 describe('events bus', ()=> {
 
