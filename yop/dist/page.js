@@ -25,20 +25,20 @@ const close = (done) => {
 };
 
 const content = () => {
-    return page.document.body.textContent;
+    return element('body').textContent;
 };
 
 const click = (text) => {
     find({ tag:'button', text }).click();
 };
 
-const set = (text) => {
-    let label = find({ tag:'label', text });
+const enter = (prompt) => {
+    let label = find({ tag:'label', text:prompt });
     return element(`#${label.htmlFor}`);
 };
 
 
-export const page = { open, close, content, set, click };
+export const page = { open, close, content, enter, click };
 
 const find = (options) => {
     let candidates = Array.from(page.document

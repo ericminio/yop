@@ -6,7 +6,7 @@ describe('power of twos', () => {
 
     beforeEach(done => {
         server.start(port => {
-            page.open(`http://localhost:${port}`).then(done).catch(done);
+            page.open(`http://localhost:${port}`).finally(done);
         });
     });
     afterEach(done => {
@@ -14,7 +14,7 @@ describe('power of twos', () => {
     });
 
     it('is available', () => {
-        page.set('number to decompose').value = '42';
+        page.enter('number to decompose').value = '42';
         page.click('compute');
 
         expect(page.content()).to.contain('2 x 3 x 7');
