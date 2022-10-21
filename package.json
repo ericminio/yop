@@ -14,7 +14,7 @@
         "mocha": "latest"
     },
     "scripts": {
-        "test": "c8 --100 mocha --recursive './{,!(node_modules)/**}/*.spec.js'"
+        "test": "c8 --100 --reporter=text-summary mocha --recursive './{,!(node_modules)/**}/*.spec.js'"
     },
     "c8": {
         "exclude": [ "**/*.spec.js" ]
