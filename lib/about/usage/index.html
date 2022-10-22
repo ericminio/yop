@@ -2,14 +2,26 @@
 <html lang="en">
     <head>
         <title>prime factors</title>
+        <script>
+            const compute = () => {
+                document.getElementById('decomposition').innerHTML = '2 x 2 x 2';
+            };
+            const wireUp = () => {
+                document.getElementById('go').addEventListener('click', compute);
+            };
+        </script>
     </head>
 <body>
     <label for="number">number to decompose</label>
     <input id="number" />
-    <button>compute</button>
+    <button id="go">compute</button>
     <section>
         <h2>results</h2>
-        <label>2 x 2 x 2</label>
+        <label id="decomposition"></label>
     </section>
+
+    <script>
+        wireUp();
+    </script>
 </body>    
 </html>
