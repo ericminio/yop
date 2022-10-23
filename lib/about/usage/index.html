@@ -4,7 +4,12 @@
         <title>prime factors</title>
         <script>
             const compute = () => {
-                document.getElementById('decomposition').innerHTML = '2 x 2 x 2';
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        document.getElementById('decomposition').innerHTML = '2 x 2 x 2';
+                        resolve();
+                    }, 50);
+                });                
             };
             const wireUp = () => {
                 document.getElementById('go').addEventListener('click', compute);
