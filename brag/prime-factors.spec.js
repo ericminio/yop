@@ -1,7 +1,5 @@
 import { expect } from 'chai';
-import { serving } from '../lib/serving.js';
-import { page } from '../lib/page.js';
-import { eventually } from '../lib/eventually.js';
+import { page , eventually, serving } from '../lib/index.js';
 const server = serving('./brag/index.html');
 
 describe('prime factors decomposition', () => {
