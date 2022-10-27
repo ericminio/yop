@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { serving } from '../../../../dist/serving.js';
-import { page } from '../../../../testing/page.js';
-import { eventually } from '../../../../testing/eventually.js';
-const server = serving('./lib/about/usage/app/index.html');
+import { serving } from '../lib/serving.js';
+import { page } from '../lib/page.js';
+import { eventually } from '../lib/eventually.js';
+const server = serving('./brag/index.html');
 
-describe('power of twos', () => {
+describe('prime factors decomposition', () => {
 
     beforeEach(done => {
         server.start(port => {
