@@ -7,7 +7,7 @@ describe('Server', () => {
     let server;
     beforeEach(done => {
         server = new Server(port);
-        server.start((p) => { done(); });
+        server.start(() => { done(); });
     });
     afterEach(done => {
         server.stop(done);
@@ -23,5 +23,22 @@ describe('Server', () => {
         let response = await request(home);
             
         expect(response.statusCode).to.equal(501);
+    });
+
+    it('resists two start calls', done => {
+        const home = {
+            hostname: 'localhost',
+            port: port,
+            path: '/',
+            method: 'GET'
+        };
+        server.start(() => {
+            request(home)
+                .then(response => {
+                    expect(response.statusCode).to.equal(501);
+                    done();
+                })
+                .catch(done);
+        });
     });
 });
