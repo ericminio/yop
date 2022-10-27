@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>prime factors</title>
+    <script>
+        const element = (selector) => {
+            return document.querySelector(selector);
+        }
+        const compute = () => {
+            setTimeout(() => {
+                element('#decomposition').innerHTML = '2 x 2 x 2';
+            }, 50);
+        };
+        const addEventListeners = () => {
+            element('#go').addEventListener('click', compute);
+        };
+    </script>
+</head>
+
+<body>
+    <label for="number">Number to decompose</label>
+    <input id="number" />
+    <button id="go">compute</button>
+    <section>
+        <h2>Results</h2>
+        <label id="decomposition"></label>
+    </section>
+
+    <script>
+        addEventListeners();
+    </script>
+</body>
+
+</html>
