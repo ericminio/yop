@@ -25,7 +25,7 @@ describe('Server', () => {
         expect(response.statusCode).to.equal(501);
     });
 
-    it('resists two start calls', done => {
+    it('resists two calls of start', done => {
         const home = {
             hostname: 'localhost',
             port: port,
