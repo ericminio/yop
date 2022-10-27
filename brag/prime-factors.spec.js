@@ -1,10 +1,11 @@
 import { expect } from 'chai';
-import { page , eventually, serving } from '../lib/index.js';
-const server = serving('./brag/index.html');
+import { page , eventually, Server, asset } from '../lib/index.js';
 
 describe('prime factors decomposition', () => {
 
+    let server;
     beforeEach(done => {
+        server = new Server(5001, asset('./brag/index.html'));
         server.start(port => {
             page.open(`http://localhost:${port}`).finally(done);
         });
