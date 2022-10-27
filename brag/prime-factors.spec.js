@@ -7,7 +7,7 @@ describe('prime factors decomposition', () => {
     beforeEach(done => {
         server = new Server(5001, asset('./brag/index.html'));
         server.start(port => {
-            page.open(`http://localhost:${port}`).finally(done);
+            page.open(`http://localhost:${port}`).then(done).catch(done);
         });
     });
     afterEach(done => {
