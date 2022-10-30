@@ -12,13 +12,16 @@
             setTimeout(() => {
                 let number = parseInt(element('#number').value);
                 let decomposition = primeFactorsOf(number);
-                render({ selector: '#decomposition', number, decomposition });
+                let userFriendlyResult = render({ number, decomposition });
+                display(userFriendlyResult);
             }, 50);
         };
-        const render = ({ selector, number, decomposition }) => {
-            let value = `${number} = ${decomposition.join(' x ')}`;
-            element(selector).innerHTML = value;
-        }
+        const render = ({ number, decomposition }) => {
+            return `${number} = ${decomposition.join(' x ')}`;
+        };
+        const display = (value) => {
+            element('#decomposition').textContent = value;
+        };
         const addEventListeners = () => {
             element('#go').addEventListener('click', compute);
         };
@@ -31,7 +34,7 @@
     <button id="go">compute</button>
     <section>
         <h2>Results</h2>
-        <label id="decomposition"></label>
+        <label id="decomposition">42 = 2 x 3 x 7</label>
     </section>
 
     <script>

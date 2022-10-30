@@ -17,8 +17,7 @@ describe('home page', () => {
     });
 
     it('gives focus to input field', () => {
-        expect(page.document.activeElement).to.equal(
-            page.input('Number to decompose'));
+        expect(page.document.activeElement).to.equal(page.input('Number to decompose'));
     });
 });
 
