@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { expose } from '../../lib/expose.js';
 const primeFactorsOf = expose({
     symbol: 'primeFactorsOf',
-    file: './brag/3.tests-pyramid/prime-factors.js'
+    file: './brag/3.test-audience/prime-factors.js'
 });
 
 describe('prime factors decomposition', () => {

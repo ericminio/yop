@@ -4,16 +4,7 @@ import { page, eventually } from '../../lib/index.js';
 describe('home page', () => {
 
     beforeEach(async () => {
-        await page.open('./brag/3.tests-pyramid/index.html');
-    });
-
-    it('offers prime factors decomposition', async () => {
-        page.enter('Number to decompose', '15');
-        page.click('compute');
-
-        await eventually(() =>
-            expect(page.section('Results')).to.contain('15 = 3 x 5')
-        );
+        await page.open('./brag/3.test-audience/index.html');
     });
 
     it('gives focus to input field', () => {
