@@ -15,5 +15,10 @@ describe('home page', () => {
             expect(page.section('Results')).to.contain('42 = 2 x 3 x 7')
         );
     });
+
+    it('gives focus to input field', () => {
+        expect(page.document.activeElement).to.equal(
+            page.input('Number to decompose'));
+    });
 });
 
