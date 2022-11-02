@@ -4,7 +4,7 @@ import { page } from '../../lib/index.js';
 describe('Greetings message', () => {
 
     beforeEach(async () => {
-        await page.open('./brag/1.hello-world/index.html');
+        await page.open(new URL('./index.html', import.meta.url));
     });
 
     it('is on Welcome page', () => {

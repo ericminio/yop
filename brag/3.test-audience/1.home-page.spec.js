@@ -4,7 +4,7 @@ import { page, eventually } from '../../lib/index.js';
 describe('home page', () => {
 
     beforeEach(async () => {
-        await page.open('./brag/3.test-audience/index.html');
+        await page.open(new URL('./index.html', import.meta.url));
     });
 
     it('offers prime factors decomposition', async () => {

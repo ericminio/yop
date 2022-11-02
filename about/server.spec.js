@@ -21,7 +21,7 @@ describe('Server', () => {
             method: 'GET'
         };
         let response = await request(home);
-            
+
         expect(response.statusCode).to.equal(501);
     });
 

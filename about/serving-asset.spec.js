@@ -14,7 +14,7 @@ describe('Serving asset handler', () => {
     })
 
     it('can server html', async () => {
-        server.use(asset('./about/serving-asset-index.html'));
+        server.use(asset(new URL('./serving-asset-index.html', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
@@ -29,7 +29,7 @@ describe('Serving asset handler', () => {
     });
 
     it('can server javascript', async () => {
-        server.use(asset('./about/serving-asset-code.js'));
+        server.use(asset(new URL('./serving-asset-code.js', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
@@ -44,7 +44,7 @@ describe('Serving asset handler', () => {
     });
 
     it('can server css', async () => {
-        server.use(asset('./about/serving-asset-css.css'));
+        server.use(asset(new URL('./serving-asset-css.css', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,

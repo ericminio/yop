@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import { asset, page, Server } from '../lib/index.js';
+import { URL } from 'url';
 
 describe('page', () => {
 
-    let file = './about/page-index.html';
+    let file = new URL('./page-index.html', import.meta.url);
 
     describe('opening file', () => {
 
@@ -14,7 +15,7 @@ describe('page', () => {
         });
     });
 
-    describe('openining url', () => {
+    describe('openning url', () => {
 
         let server;
         let port = 5001;
