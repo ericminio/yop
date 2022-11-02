@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { page, eventually } from '../../lib/index.js';
+import { page } from '../../lib/index.js';
 
 describe('home page', () => {
 

@@ -8,11 +8,11 @@ describe('home page', () => {
     });
 
     it('offers prime factors decomposition', async () => {
-        page.set('Number to decompose').value = '15';
+        page.set('Number to decompose').value = '42';
         page.click('compute');
 
         await eventually(() =>
-            expect(page.section('Results')).to.contain('15 = 3 x 5')
+            expect(page.section('Results')).to.contain('42 = 2 x 3 x 7')
         );
     });
 });
