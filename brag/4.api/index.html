@@ -3,17 +3,39 @@
 
 <head>
     <title>prime factors</title>
+
+    <script>
+        const element = (selector) => {
+            return document.querySelector(selector);
+        };
+        const addEventListeners = () => {
+            element('#compute').addEventListener('click', compute);
+        };
+        const compute = () => {
+            const number = parseInt(element('#number').value);
+            window.fetch(`/decompose?number=${number}`)
+                .then(response => response.json())
+                .then(data => {
+                    const decomposition = data.decomposition;
+                    const answer = `${number} = ${decomposition.join(' x ')}`;
+                    element('#decomposition').textContent = answer;
+                });
+        };
+    </script>
 </head>
 
 <body>
     <label for="number">Number to decompose</label>
     <input id="number" />
-    <button>compute</button>
+    <button id="compute">compute</button>
     <section>
         <h2>Results</h2>
-        <label>42 = 2 x 3 x 7</label>
+        <label id="decomposition"></label>
     </section>
 
+    <script>
+        addEventListeners();
+    </script>
 </body>
 
 </html>
