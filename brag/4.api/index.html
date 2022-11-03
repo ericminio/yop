@@ -13,7 +13,7 @@
         };
         const compute = () => {
             const number = parseInt(element('#number').value);
-            window.fetch(`/decompose?number=${number}`)
+            fetch(`/decompose?number=${number}`)
                 .then(response => response.json())
                 .then(data => {
                     const decomposition = data.decomposition;
