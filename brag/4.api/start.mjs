@@ -1,11 +1,5 @@
 import { asset, Router, Server } from '../../lib/index.js';
-
-const serveDecomposition = (incoming, response) => {
-    response.writeHead(200, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify({
-        decomposition: [2, 3, 7]
-    }));
-};
+import { serveDecomposition } from './endpoint-decomposition.js';
 
 const router = new Router([
     { matches: (incoming) => incoming.url.startsWith('/decompose'), go: serveDecomposition },
