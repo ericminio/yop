@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { asset, page, Server } from '../lib/index.js';
+import { asset, eventually, page, Server } from '../lib/index.js';
 import { URL } from 'url';
 
 describe('page', () => {
@@ -31,6 +31,21 @@ describe('page', () => {
             await page.open(`http://localhost:${port}`);
 
             expect(page.document.title).to.equal('well done page!');
+        });
+    });
+
+    it('accepts fetch stub', async () => {
+        let file = new URL('./page-stubbing-fetch.html', import.meta.url);
+        await page.open(file, {
+            fetch: () => Promise.resolve({
+                status: 200,
+                json: () => Promise.resolve({ value: 'hello world' })
+            })
+        }
+        );
+
+        await eventually(() => {
+            expect(page.section('data')).to.contain('hello world');
         });
     });
 });
