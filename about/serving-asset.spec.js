@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { asset, request, Server } from '../lib/index.js';
+import { serveAsset, request, Server } from '../lib/index.js';
 
-describe('Serving asset handler', () => {
+describe('Serving serveAsset handler', () => {
 
     let server;
     let port = 5001;
@@ -14,7 +14,7 @@ describe('Serving asset handler', () => {
     })
 
     it('can server html', async () => {
-        server.use(asset(new URL('./serving-asset-index.html', import.meta.url)));
+        server.use(serveAsset(new URL('./serving-asset-index.html', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
@@ -29,7 +29,7 @@ describe('Serving asset handler', () => {
     });
 
     it('can server javascript', async () => {
-        server.use(asset(new URL('./serving-asset-code.js', import.meta.url)));
+        server.use(serveAsset(new URL('./serving-asset-code.js', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
@@ -44,7 +44,7 @@ describe('Serving asset handler', () => {
     });
 
     it('can server css', async () => {
-        server.use(asset(new URL('./serving-asset-css.css', import.meta.url)));
+        server.use(serveAsset(new URL('./serving-asset-css.css', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { asset, eventually, page, Server } from '../lib/index.js';
+import { serveAsset, eventually, page, Server } from '../lib/index.js';
 import { URL } from 'url';
 
 describe('page', () => {
@@ -20,7 +20,7 @@ describe('page', () => {
         let server;
         let port = 5001;
         beforeEach(done => {
-            server = new Server(port, asset(file));
+            server = new Server(port, serveAsset(file));
             server.start(() => done());
         });
         afterEach(done => {
