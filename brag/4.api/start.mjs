@@ -1,22 +1,18 @@
-import { asset, contentOfFile, Server } from '../../lib/index.js';
+import { asset, Router, Server } from '../../lib/index.js';
 
-const serveHtml = asset(new URL('./index.html', import.meta.url));
 const serveDecomposition = (incoming, response) => {
     response.writeHead(200, { 'Content-Type': 'application/json' });
     response.end(JSON.stringify({
         decomposition: [2, 3, 7]
     }));
 };
-const handler = (incoming, response) => {
-    if (incoming.url.startsWith('/decompose')) {
-        serveDecomposition(incoming, response);
-    }
-    else {
-        serveHtml(incoming, response);
-    }
-};
 
-export const server = new Server(5001, handler);
+const router = new Router([
+    { matches: (incoming) => incoming.url.startsWith('/decompose'), go: serveDecomposition },
+    { matches: () => true, go: asset(new URL('./index.html', import.meta.url)) }
+]);
+
+export const server = new Server(5001, router.handler.bind(router));
 
 if (!process.argv[1].endsWith('mocha')) {
 
