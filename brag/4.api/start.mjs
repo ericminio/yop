@@ -1,17 +1,18 @@
-import { contentOfFile, Server } from '../../lib/index.js';
+import { asset, contentOfFile, Server } from '../../lib/index.js';
 
-const indexFile = new URL('./index.html', import.meta.url);
-const html = contentOfFile(indexFile);
+const serveHtml = asset(new URL('./index.html', import.meta.url));
+const serveDecomposition = (incoming, response) => {
+    response.writeHead(200, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify({
+        decomposition: [2, 3, 7]
+    }));
+};
 const handler = (incoming, response) => {
     if (incoming.url.startsWith('/decompose')) {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({
-            decomposition: [2, 3, 7]
-        }));
+        serveDecomposition(incoming, response);
     }
     else {
-        response.writeHead(200, { 'Content-Type': 'text/html' });
-        response.end(html);
+        serveHtml(incoming, response);
     }
 };
 
