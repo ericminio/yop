@@ -11,7 +11,7 @@ describe('Serving assets handler', () => {
     });
     afterEach(done => {
         server.stop(done);
-    })
+    });
 
     it('can server html', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
@@ -26,6 +26,21 @@ describe('Serving assets handler', () => {
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
         expect(response.body).to.contain('<title>serving html</title>');
+    });
+
+    it('defaults to 404', async () => {
+        server.use(serveAssets(new URL('.', import.meta.url)));
+        const home = {
+            hostname: 'localhost',
+            port: port,
+            path: '/',
+            method: 'GET'
+        };
+        let response = await request(home);
+
+        expect(response.statusCode).to.equal(404);
+        expect(response.headers['content-type']).to.equal('text/plain');
+        expect(response.body).to.equal('NOT FOUND');
     });
 
     it('can server javascript', async () => {
