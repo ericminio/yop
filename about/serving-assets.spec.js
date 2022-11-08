@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { serveAsset, request, Server } from '../lib/index.js';
+import { serveAssets, request, Server } from '../lib/index.js';
 
-describe('Serving asset handler', () => {
+describe('Serving assets handler', () => {
 
     let server;
     let port = 5001;
@@ -14,11 +14,11 @@ describe('Serving asset handler', () => {
     })
 
     it('can server html', async () => {
-        server.use(serveAsset(new URL('./serving-asset-index.html', import.meta.url)));
+        server.use(serveAssets(new URL('.', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
-            path: '/',
+            path: '/serving-asset-index.html',
             method: 'GET'
         };
         let response = await request(home);
@@ -29,11 +29,11 @@ describe('Serving asset handler', () => {
     });
 
     it('can server javascript', async () => {
-        server.use(serveAsset(new URL('./serving-asset-code.js', import.meta.url)));
+        server.use(serveAssets(new URL('.', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
-            path: '/',
+            path: '/serving-asset-code.js',
             method: 'GET'
         };
         let response = await request(home);
@@ -44,11 +44,11 @@ describe('Serving asset handler', () => {
     });
 
     it('can server css', async () => {
-        server.use(serveAsset(new URL('./serving-asset-css.css', import.meta.url)));
+        server.use(serveAssets(new URL('.', import.meta.url)));
         const home = {
             hostname: 'localhost',
             port: port,
-            path: '/',
+            path: '/serving-asset-css.css',
             method: 'GET'
         };
         let response = await request(home);
