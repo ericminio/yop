@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>push</title>
+
+
+    <script>
+        const read = (event) => {
+            document.querySelector('#message').textContent = event.data;
+        };
+        const ping = () => {
+            const url = 'ws://localhost:5001/chat';
+            const webSocket = new WebSocket(url);
+            webSocket.addEventListener('open', (event) => {
+                webSocket.addEventListener('message', read);
+                webSocket.send('abcdef');
+            });
+        };
+        const broadcast = () => {
+            fetch('/broadcast')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('#log').textContent = JSON.stringify(data);
+                });
+        };
+        const addEventListeners = () => {
+            document.querySelector('#broadcast').addEventListener('click', broadcast);
+        };
+    </script>
+</head>
+
+<body>
+    <button id="broadcast">broadcast</button>
+    <label id="log"></label>
+    <section>
+        <h2>Message</h2>
+        <label id="message"></label>
+    </section>
+
+    <script>
+        addEventListeners();
+        ping();
+    </script>
+</body>
+
+</html>
