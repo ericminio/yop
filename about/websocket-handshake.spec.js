@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { acceptHeader } from './acceptHeader.js';
+import { acceptHeader } from '../lib/websocket-frames.js';
 
 describe('Sec-WebSocket-Accept', () => {
 

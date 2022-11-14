@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { page, eventually, request } from '../../lib/index.js';
 import { server } from './start.mjs';
 
-describe.only('websocket server', () => {
+describe('websocket server', () => {
 
     let serverPort;
     beforeEach(done => {
