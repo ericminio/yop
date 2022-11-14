@@ -1,12 +1,13 @@
 import { expect } from 'chai';
 import { page, eventually, request } from '../../lib/index.js';
-import { server } from './start.mjs';
+import { clearSockets, server } from './start.mjs';
 
 describe('websocket server', () => {
 
     let serverPort;
     beforeEach(done => {
         server.start(port => {
+            clearSockets();
             serverPort = port;
             page.open(`http://localhost:${port}`).then(done).catch(done);
         });
@@ -22,11 +23,11 @@ describe('websocket server', () => {
     });
 
     it('can push data', async () => {
+        await new Promise(resolve => setTimeout(resolve, 15));
         await request({
             host: 'localhost',
             port: serverPort,
-            method: 'POST',
-            path: '/broadcast'
+            path: '/notify'
         });
         await eventually(() =>
             expect(page.section('Message')).to.contain('hello world')

@@ -1,9 +1,16 @@
 import { serveAssets, Router, Server } from '../../lib/index.js';
-import { acceptHeader, encodeSingleFrameOfText } from '../../lib/websocket-frames.js';
+import { acceptHeader, decodeSingleFrameOfText, encodeSingleFrameOfText } from '../../lib/websocket-frames.js';
 
-let socket;
-const serveUpgrage = (incoming, response) => {
-    socket = incoming.socket;
+let sockets = [];
+export const clearSockets = () => sockets = [];
+
+const socketDataListener = (socket, data) => {
+    sockets.push(socket);
+};
+
+const serveUpgrage = (listener) => (incoming, response) => {
+    let socket = incoming.socket;
+    socket.on('data', (data) => listener(socket, data));
     const key = incoming.headers['sec-websocket-key'];
     const accept = acceptHeader(key);
 
@@ -14,15 +21,18 @@ const serveUpgrage = (incoming, response) => {
     });
     response.end();
 }
-const pushMessage = (incoming, response) => {
-    socket.write(encodeSingleFrameOfText('hello world'));
+const notify = (incoming, response) => {
+    sockets.forEach(socket => {
+        socket.write(encodeSingleFrameOfText('hello world'))
+    });
+
     response.writeHead(200);
     response.end();
 }
 
 const router = new Router([
-    { matches: (incoming) => incoming.url === '/connect', go: serveUpgrage },
-    { matches: (incoming) => incoming.url === '/broadcast', go: pushMessage },
+    { matches: (incoming) => incoming.url === '/connect', go: serveUpgrage(socketDataListener) },
+    { matches: (incoming) => incoming.url === '/notify', go: notify },
     { matches: () => true, go: serveAssets(new URL('.', import.meta.url)) },
 ]);
 
