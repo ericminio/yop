@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import { page, eventually, request, wait } from '../../lib/index.js';
-import { clearSockets, server } from './start.mjs';
+import { clearRegistrations, server } from './start.mjs';
 
 describe('websocket server', () => {
 
     let serverPort;
     beforeEach(done => {
         server.start(port => {
-            clearSockets();
+            clearRegistrations();
             serverPort = port;
             page.open(`http://localhost:${port}`).then(done).catch(done);
         });
@@ -27,7 +27,9 @@ describe('websocket server', () => {
         await request({
             host: 'localhost',
             port: serverPort,
-            path: '/notify'
+            path: '/notify',
+            method: 'POST',
+            body: JSON.stringify({ event: 'greetings', message: 'hello world' })
         });
         await eventually(() =>
             expect(page.section('Message')).to.contain('hello world')

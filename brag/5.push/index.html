@@ -9,7 +9,7 @@
             const webSocket = new WebSocket(url);
             webSocket.addEventListener('open', (event) => {
                 document.querySelector('#message').textContent = 'connected';
-                webSocket.send('signup');
+                webSocket.send(JSON.stringify({ signup: ['greetings'] }));
             });
             webSocket.addEventListener('message', (event) => {
                 document.querySelector('#message').textContent = event.data;

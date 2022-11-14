@@ -1,17 +1,24 @@
-import { encodeSingleFrameOfText, Router, Server, serveAssets, serveUpgrage } from '../../lib/index.js';
+import { encodeSingleFrameOfText, Router, Server, serveAssets, serveUpgrage, payload } from '../../lib/index.js';
+import { decodeSingleFrameOfText } from '../../lib/websocket-frames.js';
 
-let sockets = [];
-export const clearSockets = () => sockets = [];
+let registrations = [];
+export const clearRegistrations = () => registrations = [];
 
-const socketDataListener = (socket) => {
-    sockets.push(socket);
+const socketDataListener = (socket, data) => {
+    registrations.push({
+        socket,
+        events: JSON.parse(decodeSingleFrameOfText(data)).signup
+    });
 };
 
-const notify = (incoming, response) => {
-    sockets.forEach(socket => socket.write(encodeSingleFrameOfText('hello world')));
-
+const notify = async (incoming, response) => {
     response.writeHead(200);
     response.end();
+
+    const notification = JSON.parse(await payload(incoming));
+    registrations
+        .filter(r => r.events.includes(notification.event))
+        .forEach(r => r.socket.write(encodeSingleFrameOfText(notification.message)));
 };
 
 const router = new Router([
