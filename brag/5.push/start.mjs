@@ -10,7 +10,7 @@ const encode = (text) => {
 };
 
 let socket;
-const serveChat = (incoming, response) => {
+const serveUpgrage = (incoming, response) => {
     socket = incoming.socket;
     const key = incoming.headers['sec-websocket-key'];
     const accept = acceptHeader(key);
@@ -22,15 +22,15 @@ const serveChat = (incoming, response) => {
     });
     response.end();
 }
-const servePong = (incoming, response) => {
-    socket.write(encode('hello'));
-    response.writeHead(200, { 'content-type': 'application/json' });
-    response.end(JSON.stringify({ data: 'pong sent' }));
+const pushMessage = (incoming, response) => {
+    socket.write(encode('hello world'));
+    response.writeHead(200);
+    response.end();
 }
 
 const router = new Router([
-    { matches: (incoming) => incoming.url === '/chat', go: serveChat },
-    { matches: (incoming) => incoming.url === '/broadcast', go: servePong },
+    { matches: (incoming) => incoming.url === '/connect', go: serveUpgrage },
+    { matches: (incoming) => incoming.url === '/broadcast', go: pushMessage },
     { matches: () => true, go: serveAssets(new URL('.', import.meta.url)) },
 ]);
 
