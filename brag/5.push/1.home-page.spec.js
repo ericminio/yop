@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { page, eventually, request, wait } from '../../lib/index.js';
-import { clearRegistrations, server } from './start.mjs';
+import { clearRegistrations } from './notification-service.js';
+import { server } from './start.mjs';
 
 describe('websocket server', () => {
 
