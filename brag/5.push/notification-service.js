@@ -1,5 +1,4 @@
-import { payload } from '../../lib/payload.js';
-import { decodeSingleFrameOfText, encodeSingleFrameOfText } from '../../lib/websocket-frames.js';
+import { decodeSingleFrameOfText, encodeSingleFrameOfText, payload } from '../../lib/index.js';
 
 let registrations = [];
 export const clearRegistrations = () => registrations = [];
