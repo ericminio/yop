@@ -1,34 +1,18 @@
-import { serveAssets, Router, Server } from '../../lib/index.js';
-import { acceptHeader, decodeSingleFrameOfText, encodeSingleFrameOfText } from '../../lib/websocket-frames.js';
+import { encodeSingleFrameOfText, Router, Server, serveAssets, serveUpgrage } from '../../lib/index.js';
 
 let sockets = [];
 export const clearSockets = () => sockets = [];
 
-const socketDataListener = (socket, data) => {
+const socketDataListener = (socket) => {
     sockets.push(socket);
 };
 
-const serveUpgrage = (listener) => (incoming, response) => {
-    let socket = incoming.socket;
-    socket.on('data', (data) => listener(socket, data));
-    const key = incoming.headers['sec-websocket-key'];
-    const accept = acceptHeader(key);
-
-    response.writeHead(101, {
-        'Upgrade': 'websocket',
-        'Connection': 'Upgrade',
-        'Sec-WebSocket-Accept': accept
-    });
-    response.end();
-}
 const notify = (incoming, response) => {
-    sockets.forEach(socket => {
-        socket.write(encodeSingleFrameOfText('hello world'))
-    });
+    sockets.forEach(socket => socket.write(encodeSingleFrameOfText('hello world')));
 
     response.writeHead(200);
     response.end();
-}
+};
 
 const router = new Router([
     { matches: (incoming) => incoming.url === '/connect', go: serveUpgrage(socketDataListener) },
