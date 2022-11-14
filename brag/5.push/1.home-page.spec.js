@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { page, eventually, request } from '../../lib/index.js';
+import { page, eventually, request, wait } from '../../lib/index.js';
 import { clearSockets, server } from './start.mjs';
 
 describe('websocket server', () => {
@@ -23,7 +23,7 @@ describe('websocket server', () => {
     });
 
     it('can push data', async () => {
-        await new Promise(resolve => setTimeout(resolve, 15));
+        await wait(15);
         await request({
             host: 'localhost',
             port: serverPort,
