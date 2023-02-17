@@ -2,24 +2,25 @@ import { expect } from 'chai';
 import { serveAsset, request, Server } from '../lib/index.js';
 
 describe('Serving asset handler', () => {
-
     let server;
     let port = 5001;
-    beforeEach(done => {
+    beforeEach((done) => {
         server = new Server(port);
         server.start(() => done());
     });
-    afterEach(done => {
+    afterEach((done) => {
         server.stop(done);
-    })
+    });
 
     it('can server html', async () => {
-        server.use(serveAsset(new URL('./serving-asset-index.html', import.meta.url)));
+        server.use(
+            serveAsset(new URL('./serving-asset-index.html', import.meta.url))
+        );
         const home = {
             hostname: 'localhost',
             port: port,
             path: '/',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
@@ -29,32 +30,38 @@ describe('Serving asset handler', () => {
     });
 
     it('can server javascript', async () => {
-        server.use(serveAsset(new URL('./serving-asset-code.js', import.meta.url)));
+        server.use(
+            serveAsset(new URL('./serving-asset-code.js', import.meta.url))
+        );
         const home = {
             hostname: 'localhost',
             port: port,
             path: '/',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
         expect(response.statusCode).to.equal(200);
-        expect(response.headers['content-type']).to.equal('application/javascript');
-        expect(response.body).to.equal('const sum = (a, b) => a + b');
+        expect(response.headers['content-type']).to.equal(
+            'application/javascript'
+        );
+        expect(response.body.trim()).to.equal('const sum = (a, b) => a + b;');
     });
 
     it('can server css', async () => {
-        server.use(serveAsset(new URL('./serving-asset-css.css', import.meta.url)));
+        server.use(
+            serveAsset(new URL('./serving-asset-css.css', import.meta.url))
+        );
         const home = {
             hostname: 'localhost',
             port: port,
             path: '/',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
-        expect(response.body).to.equal('body {\n    color: green;\n}');
+        expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
     });
 });

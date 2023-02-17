@@ -4,7 +4,7 @@ request({
     host: 'localhost',
     port: 5001,
     method: 'POST',
-    path: '/notify'
+    path: '/notify',
 })
     .then(() => console.log('sent'))
-    .catch(error => console.log(error));
+    .catch((error) => console.log(error));

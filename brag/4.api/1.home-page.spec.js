@@ -3,13 +3,12 @@ import { page, eventually } from '../../lib/index.js';
 import { server } from './start.mjs';
 
 describe('home page', () => {
-
-    beforeEach(done => {
-        server.start(port => {
+    beforeEach((done) => {
+        server.start((port) => {
             page.open(`http://localhost:${port}`).then(done).catch(done);
         });
     });
-    afterEach(done => {
+    afterEach((done) => {
         server.stop(done);
     });
 
@@ -22,4 +21,3 @@ describe('home page', () => {
         );
     });
 });
-

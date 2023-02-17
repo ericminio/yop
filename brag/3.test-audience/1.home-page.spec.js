@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { page, eventually } from '../../lib/index.js';
 
 describe('home page', () => {
-
     beforeEach(async () => {
         await page.open(new URL('./index.html', import.meta.url));
     });
@@ -16,4 +15,3 @@ describe('home page', () => {
         );
     });
 });
-

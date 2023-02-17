@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { primeFactorsOf } from './prime-factors.js';
 
 describe('prime factors decomposition', () => {
-
     it('works for our favorite number 42', () => {
         expect(primeFactorsOf(42)).to.deep.equal([2, 3, 7]);
     });

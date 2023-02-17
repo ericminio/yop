@@ -4,16 +4,15 @@ import { clearRegistrations } from './notification-service.js';
 import { server } from './start.mjs';
 
 describe('websocket server', () => {
-
     let serverPort;
-    beforeEach(done => {
-        server.start(port => {
+    beforeEach((done) => {
+        server.start((port) => {
             clearRegistrations();
             serverPort = port;
             page.open(`http://localhost:${port}`).then(done).catch(done);
         });
     });
-    afterEach(done => {
+    afterEach((done) => {
         server.stop(done);
     });
 
@@ -30,11 +29,13 @@ describe('websocket server', () => {
             port: serverPort,
             path: '/notify',
             method: 'POST',
-            body: JSON.stringify({ event: 'greetings', message: 'hello world' })
+            body: JSON.stringify({
+                event: 'greetings',
+                message: 'hello world',
+            }),
         });
         await eventually(() =>
             expect(page.section('Message')).to.contain('hello world')
         );
     });
 });
-

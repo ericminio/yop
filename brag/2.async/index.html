@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>prime factors</title>
+        <link href="./main.css" rel="stylesheet" />
+        <script>
+            const element = (selector) => {
+                return document.querySelector(selector);
+            };
+            const compute = () => {
+                setTimeout(() => {
+                    element('#decomposition').innerHTML = '2 x 2 x 2';
+                }, 50);
+            };
+            const addEventListeners = () => {
+                element('#go').addEventListener('click', compute);
+            };
+        </script>
+    </head>
 
-<head>
-    <title>prime factors</title>
-    <link href="./main.css" rel="stylesheet">
-    <script>
-        const element = (selector) => {
-            return document.querySelector(selector);
-        }
-        const compute = () => {
-            setTimeout(() => {
-                element('#decomposition').innerHTML = '2 x 2 x 2';
-            }, 50);
-        };
-        const addEventListeners = () => {
-            element('#go').addEventListener('click', compute);
-        };
-    </script>
-</head>
+    <body>
+        <section class="form">
+            <label for="number">Number to decompose</label>
+            <input id="number" />
+            <button id="go">compute</button>
+        </section>
+        <section class="results">
+            <h2>Results</h2>
+            <label id="decomposition"></label>
+        </section>
 
-<body>
-    <section class="form">
-        <label for="number">Number to decompose</label>
-        <input id="number" />
-        <button id="go">compute</button>
-    </section>
-    <section class="results">
-        <h2>Results</h2>
-        <label id="decomposition"></label>
-    </section>
-
-    <script>
-        addEventListeners();
-    </script>
-</body>
-
+        <script>
+            addEventListeners();
+        </script>
+    </body>
 </html>

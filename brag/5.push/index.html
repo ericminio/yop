@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>push</title>
+        <script>
+            const connect = () => {
+                const url = 'ws://localhost:5001/connect';
+                const webSocket = new WebSocket(url);
+                webSocket.addEventListener('open', (event) => {
+                    document.querySelector('#message').textContent =
+                        'connected';
+                    webSocket.send(JSON.stringify({ signup: ['greetings'] }));
+                });
+                webSocket.addEventListener('message', (event) => {
+                    document.querySelector('#message').textContent = event.data;
+                });
+            };
+        </script>
+    </head>
 
-<head>
-    <title>push</title>
-    <script>
-        const connect = () => {
-            const url = 'ws://localhost:5001/connect';
-            const webSocket = new WebSocket(url);
-            webSocket.addEventListener('open', (event) => {
-                document.querySelector('#message').textContent = 'connected';
-                webSocket.send(JSON.stringify({ signup: ['greetings'] }));
-            });
-            webSocket.addEventListener('message', (event) => {
-                document.querySelector('#message').textContent = event.data;
-            });
-        };
-    </script>
-</head>
+    <body>
+        <section>
+            <h2>Message</h2>
+            <label id="message">connecting</label>
+        </section>
 
-<body>
-    <section>
-        <h2>Message</h2>
-        <label id="message">connecting</label>
-    </section>
-
-    <script>
-        connect();
-    </script>
-</body>
-
+        <script>
+            connect();
+        </script>
+    </body>
 </html>

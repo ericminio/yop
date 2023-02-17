@@ -2,13 +2,14 @@ import { expect } from 'chai';
 import { page } from '../../lib/index.js';
 
 describe('home page', () => {
-
     beforeEach(async () => {
         await page.open(new URL('./index.html', import.meta.url));
     });
 
     it('gives focus to input field', () => {
-        expect(page.document.activeElement).to.equal(page.input('Number to decompose'));
+        expect(page.document.activeElement).to.equal(
+            page.input('Number to decompose')
+        );
     });
 
     it('displays an example', () => {
@@ -22,4 +23,3 @@ describe('home page', () => {
         expect(page.section('Results')).to.equal('Results');
     });
 });
-

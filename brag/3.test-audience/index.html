@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>prime factors</title>
+        <script type="application/javascript" src="./prime-factors.js"></script>
+        <script>
+            const element = (selector) => {
+                return document.querySelector(selector);
+            };
+            const compute = () => {
+                setTimeout(() => {
+                    let number = parseInt(element('#number').value);
+                    let decomposition = primeFactorsOf(number);
+                    let userFriendlyResult = render({ number, decomposition });
+                    display(userFriendlyResult);
+                }, 50);
+            };
+            const render = ({ number, decomposition }) => {
+                return `${number} = ${decomposition.join(' x ')}`;
+            };
+            const display = (value) => {
+                element('#decomposition').textContent = value;
+            };
+            const clear = () => {
+                display('');
+            };
+            const addEventListeners = () => {
+                element('#go').addEventListener('click', compute);
+                element('#number').addEventListener('input', clear);
+            };
+        </script>
+    </head>
 
-<head>
-    <title>prime factors</title>
-    <script type="application/javascript" src="./prime-factors.js"></script>
-    <script>
-        const element = (selector) => {
-            return document.querySelector(selector);
-        }
-        const compute = () => {
-            setTimeout(() => {
-                let number = parseInt(element('#number').value);
-                let decomposition = primeFactorsOf(number);
-                let userFriendlyResult = render({ number, decomposition });
-                display(userFriendlyResult);
-            }, 50);
-        };
-        const render = ({ number, decomposition }) => {
-            return `${number} = ${decomposition.join(' x ')}`;
-        };
-        const display = (value) => {
-            element('#decomposition').textContent = value;
-        };
-        const clear = () => {
-            display('');
-        }
-        const addEventListeners = () => {
-            element('#go').addEventListener('click', compute);
-            element('#number').addEventListener('input', clear);
-        };
-    </script>
-</head>
+    <body>
+        <label for="number">Number to decompose</label>
+        <input id="number" value="42" />
+        <button id="go">compute</button>
+        <section>
+            <h2>Results</h2>
+            <label id="decomposition">42 = 2 x 3 x 7</label>
+        </section>
 
-<body>
-    <label for="number">Number to decompose</label>
-    <input id="number" value="42" />
-    <button id="go">compute</button>
-    <section>
-        <h2>Results</h2>
-        <label id="decomposition">42 = 2 x 3 x 7</label>
-    </section>
-
-    <script>
-        addEventListeners();
-        element('#number').focus();
-    </script>
-</body>
-
+        <script>
+            addEventListeners();
+            element('#number').focus();
+        </script>
+    </body>
 </html>

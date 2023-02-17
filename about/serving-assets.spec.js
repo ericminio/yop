@@ -3,14 +3,13 @@ import { serveAssets, request, Server } from '../lib/index.js';
 import fs from 'fs';
 
 describe('Serving assets handler', () => {
-
     let server;
     let port = 5001;
-    beforeEach(done => {
+    beforeEach((done) => {
         server = new Server(port);
         server.start(() => done());
     });
-    afterEach(done => {
+    afterEach((done) => {
         server.stop(done);
     });
 
@@ -20,7 +19,7 @@ describe('Serving assets handler', () => {
             hostname: 'localhost',
             port: port,
             path: '/serving-asset-index.html',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
@@ -35,7 +34,7 @@ describe('Serving assets handler', () => {
             hostname: 'localhost',
             port: port,
             path: '/',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
@@ -45,7 +44,6 @@ describe('Serving assets handler', () => {
     });
 
     describe('when index.html is present', () => {
-
         const file = new URL('./index.html', import.meta.url);
 
         beforeEach(() => {
@@ -70,13 +68,15 @@ describe('Serving assets handler', () => {
                 hostname: 'localhost',
                 port: port,
                 path: '/',
-                method: 'GET'
+                method: 'GET',
             };
             let response = await request(home);
 
             expect(response.statusCode).to.equal(200);
             expect(response.headers['content-type']).to.equal('text/html');
-            expect(response.body).to.contain('<title>serving index.html</title>');
+            expect(response.body).to.contain(
+                '<title>serving index.html</title>'
+            );
         });
     });
 
@@ -86,13 +86,15 @@ describe('Serving assets handler', () => {
             hostname: 'localhost',
             port: port,
             path: '/serving-asset-code.js',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
         expect(response.statusCode).to.equal(200);
-        expect(response.headers['content-type']).to.equal('application/javascript');
-        expect(response.body).to.equal('const sum = (a, b) => a + b');
+        expect(response.headers['content-type']).to.equal(
+            'application/javascript'
+        );
+        expect(response.body.trim()).to.equal('const sum = (a, b) => a + b;');
     });
 
     it('can server css', async () => {
@@ -101,12 +103,12 @@ describe('Serving assets handler', () => {
             hostname: 'localhost',
             port: port,
             path: '/serving-asset-css.css',
-            method: 'GET'
+            method: 'GET',
         };
         let response = await request(home);
 
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
-        expect(response.body).to.equal('body {\n    color: green;\n}');
+        expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
     });
 });

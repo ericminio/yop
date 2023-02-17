@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>prime factors</title>
+        <link href="/main.css" rel="stylesheet" />
 
-<head>
-    <title>prime factors</title>
-    <link href="/main.css" rel="stylesheet">
+        <script>
+            const element = (selector) => {
+                return document.querySelector(selector);
+            };
+            const addEventListeners = () => {
+                element('#compute').addEventListener('click', compute);
+            };
+            const compute = () => {
+                const number = parseInt(element('#number').value);
+                fetch(`/decompose?number=${number}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const decomposition = data.decomposition;
+                        const answer = `${number} = ${decomposition.join(
+                            ' x '
+                        )}`;
+                        element('#decomposition').textContent = answer;
+                    });
+            };
+        </script>
+    </head>
 
-    <script>
-        const element = (selector) => {
-            return document.querySelector(selector);
-        };
-        const addEventListeners = () => {
-            element('#compute').addEventListener('click', compute);
-        };
-        const compute = () => {
-            const number = parseInt(element('#number').value);
-            fetch(`/decompose?number=${number}`)
-                .then(response => response.json())
-                .then(data => {
-                    const decomposition = data.decomposition;
-                    const answer = `${number} = ${decomposition.join(' x ')}`;
-                    element('#decomposition').textContent = answer;
-                });
-        };
-    </script>
-</head>
+    <body>
+        <section>
+            <label for="number">Number to decompose</label>
+            <input id="number" />
+            <button id="compute">compute</button>
+        </section>
+        <section>
+            <h2>Results</h2>
+            <label id="decomposition"></label>
+        </section>
 
-<body>
-    <section>
-        <label for="number">Number to decompose</label>
-        <input id="number" />
-        <button id="compute">compute</button>
-    </section>
-    <section>
-        <h2>Results</h2>
-        <label id="decomposition"></label>
-    </section>
-
-    <script>
-        addEventListeners();
-    </script>
-</body>
-
+        <script>
+            addEventListeners();
+        </script>
+    </body>
 </html>

@@ -1,12 +1,16 @@
-import { decodeSingleFrameOfText, encodeSingleFrameOfText, payload } from '../../lib/index.js';
+import {
+    decodeSingleFrameOfText,
+    encodeSingleFrameOfText,
+    payload,
+} from '../../lib/index.js';
 
 let registrations = [];
-export const clearRegistrations = () => registrations = [];
+export const clearRegistrations = () => (registrations = []);
 
 export const socketDataListener = (socket, data) => {
     registrations.push({
         socket,
-        events: JSON.parse(decodeSingleFrameOfText(data)).signup
+        events: JSON.parse(decodeSingleFrameOfText(data)).signup,
     });
 };
 
@@ -16,6 +20,8 @@ export const notify = async (incoming, response) => {
 
     const notification = JSON.parse(await payload(incoming));
     registrations
-        .filter(r => r.events.includes(notification.event))
-        .forEach(r => r.socket.write(encodeSingleFrameOfText(notification.message)));
+        .filter((r) => r.events.includes(notification.event))
+        .forEach((r) =>
+            r.socket.write(encodeSingleFrameOfText(notification.message))
+        );
 };

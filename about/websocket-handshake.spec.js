@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { acceptHeader } from '../lib/websocket-upgrade.js';
 
 describe('Sec-WebSocket-Accept', () => {
-
     it('is generated as expected', () => {
         const key = 'dGhlIHNhbXBsZSBub25jZQ==';
         const accept = acceptHeader(key);

@@ -2,22 +2,23 @@ import { expect } from 'chai';
 import { fetch, Headers, payload, Server } from '../lib/index.js';
 
 describe('fetch', () => {
-
     let server;
-    beforeEach(done => {
+    beforeEach((done) => {
         server = new Server(5001, async (incoming, response) => {
             const body = await payload(incoming);
             response.writeHead(200, { 'Content-Type': 'application/json' });
-            response.end(JSON.stringify({
-                method: incoming.method,
-                url: incoming.url,
-                body,
-                headers: incoming.headers
-            }));
+            response.end(
+                JSON.stringify({
+                    method: incoming.method,
+                    url: incoming.url,
+                    body,
+                    headers: incoming.headers,
+                })
+            );
         });
         server.start(() => done());
     });
-    afterEach(done => {
+    afterEach((done) => {
         server.stop(done);
     });
 
@@ -33,13 +34,16 @@ describe('fetch', () => {
                 connection: 'close',
                 host: 'localhost:5001',
             },
-            body: ''
+            body: '',
         });
     });
 
     it('can POST', async () => {
         const request = fetch(5001);
-        const response = await request('/hello', { method: 'POST', body: 'hello world' });
+        const response = await request('/hello', {
+            method: 'POST',
+            body: 'hello world',
+        });
         const data = await response.json();
 
         expect(data).to.deep.equal({
@@ -50,7 +54,7 @@ describe('fetch', () => {
                 host: 'localhost:5001',
                 'transfer-encoding': 'chunked',
             },
-            body: 'hello world'
+            body: 'hello world',
         });
     });
 
@@ -60,7 +64,7 @@ describe('fetch', () => {
             headers: new Headers({
                 'x-one': 'I see you',
                 'x-two': 'Me too',
-            })
+            }),
         });
         const data = await response.json();
 
@@ -68,7 +72,7 @@ describe('fetch', () => {
             'x-one': 'I see you',
             'x-two': 'Me too',
             connection: 'close',
-            host: 'localhost:5001'
+            host: 'localhost:5001',
         });
     });
 });

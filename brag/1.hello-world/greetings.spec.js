@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { page } from '../../lib/index.js';
 
 describe('Greetings message', () => {
-
     beforeEach(async () => {
         await page.open(new URL('./index.html', import.meta.url));
     });

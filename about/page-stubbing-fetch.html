@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 
 <html lang="en">
+    <head>
+        <title>stubbing fetch</title>
+        <script>
+            const load = () => {
+                fetch('/data')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        document.querySelector('#value').textContent =
+                            data.value;
+                    })
+                    .catch(console.log);
+            };
+        </script>
+    </head>
 
-<head>
-    <title>stubbing fetch</title>
-    <script>
-        const load = () => {
-            fetch('/data')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelector('#value').textContent = data.value;
-                })
-                .catch(console.log);
-        }
-    </script>
-</head>
+    <body>
+        <section>
+            <h1>data</h1>
+            <label id="value"></label>
+        </section>
 
-<body>
-    <section>
-        <h1>data</h1>
-        <label id="value"></label>
-    </section>
-
-    <script>
-        load();
-    </script>
-</body>
-
+        <script>
+            load();
+        </script>
+    </body>
 </html>
