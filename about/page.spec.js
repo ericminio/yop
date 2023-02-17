@@ -13,7 +13,7 @@ describe('page', () => {
         });
     });
 
-    describe('openning url', () => {
+    describe('opening url', () => {
         let server;
         let port = 5001;
         beforeEach((done) => {
@@ -44,5 +44,11 @@ describe('page', () => {
         await eventually(() => {
             expect(page.section('data')).to.contain('hello world');
         });
+    });
+
+    it('offers section selection', async () => {
+        await page.open(file);
+
+        expect(page.section('Welcome')).to.contain('Hello world');
     });
 });
