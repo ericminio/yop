@@ -14,12 +14,12 @@ describe('home page', () => {
 
     it('displays an example', () => {
         expect(page.input('Number to decompose').value).to.equal('42');
-        expect(page.section('Results')).to.contain('42 = 2 x 3 x 7');
+        expect(page.section('Result')).to.contain('42 = 2 x 3 x 7');
     });
 
     it('clears results on input', () => {
         page.enter('Number to decompose', '15');
 
-        expect(page.section('Results')).to.equal('Results');
+        expect(page.section('Result')).to.equal('Result');
     });
 });

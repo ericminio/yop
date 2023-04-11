@@ -2,31 +2,30 @@
 <html lang="en">
     <head>
         <title>prime factors</title>
+        <script type="application/javascript" src="./page.js"></script>
         <script type="application/javascript" src="./prime-factors.js"></script>
         <script>
-            const element = (selector) => {
-                return document.querySelector(selector);
+            const addEventListeners = (document) => {
+                element('#go', document).addEventListener('click', computeLater);
+                element('#number', document).addEventListener('input', clearResultPlaceholder);
             };
-            const compute = () => {
-                setTimeout(() => {
-                    let number = parseInt(element('#number').value);
-                    let decomposition = primeFactorsOf(number);
-                    let userFriendlyResult = render({ number, decomposition });
-                    display(userFriendlyResult);
-                }, 50);
+            const computeLater = (e) => {
+                setTimeout(() => compute(e.target.ownerDocument), 50);
             };
-            const render = ({ number, decomposition }) => {
+            const clearResultPlaceholder = (e) => {
+                displayResult('', e.target.ownerDocument);
+            };
+
+            const displayResult = (value, document) => {
+                element('#decomposition', document).textContent = value;
+            };
+            const compute = (document) => {
+                const number = parseInt(element('#number', document).value);
+                const decomposition = primeFactorsOf(number);
+                displayResult(userFriendlyResultString(number, decomposition), document);
+            }
+            const userFriendlyResultString = (number, decomposition) => {
                 return `${number} = ${decomposition.join(' x ')}`;
-            };
-            const display = (value) => {
-                element('#decomposition').textContent = value;
-            };
-            const clear = () => {
-                display('');
-            };
-            const addEventListeners = () => {
-                element('#go').addEventListener('click', compute);
-                element('#number').addEventListener('input', clear);
             };
         </script>
     </head>
@@ -36,13 +35,13 @@
         <input id="number" value="42" />
         <button id="go">compute</button>
         <section>
-            <h2>Results</h2>
+            <h2>Result</h2>
             <label id="decomposition">42 = 2 x 3 x 7</label>
         </section>
 
         <script>
-            addEventListeners();
-            element('#number').focus();
+            addEventListeners(document);
+            element('#number', document).focus();
         </script>
     </body>
 </html>
