@@ -14,4 +14,11 @@ describe('prime factors decomposition', () => {
             expect(page.section('Results')).to.contain('2 x 2 x 2')
         );
     });
+
+    it('discloses waiting state immediately', async () => {
+        page.set('Number to decompose').value = '42';
+        page.click('compute');
+
+        expect(page.section('Results')).to.contain('waiting...');
+    });
 });
