@@ -18,10 +18,15 @@ export const notify = async (incoming, response) => {
     response.writeHead(200);
     response.end();
 
-    const notification = JSON.parse(await payload(incoming));
-    registrations
-        .filter((r) => r.events.includes(notification.event))
-        .forEach((r) =>
-            r.socket.write(encodeSingleFrameOfText(notification.message))
-        );
+    payload(incoming)
+        .then((data) => JSON.parse(data))
+        .then((notification) => {
+            registrations
+                .filter((r) => r.events.includes(notification.event))
+                .forEach((r) =>
+                    r.socket.write(
+                        encodeSingleFrameOfText(notification.message)
+                    )
+                );
+        });
 };
