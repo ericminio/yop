@@ -15,11 +15,22 @@ export const socketDataListener = (socket, data) => {
 };
 
 export const notify = async (incoming, response) => {
-    response.writeHead(200);
-    response.end();
-
-    payload(incoming)
-        .then((data) => JSON.parse(data))
+    new Promise((resolve, reject) => {
+        payload(incoming)
+            .then((data) => {
+                const notification = JSON.parse(data);
+                if (!notification.event || !notification.message) {
+                    throw 'bad request';
+                }
+                return notification;
+            })
+            .then((notification) => {
+                response.writeHead(200);
+                response.end();
+                resolve(notification);
+            })
+            .catch(reject);
+    })
         .then((notification) => {
             registrations
                 .filter((r) => r.events.includes(notification.event))
@@ -28,5 +39,9 @@ export const notify = async (incoming, response) => {
                         encodeSingleFrameOfText(notification.message)
                     )
                 );
+        })
+        .catch(() => {
+            response.writeHead(400);
+            response.end();
         });
 };

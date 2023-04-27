@@ -38,4 +38,17 @@ describe('websocket server', () => {
             expect(page.section('Message')).to.contain('hello world')
         );
     });
+
+    it('resists bad request', async () => {
+        await wait(15);
+        const response = await request({
+            host: 'localhost',
+            port: serverPort,
+            path: '/notify',
+            method: 'POST',
+            body: JSON.stringify({ random: 'field' }),
+        });
+
+        expect(response.statusCode).to.equal(400);
+    });
 });
