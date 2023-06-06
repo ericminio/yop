@@ -15,7 +15,7 @@
         "prettier": "2.8.4"
     },
     "scripts": {
-        "test": "mocha --recursive --exit './{,!(node_modules)/**}/*.spec.js'",
+        "test": "mocha $(find -s about brag -name '*.spec.js')",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write ."
     }

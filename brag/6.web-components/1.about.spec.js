@@ -8,5 +8,6 @@ describe('Web component', () => {
 
     it('is a way to reuse code', () => {
         expect(page.section('Todos')).to.contain('Todo: Enjoy');
+        expect(page.section('Todos')).to.contain('Todo: Repeat');
     });
 });
