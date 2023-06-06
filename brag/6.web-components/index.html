@@ -4,27 +4,13 @@
         <title>Welcome to Web components</title>
 
         <script>
-            customElements.define(
-                'yop-todo',
-                class extends HTMLElement {
-                    constructor() {
-                        super();
-                    }
-
-                    async connectedCallback() {
-                        const todo = await fetch('/template.html')
-                            .then((response) => response.text())
-                            .then((html) =>
-                                html.replace(
-                                    'todo-text',
-                                    this.getAttribute('data-task')
-                                )
-                            );
-                        this.innerHTML = todo;
-                    }
-                }
-            );
+            const getTemplate = async (file) => {
+                const response = await fetch(file);
+                const template = await response.text();
+                return template;
+            };
         </script>
+        <script src="/todo/todo.js"></script>
     </head>
 
     <body>

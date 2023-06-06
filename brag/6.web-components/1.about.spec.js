@@ -16,5 +16,8 @@ describe('Web component', () => {
         await eventually(() =>
             expect(page.section('Todos')).to.contain('Todo: Enjoy')
         );
+        await eventually(() =>
+            expect(page.section('Todos')).to.contain('Todo: Repeat')
+        );
     });
 });
