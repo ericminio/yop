@@ -12,12 +12,15 @@
                     }
 
                     async connectedCallback() {
-                        const todo = document.createElement('p');
-                        todo.textContent = `Todo: ${this.getAttribute(
-                            'data-task'
-                        )}`;
-
-                        this.appendChild(todo);
+                        const todo = await fetch('/template.html')
+                            .then((response) => response.text())
+                            .then((html) =>
+                                html.replace(
+                                    'todo-text',
+                                    this.getAttribute('data-task')
+                                )
+                            );
+                        this.innerHTML = todo;
                     }
                 }
             );

@@ -6,7 +6,6 @@ describe('fetch', () => {
     beforeEach((done) => {
         server = new Server(5001, async (incoming, response) => {
             const body = await payload(incoming);
-            response.writeHead(200, { 'Content-Type': 'application/json' });
             response.end(
                 JSON.stringify({
                     method: incoming.method,
@@ -73,6 +72,22 @@ describe('fetch', () => {
             'x-two': 'Me too',
             connection: 'close',
             host: 'localhost:5001',
+        });
+    });
+
+    it('can GET text body', async () => {
+        const request = fetch(5001);
+        const response = await request('/text');
+        const data = await response.text();
+
+        expect(JSON.parse(data)).to.deep.equal({
+            method: 'GET',
+            url: '/text',
+            headers: {
+                connection: 'close',
+                host: 'localhost:5001',
+            },
+            body: '',
         });
     });
 });

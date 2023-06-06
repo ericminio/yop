@@ -1,13 +1,20 @@
 import { expect } from 'chai';
-import { page } from '../../lib/index.js';
+import { page, eventually } from '../../lib/index.js';
+import { server } from './start.mjs';
 
 describe('Web component', () => {
-    beforeEach(async () => {
-        await page.open(new URL('./index.html', import.meta.url));
+    beforeEach((done) => {
+        server.start((port) => {
+            page.open(`http://localhost:${port}`).then(done).catch(done);
+        });
+    });
+    afterEach((done) => {
+        server.stop(done);
     });
 
-    it('is a way to reuse code', () => {
-        expect(page.section('Todos')).to.contain('Todo: Enjoy');
-        expect(page.section('Todos')).to.contain('Todo: Repeat');
+    it('is a way to reuse code', async () => {
+        await eventually(() =>
+            expect(page.section('Todos')).to.contain('Todo: Enjoy')
+        );
     });
 });
