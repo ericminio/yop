@@ -15,7 +15,7 @@
         "prettier": "2.8.4"
     },
     "scripts": {
-        "test": "mocha $(find -s about brag -name '*.spec.js')",
+        "test": "mocha $(find about brag -name '*.spec.js')",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write ."
     }
