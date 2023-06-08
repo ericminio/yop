@@ -6,7 +6,9 @@ customElements.define(
         }
 
         async connectedCallback() {
-            const html = await getTemplate('/todo/todo.html');
+            const html = await fetch('/todo/todo.html').then((response) =>
+                response.text()
+            );
             this.innerHTML = html.replace(
                 'todo-text',
                 this.getAttribute('data-task')
