@@ -20,4 +20,10 @@ describe('Web component', () => {
             expect(page.section('Todos')).to.contain('Todo: Repeat')
         );
     });
+
+    it('welcomes styles defined outside of <head>', async () => {
+        await eventually(() =>
+            expect(page.color('Todo: Repeat')).to.equal('blue')
+        );
+    });
 });

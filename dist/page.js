@@ -71,7 +71,14 @@ const section = (text) => {
     return find({ tag: 'section', text }).textContent.trim();
 };
 
-export const page = { open, close, section, set, input, enter, click };
+const color = (text) => {
+    const label = find({ tag: 'label', text });
+    const style = page.document.defaultView.getComputedStyle(label, null);
+
+    return style.color;
+};
+
+export const page = { open, close, section, set, input, enter, click, color };
 
 const find = (options) => {
     if (page.document === undefined) {

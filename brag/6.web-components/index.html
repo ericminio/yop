@@ -4,11 +4,7 @@
         <title>Welcome to Web components</title>
 
         <script>
-            const getTemplate = async (file) => {
-                const response = await fetch(file);
-                const template = await response.text();
-                return template;
-            };
+            const getTemplate = (file) => fetch(file).then(response => response.text());            
         </script>
         <script src="/todo/todo.js"></script>
     </head>
