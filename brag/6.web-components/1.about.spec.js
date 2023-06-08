@@ -13,12 +13,10 @@ describe('Web component', () => {
     });
 
     it('is a way to reuse code', async () => {
-        await eventually(() =>
-            expect(page.section('Todos')).to.contain('Todo: Enjoy')
-        );
-        await eventually(() =>
-            expect(page.section('Todos')).to.contain('Todo: Repeat')
-        );
+        await eventually(() => {
+            expect(page.section('Todos')).to.contain('Todo: Enjoy');
+            expect(page.section('Todos')).to.contain('Todo: Repeat');
+        });
     });
 
     it('welcomes styles defined outside of <head>', async () => {
