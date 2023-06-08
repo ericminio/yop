@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import {
     decodeSingleFrameOfText,
     encodeSingleFrameOfText,
-} from '../lib/websocket-frames.js';
+} from '../dist/index.js';
 
 describe('encoding', () => {
     it('does not require a mask', () => {

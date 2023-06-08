@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { acceptHeader } from '../lib/websocket-upgrade.js';
+import { acceptHeader } from '../dist/index.js';
 
 describe('Sec-WebSocket-Accept', () => {
     it('is generated as expected', () => {

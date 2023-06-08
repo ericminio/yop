@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { page } from '../../lib/index.js';
+import { page } from '../../dist/index.js';
 
 describe('home page', () => {
     beforeEach(async () => {

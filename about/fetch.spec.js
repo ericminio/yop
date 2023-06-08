@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { fetch, Headers, payload, Server } from '../lib/index.js';
+import { fetch, Headers, payload, Server } from '../dist/index.js';
 
 describe('fetch', () => {
     let server;

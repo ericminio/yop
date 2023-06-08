@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { expose } from '../lib/expose.js';
+import { expose } from '../dist/index.js';
 
 describe('exposing non-module code', () => {
     it('leverages dynamic functions', () => {

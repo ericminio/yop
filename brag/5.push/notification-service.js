@@ -2,7 +2,7 @@ import {
     decodeSingleFrameOfText,
     encodeSingleFrameOfText,
     payload,
-} from '../../lib/index.js';
+} from '../../dist/index.js';
 
 let registrations = [];
 export const clearRegistrations = () => (registrations = []);

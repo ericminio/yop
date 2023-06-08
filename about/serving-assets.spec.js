@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { serveAssets, request, Server } from '../lib/index.js';
+import { serveAssets, request, Server } from '../dist/index.js';
 import fs from 'fs';
 
 describe('Serving assets handler', () => {

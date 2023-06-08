@@ -1,7 +1,6 @@
-export * from './serve-asset.js';
-export * from './serve-assets.js';
 export * from './content-of-file.js';
 export * from './eventually.js';
+export * from './event-bus.js';
 export * from './expose.js';
 export * from './fetch.js';
 export * from './headers.js';
@@ -11,6 +10,8 @@ export * from './route-302.js';
 export * from './request.js';
 export * from './router.js';
 export * from './server.js';
+export * from './serve-asset.js';
+export * from './serve-assets.js';
 export * from './wait.js';
 export * from './websocket-frames.js';
 export * from './websocket-upgrade.js';

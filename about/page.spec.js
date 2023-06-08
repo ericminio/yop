@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { serveAsset, eventually, page, Server } from '../lib/index.js';
+import { serveAsset, eventually, page, Server } from '../dist/index.js';
 import { URL } from 'url';
 
 describe('page', () => {

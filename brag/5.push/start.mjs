@@ -1,4 +1,4 @@
-import { Router, Server, serveAssets, serveUpgrage } from '../../lib/index.js';
+import { Router, Server, serveAssets, serveUpgrage } from '../../dist/index.js';
 import { notify, socketDataListener } from './notification-service.js';
 
 const router = new Router([

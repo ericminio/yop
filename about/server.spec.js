@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { request, Server } from '../lib/index.js';
+import { request, Server } from '../dist/index.js';
 const port = 5005;
 
 describe('Server', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { redirect, request, Router, Server } from '../lib/index.js';
+import { redirect, request, Router, Server } from '../dist/index.js';
 
 describe('redirection', () => {
     let server;

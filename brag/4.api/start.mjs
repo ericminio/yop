@@ -1,4 +1,4 @@
-import { serveAssets, Router, Server } from '../../lib/index.js';
+import { serveAssets, Router, Server } from '../../dist/index.js';
 import { serveDecomposition } from './serve-decomposition.js';
 
 const router = new Router([

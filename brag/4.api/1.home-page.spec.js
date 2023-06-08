@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { page, eventually } from '../../lib/index.js';
+import { page, eventually } from '../../dist/index.js';
 import { server } from './start.mjs';
 
 describe('home page', () => {
