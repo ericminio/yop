@@ -26,6 +26,7 @@ describe('Serving asset handler', () => {
 
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
+        expect(response.headers['cache-control']).to.equal('max-age=45');
         expect(response.body).to.contain('<title>serving html</title>');
     });
 
