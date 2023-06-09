@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { normalize } from './normalize.js';
 
 export class Postgres {
     constructor() {
@@ -12,34 +13,8 @@ export class Postgres {
         }
     }
 
-    async executeSync(sql, params) {
-        const statements = this.normalize(sql, params);
-        const rows = await this.runAll(statements);
-
-        return rows;
-    }
-
-    normalize(sql, params) {
-        let statements = sql;
-        if (typeof sql == 'string') {
-            let statement = { sql: sql, params: [] };
-            if (typeof params == 'object') {
-                statement.params = params;
-            }
-            statements = [statement];
-        }
-        for (let i = 0; i < statements.length; i++) {
-            if (typeof statements[i] == 'string') {
-                statements[i] = {
-                    sql: statements[i],
-                    params: [],
-                };
-            }
-        }
-        return statements;
-    }
-
-    async runAll(statements) {
+    async execute(sql, params) {
+        const statements = normalize(sql, params);
         let rows = [];
         for (let i = 0; i < statements.length; i++) {
             const statement = statements[i];
