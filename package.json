@@ -18,5 +18,8 @@
         "test": "mocha $(find about brag -name '*.spec.js')",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write ."
+    },
+    "dependencies": {
+        "pg": "^8.11.0"
     }
 }

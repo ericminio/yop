@@ -1,4 +1,5 @@
 export * from './content-of-file.js';
+export * from './postgres.js';
 export * from './eventually.js';
 export * from './event-bus.js';
 export * from './expose.js';
