@@ -10,6 +10,7 @@ const mime = {
     js: 'application/javascript',
     css: 'text/css',
     png: 'image/png',
+    jpg: 'image/jpeg',
 };
 
 export const serveAsset = (url) => {
@@ -24,14 +25,15 @@ export const serveAsset = (url) => {
             url.pathname.lastIndexOf('.') + 1
         );
         const type = mime[extension];
-        const content =
-            type == 'image/png' ? contentOfBinaryFile(url) : contentOfFile(url);
+        const content = type.startsWith('image')
+            ? contentOfBinaryFile(url)
+            : contentOfFile(url);
 
         return (request, response) => {
             response.setHeader('Content-Length', content.length);
             response.setHeader('Content-Type', type);
             response.setHeader('Cache-Control', 'max-age=45');
-            type == 'image/png'
+            type.startsWith('image')
                 ? response.end(content, 'binary')
                 : response.end(content);
         };
