@@ -1,5 +1,10 @@
 import { expect } from 'chai';
-import { serveAsset, request, Server } from '../dist/index.js';
+import {
+    serveAsset,
+    request,
+    Server,
+    contentOfBinaryFile,
+} from '../dist/index.js';
 
 describe('Serving asset handler', () => {
     let server;
@@ -64,5 +69,24 @@ describe('Serving asset handler', () => {
         expect(response.statusCode).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
         expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
+    });
+
+    it('can serve image', async () => {
+        const image = new URL('./serving-asset-image.png', import.meta.url);
+        const expected = contentOfBinaryFile(image);
+        server.use(serveAsset(image));
+        const home = {
+            hostname: 'localhost',
+            port: port,
+            path: '/',
+            method: 'GET',
+        };
+        let response = await request(home);
+
+        expect(response.statusCode).to.equal(200);
+        expect(response.headers['content-type']).to.equal('image/png');
+        expect(response.body.equals(Buffer.from(expected, 'binary'))).to.equal(
+            true
+        );
     });
 });
