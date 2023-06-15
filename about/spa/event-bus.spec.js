@@ -1,5 +1,9 @@
 import { expect } from 'chai';
-import { EventBus } from '../dist/index.js';
+import { expose } from '../../dist/index.js';
+const EventBus = expose({
+    symbol: 'EventBus',
+    file: './dist/spa/event-bus.js',
+});
 
 describe('events bus', () => {
     let eventBus;

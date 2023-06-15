@@ -1,6 +1,11 @@
 import { serveAssets, Router, Server } from '../../dist/index.js';
+import { serveYop } from '../../dist/spa/serve.js';
 
 const router = new Router([
+    {
+        matches: (incoming) => incoming.url === '/yop-spa.js',
+        go: serveYop(),
+    },
     {
         matches: () => true,
         go: serveAssets(new URL('.', import.meta.url)),

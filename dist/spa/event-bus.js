@@ -1,4 +1,4 @@
-export class EventBus {
+class EventBus {
     constructor() {
         this.listeners = {};
         this.id = 0;
@@ -57,3 +57,4 @@ export class EventBus {
         }
     }
 }
+var eventBus = new EventBus();
