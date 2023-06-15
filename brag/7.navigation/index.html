@@ -106,19 +106,13 @@
         </script>    
         <script src="/MainMenu/index.js"></script>
         <script src="/WelcomeHome/index.js"></script>
+        <script src="/About/index.js"></script>
     </head>
 
     <body>
         <main-menu></main-menu>
 
         <spa-route when="/" then="welcome-home"></spa-route>
-        <spa-route when="/about">
-            <section>
-                <h1>About page</h1>
-                <p>
-                    this is the about page
-                </p>
-            </section>
-        </spa-route>
+        <spa-route when="/about" then="page-about"></spa-route>
     </body>
 </html>
