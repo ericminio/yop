@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Navigation</title>
+        <script>
+            class EventBus {
+                constructor() {
+                    this.listeners = {};
+                    this.id = 0;
+                }
+                isEmpty() {
+                    return Object.keys(this.listeners).length == 0;
+                }
+                notify(key, value) {
+                    let listeners = this.listeners[key];
+                    if (listeners !== undefined) {
+                        for (var i = 0; i < listeners.length; i++) {
+                            var listener = listeners[i].listener;
+                            if (typeof listener == 'object') {
+                                listener.update(value, key);
+                            }
+                            if (typeof listener == 'function') {
+                                listener(value, key);
+                            }
+                        }
+                    }
+                }
+                register(listener, key) {
+                    return this.save(listener, key, this.listeners);
+                }
+                unregister(id) {
+                    this.remove(id, this.listeners);
+                }
+                unregisterAll(ids) {
+                    for (var i = 0; i < ids.length; i++) {
+                        let id = ids[i];
+                        this.unregister(id);
+                    }
+                }
+
+                save(listener, key, map) {
+                    if (map[key] === undefined) {
+                        map[key] = [];
+                    }
+                    this.id = this.id + 1;
+                    map[key].push({ id: this.id, listener: listener });
+                    return this.id;
+                }
+                remove(id, map) {
+                    let keys = Object.keys(map);
+                    for (let i = 0; i < keys.length; i++) {
+                        let key = keys[i];
+                        for (let j = 0; j < map[key].length; j++) {
+                            let entry = map[key][j];
+                            if (entry.id == id) {
+                                map[key].splice(j, 1);
+                            }
+                        }
+                        if (map[key] == 0) {
+                            delete map[key];
+                        }
+                    }
+                }
+            }
+            var eventBus = new EventBus();
+        </script>
+        <script>
+            class Navigation {
+                constructor(window) {
+                    this.window = window;
+                    this.window.onpopstate = () => {
+                        eventBus.notify('navigation');
+                    };
+                }
+
+                to(target) {
+                    history.pushState({}, null, target);
+                    eventBus.notify('navigation');
+                }
+            }
+            var navigate = new Navigation(window);
+        </script>    
+        <script>
+            customElements.define(
+                'spa-route',
+                class extends HTMLElement {
+                    connectedCallback() {
+                        if (this.getAttribute('then') !== null) {
+                            let then = this.getAttribute('then');
+                            this.then = `<${then}></${then}>`;
+                        } else {
+                            this.then = this.innerHTML;
+                        }
+                        eventBus.register(this, 'navigation');
+                        this.update();
+                    }
+                    update() {
+                        if (window.location.pathname == this.getAttribute('when')) {
+                            this.innerHTML = this.then;
+                        } else {
+                            this.innerHTML = '';
+                        }
+                    }
+                }
+            );
+        </script>    
+        <script src="/MainMenu/index.js"></script>
+        <script src="/WelcomeHome/index.js"></script>
+    </head>
+
+    <body>
+        <main-menu></main-menu>
+
+        <spa-route when="/" then="welcome-home"></spa-route>
+        <spa-route when="/about">
+            <section>
+                <h1>About page</h1>
+                <p>
+                    this is the about page
+                </p>
+            </section>
+        </spa-route>
+    </body>
+</html>
