@@ -1,4 +1,4 @@
-import { serveAsset } from './assets/serve-asset.js';
+import { serveAsset } from './serve-asset.js';
 
 export class RouteDefault {
     constructor(assetProvider) {
