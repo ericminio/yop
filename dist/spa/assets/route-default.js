@@ -1,8 +1,8 @@
-import { serveAsset } from './serve-asset.js';
+import { serveContent } from './serve-content.js';
 
 export class RouteDefault {
-    constructor(assetProvider) {
-        this.assetProvider = assetProvider;
+    constructor(contentProvider) {
+        this.contentProvider = contentProvider;
     }
 
     matches() {
@@ -10,6 +10,6 @@ export class RouteDefault {
     }
 
     go(request, response) {
-        serveAsset(this.assetProvider)(request, response);
+        serveContent(this.contentProvider)(request, response);
     }
 }

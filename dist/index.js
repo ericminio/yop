@@ -5,7 +5,7 @@ export * from './spa/event-bus.js';
 export * from './spa/assets/route-asset-equal.js';
 export * from './spa/assets/route-asset-prefix.js';
 export * from './spa/assets/route-default.js';
-export * from './spa/assets/serve-asset.js';
+export * from './spa/assets/serve-content.js';
 export * from './expose.js';
 export * from './fetch.js';
 export * from './headers.js';

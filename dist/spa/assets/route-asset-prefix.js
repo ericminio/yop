@@ -1,9 +1,9 @@
-import { serveAsset } from './serve-asset.js';
+import { serveContent } from './serve-content.js';
 
 export class RouteAssetPrefix {
-    constructor(prefix, assetProvider) {
+    constructor(prefix, contentProvider) {
         this.prefix = prefix;
-        this.assetProvider = assetProvider;
+        this.contentProvider = contentProvider;
     }
 
     matches(incoming) {
@@ -11,6 +11,6 @@ export class RouteAssetPrefix {
     }
 
     go(request, response) {
-        serveAsset(this.assetProvider)(request, response);
+        serveContent(this.contentProvider)(request, response);
     }
 }
