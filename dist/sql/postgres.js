@@ -9,6 +9,7 @@ export class Postgres {
         if (process.env.DATABASE_SSL) {
             this.config.ssl = {
                 rejectUnauthorized: false,
+                ca: process.env.CACERT,
             };
         }
     }
