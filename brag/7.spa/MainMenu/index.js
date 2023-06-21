@@ -9,7 +9,7 @@ customElements.define(
             const html = await fetch('/MainMenu/index.html').then((response) =>
                 response.text()
             );
-            this.innerHTML = html;
+            this.outerHTML = html;
             this.querySelector('#menu-about').addEventListener('click', () => {
                 navigate.to('/about');
             });
