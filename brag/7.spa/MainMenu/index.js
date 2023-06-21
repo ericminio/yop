@@ -10,9 +10,11 @@ customElements.define(
                 response.text()
             );
             this.outerHTML = html;
-            this.querySelector('#menu-about').addEventListener('click', () => {
-                navigate.to('/about');
-            });
+            this.ownerDocument
+                .querySelector('#menu-about')
+                .addEventListener('click', () => {
+                    navigate.to('/about');
+                });
         }
     }
 );
