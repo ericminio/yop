@@ -1,4 +1,4 @@
-const binaryContentTypes = ['image/jpeg', 'image/png'];
+import { binaryContentTypes } from '../../content-types.js';
 
 export const serveContent = (contentProvider) => {
     return (request, response) => {

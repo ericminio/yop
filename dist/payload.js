@@ -1,8 +1,10 @@
+import { binaryContentTypes } from './content-types.js';
+
 export const payload = (incoming) => {
     const contentTypeIndex = incoming.rawHeaders.indexOf('Content-Type');
     if (
         contentTypeIndex > 0 &&
-        incoming.rawHeaders[contentTypeIndex + 1].indexOf('image') == 0
+        binaryContentTypes.includes(incoming.rawHeaders[contentTypeIndex + 1])
     ) {
         return new Promise((resolve, reject) => {
             const body = [];
