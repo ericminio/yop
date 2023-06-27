@@ -1,6 +1,11 @@
 import { contentOfFile } from '../../content-of-file.js';
 
-const yop = ['../event-bus.js', '../navigate.js', '../route.js'].reduce(
+const yop = [
+    '../store.js',
+    '../event-bus.js',
+    '../navigate.js',
+    '../route.js',
+].reduce(
     (acc, current) => acc + contentOfFile(new URL(current, import.meta.url)),
     ''
 );
