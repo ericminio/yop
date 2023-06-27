@@ -51,4 +51,14 @@ describe('page', () => {
 
         expect(page.section('Welcome')).to.contain('Hello world');
     });
+
+    it('selects first smallest section with matching content', async () => {
+        await page.open(
+            new URL('./page-nested-sections.html', import.meta.url)
+        );
+        const monday = page.section('Monday');
+
+        expect(monday).to.contain('Dentist');
+        expect(monday).not.to.contain('Shopping');
+    });
 });

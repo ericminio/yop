@@ -90,7 +90,9 @@ const find = (options) => {
     if (candidates.length === 0) {
         throw new Error(`${options.tag} with text '${options.text}' not found`);
     }
-    return candidates[0];
+    return candidates.sort(
+        (a, b) => a.textContent.length - b.textContent.length
+    )[0];
 };
 
 const element = (selector) => {
