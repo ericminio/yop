@@ -1,6 +1,11 @@
 import { contentOfFile } from './content-of-file.js';
 
-export const exposex = ({ symbol, files }) => {
+export const exposex = ({ symbol, files, symbols }) => {
     const content = files.reduce((acc, file) => acc + contentOfFile(file), '');
-    return new Function(`${content}; return ${symbol}`)();
+    let exposed = `return ${symbol};`;
+    if (!!symbols) {
+        exposed = symbols.reduce((acc, symbol) => acc + `, ${symbol}`);
+        exposed = `return { ${exposed} };`;
+    }
+    return new Function(`${content}; ${exposed}`)();
 };
