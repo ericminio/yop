@@ -68,6 +68,8 @@ describe('page', () => {
         );
 
         expect(page.section('Mouse')).to.contain('Quantity - 1 +');
-        expect(page.section('Monitor')).to.contain('Quantity - 2 +');
+        expect(page.section('Monitor')).to.equal(
+            'Monitor Quantity - 2 + $ 300'
+        );
     });
 });

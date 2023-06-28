@@ -68,7 +68,9 @@ const enter = (prompt, value) => {
 };
 
 const section = (text) => {
-    return find({ tag: 'section', text }).textContent.replace(/\s\s+/g, ' ');
+    return find({ tag: 'section', text })
+        .textContent.replace(/\s\s+/g, ' ')
+        .trim();
 };
 
 const color = (text) => {
