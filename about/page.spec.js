@@ -61,4 +61,13 @@ describe('page', () => {
         expect(monday).to.contain('Dentist');
         expect(monday).not.to.contain('Shopping');
     });
+
+    it('section returned as one line', async () => {
+        await page.open(
+            new URL('./page-nested-sections.html', import.meta.url)
+        );
+
+        expect(page.section('Mouse')).to.contain('Quantity - 1 +');
+        expect(page.section('Monitor')).to.contain('Quantity - 2 +');
+    });
 });
