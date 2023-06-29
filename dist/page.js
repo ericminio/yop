@@ -88,9 +88,15 @@ const find = (options) => {
     }
     let candidates = Array.from(
         page.document.querySelectorAll(options.tag)
-    ).filter((element) => element.textContent.indexOf(options.text) !== -1);
+    ).filter(
+        (element) =>
+            element.textContent.indexOf(options.text) !== -1 ||
+            element.getAttribute('name') === options.text
+    );
     if (candidates.length === 0) {
-        throw new Error(`${options.tag} with text '${options.text}' not found`);
+        throw new Error(
+            `${options.tag} with text or name '${options.text}' not found`
+        );
     }
     return candidates.sort(
         (a, b) => a.textContent.length - b.textContent.length

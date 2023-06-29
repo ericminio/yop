@@ -72,4 +72,18 @@ describe('page', () => {
             'Monitor Quantity - 2 + $ 300'
         );
     });
+
+    it('can click on a button with partially matching content', async () => {
+        await page.open(new URL('./page-buttons.html', import.meta.url));
+        page.click('great');
+
+        expect(page.section('Message')).to.equal('Message great indeed');
+    });
+
+    it('can click on a button with matching name', async () => {
+        await page.open(new URL('./page-buttons.html', import.meta.url));
+        page.click('order');
+
+        expect(page.section('Message')).to.equal('Message order in!');
+    });
 });
