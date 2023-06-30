@@ -7,11 +7,11 @@ export const eventually = async (...params) => {
         verify = page;
         page = undefined;
     }
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let credit = tries;
-        const tryNow = () => {
+        const tryNow = async () => {
             try {
-                verify();
+                await verify();
                 resolve();
             } catch (error) {
                 credit--;
@@ -25,6 +25,6 @@ export const eventually = async (...params) => {
                 }
             }
         };
-        tryNow();
+        await tryNow();
     });
 };
