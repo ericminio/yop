@@ -5,16 +5,20 @@ const config = {
     resources: 'usable',
 };
 const openWithJsdom = (isUrl) => (isUrl ? JSDOM.fromURL : JSDOM.fromFile);
-const PREFIX = 'http://localhost:';
 
 const open = (spec, options) => {
-    let isUrl = typeof spec == 'string' && spec.indexOf('http') === 0;
-    let target = isUrl ? spec : spec.pathname;
-    let port = isUrl
-        ? parseInt(spec.substring(spec.indexOf(PREFIX) + PREFIX.length))
-        : 0;
-    let fetchImplementation =
-        !!options && options.fetch ? options.fetch : fetch(port);
+    const isUrl = typeof spec == 'string' && spec.indexOf('http') === 0;
+    const target = isUrl ? spec : spec.pathname;
+    const fetchImplementation =
+        !!options && options.fetch
+            ? options.fetch
+            : (url, options) => {
+                  return isUrl &&
+                      typeof url == 'string' &&
+                      url.indexOf('/') === 0
+                      ? fetch(`${spec}${url}`, options)
+                      : fetch(url, options);
+              };
     return new Promise(async (resolve, reject) => {
         try {
             const dom = await openWithJsdom(isUrl)(target, {

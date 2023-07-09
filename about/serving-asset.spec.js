@@ -5,10 +5,11 @@ import {
     Server,
     contentOfBinaryFile,
 } from '../dist/index.js';
+const port = 5001;
+const baseUrl = `http://localhost:${port}`;
 
 describe('Serving asset handler', () => {
     let server;
-    let port = 5001;
     beforeEach((done) => {
         server = new Server(port);
         server.start(() => done());
@@ -21,7 +22,7 @@ describe('Serving asset handler', () => {
         server.use(
             serveAsset(new URL('./serving-asset-index.html', import.meta.url))
         );
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
@@ -33,7 +34,7 @@ describe('Serving asset handler', () => {
         server.use(
             serveAsset(new URL('./serving-asset-code.js', import.meta.url))
         );
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal(
@@ -46,7 +47,7 @@ describe('Serving asset handler', () => {
         server.use(
             serveAsset(new URL('./serving-asset-css.css', import.meta.url))
         );
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
@@ -57,7 +58,7 @@ describe('Serving asset handler', () => {
         const image = new URL('./serving-asset-image.png', import.meta.url);
         const expected = contentOfBinaryFile(image);
         server.use(serveAsset(image));
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('image/png');
@@ -70,7 +71,7 @@ describe('Serving asset handler', () => {
         const image = new URL('./serving-asset-image.jpg', import.meta.url);
         const expected = contentOfBinaryFile(image);
         server.use(serveAsset(image));
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('image/jpeg');

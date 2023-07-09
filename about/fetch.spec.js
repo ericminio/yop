@@ -1,5 +1,7 @@
 import { expect } from 'chai';
 import { fetch, Headers, payload, Server } from '../dist/index.js';
+const port = 5001;
+const baseUrl = `http://localhost:${port}`;
 
 describe('fetch', () => {
     let server;
@@ -22,8 +24,7 @@ describe('fetch', () => {
     });
 
     it('can GET', async () => {
-        const request = fetch(5001);
-        const response = await request('/hello');
+        const response = await fetch(`${baseUrl}/hello`);
         const data = await response.json();
 
         expect(data).to.deep.equal({
@@ -38,8 +39,7 @@ describe('fetch', () => {
     });
 
     it('can POST', async () => {
-        const request = fetch(5001);
-        const response = await request('/hello', {
+        const response = await fetch(`${baseUrl}/hello`, {
             method: 'POST',
             body: 'hello world',
         });
@@ -58,8 +58,7 @@ describe('fetch', () => {
     });
 
     it('propagates custom headers', async () => {
-        const request = fetch(5001);
-        const response = await request('/hello', {
+        const response = await fetch(`${baseUrl}/hello`, {
             headers: new Headers({
                 'x-one': 'I see you',
                 'x-two': 'Me too',
@@ -76,8 +75,7 @@ describe('fetch', () => {
     });
 
     it('can GET text body', async () => {
-        const request = fetch(5001);
-        const response = await request('/text');
+        const response = await fetch(`${baseUrl}/text`);
         const data = await response.text();
 
         expect(JSON.parse(data)).to.deep.equal({

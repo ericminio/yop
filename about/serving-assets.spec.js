@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import { serveAssets, fetch, Server } from '../dist/index.js';
 import fs from 'fs';
+const port = 5001;
+const baseUrl = `http://localhost:${port}`;
 
 describe('Serving assets handler', () => {
     let server;
-    let port = 5001;
     beforeEach((done) => {
         server = new Server(port);
         server.start(() => done());
@@ -15,7 +16,7 @@ describe('Serving assets handler', () => {
 
     it('can server html', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const response = await fetch(port)('/serving-asset-index.html');
+        const response = await fetch(`${baseUrl}/serving-asset-index.html`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
@@ -24,7 +25,7 @@ describe('Serving assets handler', () => {
 
     it('defaults to 404', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(404);
         expect(response.headers['content-type']).to.equal('text/plain');
@@ -52,7 +53,7 @@ describe('Serving assets handler', () => {
 
         it('defaults to index.html', async () => {
             server.use(serveAssets(new URL('.', import.meta.url)));
-            const response = await fetch(port)('/');
+            const response = await fetch(`${baseUrl}/`);
 
             expect(response.status).to.equal(200);
             expect(response.headers['content-type']).to.equal('text/html');
@@ -64,7 +65,7 @@ describe('Serving assets handler', () => {
 
     it('can server javascript', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const response = await fetch(port)('/serving-asset-code.js');
+        const response = await fetch(`${baseUrl}/serving-asset-code.js`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal(
@@ -81,7 +82,7 @@ describe('Serving assets handler', () => {
             path: '/serving-asset-css.css',
             method: 'GET',
         };
-        let response = await fetch(port)('/serving-asset-css.css');
+        let response = await fetch(`${baseUrl}/serving-asset-css.css`);
 
         expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');

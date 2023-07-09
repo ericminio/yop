@@ -26,7 +26,7 @@ describe('websocket server', () => {
 
     it('can push data', async () => {
         await wait(15);
-        await fetch(serverPort)('/notify', {
+        await fetch(`${baseUrl}/notify`, {
             method: 'POST',
             body: JSON.stringify({
                 event: 'greetings',
@@ -41,7 +41,7 @@ describe('websocket server', () => {
     it('resists bad request', async () => {
         await wait(15);
         try {
-            const response = await fetch(serverPort)('/notify', {
+            const response = await fetch(`${baseUrl}/notify`, {
                 method: 'POST',
                 body: JSON.stringify({ random: 'field' }),
             });

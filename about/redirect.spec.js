@@ -1,14 +1,15 @@
 import { expect } from 'chai';
 import { redirect, fetch, Router, Server } from '../dist/index.js';
+const port = 5001;
+const baseUrl = `http://localhost:${port}`;
 
 describe('redirection', () => {
     let server;
-    let port = 5001;
     beforeEach((done) => {
         const router = new Router([
             {
                 matches: (incoming) => incoming.url === '/redirect-please',
-                go: redirect('/redirected'),
+                go: redirect(`${baseUrl}/redirected`),
             },
             {
                 matches: (incoming) => incoming.url === '/redirected',
@@ -28,7 +29,7 @@ describe('redirection', () => {
     });
 
     it('works as expected', async () => {
-        const response = await fetch(port)('/redirect-please');
+        const response = await fetch(`${baseUrl}/redirect-please`);
 
         expect(response.status).to.equal(200);
         expect(response.body).to.equal('after redirection');

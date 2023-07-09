@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { fetch, Server } from '../dist/index.js';
 const port = 5005;
+const baseUrl = `http://localhost:${port}`;
 
 describe('Server', () => {
     let server;
@@ -15,14 +16,14 @@ describe('Server', () => {
     });
 
     it('implements nothing by default', async () => {
-        const response = await fetch(port)('/');
+        const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(501);
     });
 
     it('resists two calls of start', (done) => {
         server.start(() => {
-            fetch(port)('/')
+            fetch(`${baseUrl}/`)
                 .then((response) => {
                     expect(response.status).to.equal(501);
                     done();
