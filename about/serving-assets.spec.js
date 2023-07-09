@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { serveAssets, request, Server } from '../dist/index.js';
+import { serveAssets, fetch, Server } from '../dist/index.js';
 import fs from 'fs';
 
 describe('Serving assets handler', () => {
@@ -15,30 +15,18 @@ describe('Serving assets handler', () => {
 
     it('can server html', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/serving-asset-index.html',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/serving-asset-index.html');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
         expect(response.body).to.contain('<title>serving html</title>');
     });
 
     it('defaults to 404', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(404);
+        expect(response.status).to.equal(404);
         expect(response.headers['content-type']).to.equal('text/plain');
         expect(response.body).to.equal('NOT FOUND');
     });
@@ -64,15 +52,9 @@ describe('Serving assets handler', () => {
 
         it('defaults to index.html', async () => {
             server.use(serveAssets(new URL('.', import.meta.url)));
-            const home = {
-                hostname: 'localhost',
-                port: port,
-                path: '/',
-                method: 'GET',
-            };
-            let response = await request(home);
+            const response = await fetch(port)('/');
 
-            expect(response.statusCode).to.equal(200);
+            expect(response.status).to.equal(200);
             expect(response.headers['content-type']).to.equal('text/html');
             expect(response.body).to.contain(
                 '<title>serving index.html</title>'
@@ -82,15 +64,9 @@ describe('Serving assets handler', () => {
 
     it('can server javascript', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/serving-asset-code.js',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/serving-asset-code.js');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal(
             'application/javascript'
         );
@@ -105,9 +81,9 @@ describe('Serving assets handler', () => {
             path: '/serving-asset-css.css',
             method: 'GET',
         };
-        let response = await request(home);
+        let response = await fetch(port)('/serving-asset-css.css');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
         expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
     });

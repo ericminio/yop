@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { redirect, request, Router, Server } from '../dist/index.js';
+import { redirect, fetch, Router, Server } from '../dist/index.js';
 
 describe('redirection', () => {
     let server;
@@ -28,15 +28,9 @@ describe('redirection', () => {
     });
 
     it('works as expected', async () => {
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/redirect-please',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/redirect-please');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.body).to.equal('after redirection');
     });
 });

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import {
     serveAsset,
-    request,
+    fetch,
     Server,
     contentOfBinaryFile,
 } from '../dist/index.js';
@@ -21,15 +21,9 @@ describe('Serving asset handler', () => {
         server.use(
             serveAsset(new URL('./serving-asset-index.html', import.meta.url))
         );
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/html');
         expect(response.headers['cache-control']).to.equal('max-age=45');
         expect(response.body).to.contain('<title>serving html</title>');
@@ -39,15 +33,9 @@ describe('Serving asset handler', () => {
         server.use(
             serveAsset(new URL('./serving-asset-code.js', import.meta.url))
         );
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal(
             'application/javascript'
         );
@@ -58,15 +46,9 @@ describe('Serving asset handler', () => {
         server.use(
             serveAsset(new URL('./serving-asset-css.css', import.meta.url))
         );
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('text/css');
         expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
     });
@@ -75,15 +57,9 @@ describe('Serving asset handler', () => {
         const image = new URL('./serving-asset-image.png', import.meta.url);
         const expected = contentOfBinaryFile(image);
         server.use(serveAsset(image));
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('image/png');
         expect(response.body.equals(Buffer.from(expected, 'binary'))).to.equal(
             true
@@ -94,15 +70,9 @@ describe('Serving asset handler', () => {
         const image = new URL('./serving-asset-image.jpg', import.meta.url);
         const expected = contentOfBinaryFile(image);
         server.use(serveAsset(image));
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(200);
+        expect(response.status).to.equal(200);
         expect(response.headers['content-type']).to.equal('image/jpeg');
         expect(response.body.equals(Buffer.from(expected, 'binary'))).to.equal(
             true

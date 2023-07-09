@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { request, Server } from '../dist/index.js';
+import { fetch, Server } from '../dist/index.js';
 const port = 5005;
 
 describe('Server', () => {
@@ -15,28 +15,16 @@ describe('Server', () => {
     });
 
     it('implements nothing by default', async () => {
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
-        let response = await request(home);
+        const response = await fetch(port)('/');
 
-        expect(response.statusCode).to.equal(501);
+        expect(response.status).to.equal(501);
     });
 
     it('resists two calls of start', (done) => {
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/',
-            method: 'GET',
-        };
         server.start(() => {
-            request(home)
+            fetch(port)('/')
                 .then((response) => {
-                    expect(response.statusCode).to.equal(501);
+                    expect(response.status).to.equal(501);
                     done();
                 })
                 .catch(done);

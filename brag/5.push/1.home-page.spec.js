@@ -1,15 +1,17 @@
 import { expect } from 'chai';
-import { page, eventually, request, wait } from '../../dist/index.js';
+import { page, eventually, fetch, wait } from '../../dist/index.js';
 import { clearRegistrations } from './notification-service.js';
 import { server } from './start.mjs';
 
 describe('websocket server', () => {
     let serverPort;
+    let baseUrl;
     beforeEach((done) => {
         server.start((port) => {
-            clearRegistrations();
             serverPort = port;
-            page.open(`http://localhost:${port}`).then(done).catch(done);
+            baseUrl = `http://localhost:${port}`;
+            clearRegistrations();
+            page.open(`${baseUrl}/`).then(done).catch(done);
         });
     });
     afterEach((done) => {
@@ -24,10 +26,7 @@ describe('websocket server', () => {
 
     it('can push data', async () => {
         await wait(15);
-        await request({
-            host: 'localhost',
-            port: serverPort,
-            path: '/notify',
+        await fetch(serverPort)('/notify', {
             method: 'POST',
             body: JSON.stringify({
                 event: 'greetings',
@@ -41,14 +40,14 @@ describe('websocket server', () => {
 
     it('resists bad request', async () => {
         await wait(15);
-        const response = await request({
-            host: 'localhost',
-            port: serverPort,
-            path: '/notify',
-            method: 'POST',
-            body: JSON.stringify({ random: 'field' }),
-        });
-
-        expect(response.statusCode).to.equal(400);
+        try {
+            const response = await fetch(serverPort)('/notify', {
+                method: 'POST',
+                body: JSON.stringify({ random: 'field' }),
+            });
+        } catch (error) {
+            const { status } = JSON.parse(error.message);
+            expect(status).to.equal(400);
+        }
     });
 });

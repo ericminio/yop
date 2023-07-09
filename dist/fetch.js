@@ -1,4 +1,5 @@
 import http from 'http';
+import { payload } from './payload.js';
 
 export const fetch = (port) => (uri, options) => {
     const init = options || { method: 'GET' };
@@ -10,40 +11,65 @@ export const fetch = (port) => (uri, options) => {
             method: init.method,
         };
         let request = http.request(please, (answer) => {
-            let payload = '';
-            answer.on('data', (chunk) => {
-                payload += chunk;
-            });
-            answer.on('end', () => {
-                try {
-                    if (answer.statusCode >= 400) {
-                        const message = {
-                            request: please,
-                            status: answer.statusCode,
-                            body: payload,
-                        };
-                        reject(new Error(JSON.stringify(message)));
-                    } else {
-                        let response = {
-                            status: answer.statusCode,
-                            json: () => {
-                                return new Promise((resolve) => {
-                                    resolve(JSON.parse(payload));
-                                });
-                            },
-                            text: () => {
-                                return new Promise((resolve) => {
-                                    resolve(payload);
-                                });
-                            },
-                        };
-                        resolve(response);
+            payload(answer)
+                .then((body) => {
+                    try {
+                        if (answer.statusCode === 302) {
+                            const target = please;
+                            target.path = answer.headers.location;
+                            let request = http.request(target, async (pong) => {
+                                payload(pong)
+                                    .then((body) => {
+                                        let response = {
+                                            status: pong.statusCode,
+                                            headers: pong.headers,
+                                            body,
+                                            json: () => {
+                                                return new Promise(
+                                                    (resolve) => {
+                                                        resolve(
+                                                            JSON.parse(body)
+                                                        );
+                                                    }
+                                                );
+                                            },
+                                            text: () => {
+                                                return new Promise(
+                                                    (resolve) => {
+                                                        resolve(body);
+                                                    }
+                                                );
+                                            },
+                                        };
+                                        resolve(response);
+                                    })
+                                    .catch(reject);
+                            });
+                            request.on('error', reject);
+                            request.end();
+                        } else {
+                            let response = {
+                                status: answer.statusCode,
+                                headers: answer.headers,
+                                body,
+                                json: () => {
+                                    return new Promise((resolve) => {
+                                        resolve(JSON.parse(body));
+                                    });
+                                },
+                                text: () => {
+                                    return new Promise((resolve) => {
+                                        resolve(body);
+                                    });
+                                },
+                            };
+                            resolve(response);
+                        }
+                    } catch (error) {
+                        reject(error);
                     }
-                } catch (error) {
-                    reject(error);
-                }
-            });
-            answer.on('error', reject);
+                })
+                .catch(reject);
         });
         request.on('error', reject);
         if (init.body) {

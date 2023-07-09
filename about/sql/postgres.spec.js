@@ -2,10 +2,6 @@ import { Postgres } from '../../dist/index.js';
 import { expect } from 'chai';
 
 describe('Postgres', () => {
-    beforeEach(() => {
-        process.env.POSTGRES_URL = 'postgres://dev:dev@localhost:5432/yop';
-    });
-
     it('can execute one select', async () => {
         const database = new Postgres();
         const rows = await database.execute("select 'Joe' as name");
