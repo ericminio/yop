@@ -15,7 +15,7 @@
         "prettier": "2.8.4"
     },
     "scripts": {
-        "test": "POSTGRES_URL=postgres://dev:dev@localhost:5433/yop mocha $(find about brag -name '*.spec.js')",
+        "test": "mocha $(find about brag -name '*.spec.js')",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write ."
     },

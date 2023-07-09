@@ -8,7 +8,7 @@ on:
 jobs:
     test:
         name: run tests
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04
 
         services:
             postgres:
@@ -28,17 +28,9 @@ jobs:
         steps:
             - name: checkout code
               uses: actions/checkout@v2
-            - name: install node
-              uses: actions/setup-node@v2
-              with:
-                  node-version-file: '.nvmrc'
-            - name: info
+            - name: build
               run: |
-                  node --version
-                  npm --version
-            - name: install
-              run: |
-                  npm install
+                  docker-compose build dev
             - name: tests
               run: |
-                  npm test
+                  docker-compose run --rm dev ./run.sh
