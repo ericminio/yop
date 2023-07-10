@@ -10,21 +10,6 @@ jobs:
         name: run tests
         runs-on: ubuntu-20.04
 
-        services:
-            postgres:
-                image: postgres
-                env:
-                    POSTGRES_DB: yop
-                    POSTGRES_USER: dev
-                    POSTGRES_PASSWORD: dev
-                ports:
-                    - 5433:5432
-                options: >-
-                    --health-cmd pg_isready
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-
         steps:
             - name: checkout code
               uses: actions/checkout@v2
@@ -32,9 +17,11 @@ jobs:
               run: |
                   sudo echo "172.17.0.1 host.docker.internal" | sudo tee -a /etc/hosts
                   cat /etc/hosts
-            - name: build
-              run: |
-                  docker-compose build dev
+            - name: start db
+              run: docker-compose up -d db
+            - name: wait for db
+              run: ./support/wait.sh
+            - name: build dev environment
+              run: docker-compose build dev
             - name: tests
-              run: |
-                  docker-compose run --rm dev ./run.sh
+              run: docker-compose run --rm dev ./run.sh
