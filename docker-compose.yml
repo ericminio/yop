@@ -13,8 +13,8 @@ services:
 
     dev:
         build: support
-        image: ubuntu:nvm
-        container_name: ubuntu-node
+        image: ubuntu:yop
+        container_name: ubuntu-yop
         environment:
             - POSTGRES_URL=postgres://dev:dev@host.docker.internal:5433/yop
         volumes:
