@@ -1,10 +1,5 @@
 import { expect } from 'chai';
-import {
-    serveAsset,
-    fetch,
-    Server,
-    contentOfBinaryFile,
-} from '../dist/index.js';
+import { serveAsset, Server, contentOfBinaryFile } from '../dist/index.js';
 const port = 5001;
 const baseUrl = `http://localhost:${port}`;
 
@@ -25,9 +20,9 @@ describe('Serving asset handler', () => {
         const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal('text/html');
-        expect(response.headers['cache-control']).to.equal('max-age=45');
-        expect(response.body).to.contain('<title>serving html</title>');
+        expect(response.headers.get('content-type')).to.equal('text/html');
+        expect(response.headers.get('cache-control')).to.equal('max-age=45');
+        expect(await response.text()).to.contain('<title>serving html</title>');
     });
 
     it('can server javascript', async () => {
@@ -37,10 +32,12 @@ describe('Serving asset handler', () => {
         const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal(
+        expect(response.headers.get('content-type')).to.equal(
             'application/javascript'
         );
-        expect(response.body.trim()).to.equal('const sum = (a, b) => a + b;');
+        expect((await response.text()).trim()).to.equal(
+            'const sum = (a, b) => a + b;'
+        );
     });
 
     it('can server css', async () => {
@@ -50,33 +47,33 @@ describe('Serving asset handler', () => {
         const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal('text/css');
-        expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
+        expect(response.headers.get('content-type')).to.equal('text/css');
+        expect((await response.text()).trim()).to.equal(
+            'body {\n    color: green;\n}'
+        );
     });
 
     it('can serve png', async () => {
         const image = new URL('./serving-asset-image.png', import.meta.url);
-        const expected = contentOfBinaryFile(image);
+        const expected = Buffer.from(contentOfBinaryFile(image), 'binary');
         server.use(serveAsset(image));
         const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal('image/png');
-        expect(response.body.equals(Buffer.from(expected, 'binary'))).to.equal(
-            true
-        );
+        expect(response.headers.get('content-type')).to.equal('image/png');
+        const actual = Buffer.from(await (await response.blob()).arrayBuffer());
+        expect(actual.equals(expected)).to.equal(true);
     });
 
     it('can serve jpg', async () => {
         const image = new URL('./serving-asset-image.jpg', import.meta.url);
-        const expected = contentOfBinaryFile(image);
+        const expected = Buffer.from(contentOfBinaryFile(image), 'binary');
         server.use(serveAsset(image));
         const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal('image/jpeg');
-        expect(response.body.equals(Buffer.from(expected, 'binary'))).to.equal(
-            true
-        );
+        expect(response.headers.get('content-type')).to.equal('image/jpeg');
+        const actual = Buffer.from(await (await response.blob()).arrayBuffer());
+        expect(actual.equals(expected)).to.equal(true);
     });
 });

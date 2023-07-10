@@ -1,5 +1,4 @@
 import { JSDOM } from 'jsdom';
-import { fetch } from './fetch.js';
 const config = {
     runScripts: 'dangerously',
     resources: 'usable',

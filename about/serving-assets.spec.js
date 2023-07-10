@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { serveAssets, fetch, Server } from '../dist/index.js';
+import { serveAssets, Server } from '../dist/index.js';
 import fs from 'fs';
 const port = 5001;
 const baseUrl = `http://localhost:${port}`;
@@ -19,8 +19,8 @@ describe('Serving assets handler', () => {
         const response = await fetch(`${baseUrl}/serving-asset-index.html`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal('text/html');
-        expect(response.body).to.contain('<title>serving html</title>');
+        expect(response.headers.get('content-type')).to.equal('text/html');
+        expect(await response.text()).to.contain('<title>serving html</title>');
     });
 
     it('defaults to 404', async () => {
@@ -28,8 +28,8 @@ describe('Serving assets handler', () => {
         const response = await fetch(`${baseUrl}/`);
 
         expect(response.status).to.equal(404);
-        expect(response.headers['content-type']).to.equal('text/plain');
-        expect(response.body).to.equal('NOT FOUND');
+        expect(response.headers.get('content-type')).to.equal('text/plain');
+        expect(await response.text()).to.equal('NOT FOUND');
     });
 
     describe('when index.html is present', () => {
@@ -56,8 +56,8 @@ describe('Serving assets handler', () => {
             const response = await fetch(`${baseUrl}/`);
 
             expect(response.status).to.equal(200);
-            expect(response.headers['content-type']).to.equal('text/html');
-            expect(response.body).to.contain(
+            expect(response.headers.get('content-type')).to.equal('text/html');
+            expect(await response.text()).to.contain(
                 '<title>serving index.html</title>'
             );
         });
@@ -68,10 +68,12 @@ describe('Serving assets handler', () => {
         const response = await fetch(`${baseUrl}/serving-asset-code.js`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal(
+        expect(response.headers.get('content-type')).to.equal(
             'application/javascript'
         );
-        expect(response.body.trim()).to.equal('const sum = (a, b) => a + b;');
+        expect((await response.text()).trim()).to.equal(
+            'const sum = (a, b) => a + b;'
+        );
     });
 
     it('can server css', async () => {
@@ -85,7 +87,9 @@ describe('Serving assets handler', () => {
         let response = await fetch(`${baseUrl}/serving-asset-css.css`);
 
         expect(response.status).to.equal(200);
-        expect(response.headers['content-type']).to.equal('text/css');
-        expect(response.body.trim()).to.equal('body {\n    color: green;\n}');
+        expect(response.headers.get('content-type')).to.equal('text/css');
+        expect((await response.text()).trim()).to.equal(
+            'body {\n    color: green;\n}'
+        );
     });
 });

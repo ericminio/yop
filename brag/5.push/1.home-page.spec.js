@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { page, eventually, fetch, wait } from '../../dist/index.js';
+import { page, eventually, wait } from '../../dist/index.js';
 import { clearRegistrations } from './notification-service.js';
 import { server } from './start.mjs';
 

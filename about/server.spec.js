@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { fetch, Server } from '../dist/index.js';
+import { Server } from '../dist/index.js';
 const port = 5005;
 const baseUrl = `http://localhost:${port}`;
 

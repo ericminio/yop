@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { redirect, fetch, Router, Server } from '../dist/index.js';
+import { redirect, Router, Server } from '../dist/index.js';
 const port = 5001;
 const baseUrl = `http://localhost:${port}`;
 
@@ -32,6 +32,6 @@ describe('redirection', () => {
         const response = await fetch(`${baseUrl}/redirect-please`);
 
         expect(response.status).to.equal(200);
-        expect(response.body).to.equal('after redirection');
+        expect(await response.text()).to.equal('after redirection');
     });
 });

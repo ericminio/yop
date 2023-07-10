@@ -8,7 +8,6 @@ export * from './spa/assets/route-default.js';
 export * from './spa/assets/serve-content.js';
 export * from './expose.js';
 export * from './exposex.js';
-export * from './fetch.js';
 export * from './headers.js';
 export * from './page.js';
 export * from './payload.js';
