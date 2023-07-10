@@ -17,6 +17,8 @@ services:
         container_name: ubuntu-yop
         environment:
             - POSTGRES_URL=postgres://dev:dev@host.docker.internal:5433/yop
+        ports:
+            - 5001:5001
         volumes:
             - ./package.json:/root/code/package.json
             - ./package-lock.json:/root/code/package-lock.json

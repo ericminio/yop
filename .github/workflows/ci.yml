@@ -24,4 +24,4 @@ jobs:
             - name: build dev environment
               run: docker-compose build dev
             - name: tests
-              run: docker-compose run --rm --name ubuntu-yop dev ./run.sh
+              run: docker-compose run --service-ports --rm --name ubuntu-yop dev ./run.sh
