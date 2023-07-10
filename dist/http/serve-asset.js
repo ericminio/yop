@@ -2,7 +2,7 @@ import {
     contentOfBinaryFile,
     contentOfFile,
     fileExists,
-} from './content-of-file.js';
+} from '../files/content-of-file.js';
 import { notFound } from './route-404.js';
 
 const mime = {
