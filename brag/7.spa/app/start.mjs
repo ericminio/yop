@@ -22,7 +22,7 @@ const router = new Router([
             import.meta.url
         )
     ),
-    new RouteTemplate(/^\/template\/(.*)/, new URL('./web', import.meta.url)),
+    new RouteTemplate(/^\/templates\/(.*)/, new URL('./web', import.meta.url)),
     new RouteDefault(html(new URL('./web/index.html', import.meta.url))),
 ]);
 

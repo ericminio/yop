@@ -6,7 +6,7 @@ customElements.define(
         }
 
         async connectedCallback() {
-            const html = await fetch('/template/WelcomeHome/index.html').then(
+            const html = await fetch('/templates/WelcomeHome/index.html').then(
                 (response) => response.text()
             );
             this.innerHTML = html;
