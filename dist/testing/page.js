@@ -15,7 +15,7 @@ const open = (spec, options) => {
                   return isUrl &&
                       typeof url == 'string' &&
                       url.indexOf('/') === 0
-                      ? fetch(`${spec}${url}`, options)
+                      ? fetch(`${new URL(spec).origin}${url}`, options)
                       : fetch(url, options);
               };
     return new Promise(async (resolve, reject) => {
