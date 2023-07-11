@@ -1,4 +1,4 @@
-import { binaryContentTypes } from '../../http/content-types.js';
+import { binaryContentTypes } from './content-types.js';
 
 export const serveContent = (contentProvider) => {
     return (request, response) => {

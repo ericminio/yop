@@ -5,8 +5,8 @@ import {
     contentOfFile,
     RouteAssetPrefix,
     RouteAssetEqual,
+    yop,
 } from '../../../dist/index.js';
-import { serveYop } from '../../../dist/spa/serve.js';
 import { components } from './web/components.js';
 import { template } from './web/template.js';
 
@@ -16,10 +16,7 @@ const home = () => ({
 });
 
 const router = new Router([
-    {
-        matches: (incoming) => incoming.url === '/yop-spa.js',
-        go: serveYop(),
-    },
+    new RouteAssetEqual('/yop.js', yop),
     new RouteAssetEqual('/app.js', components),
     new RouteAssetPrefix('/template/', template),
     new RouteDefault(home),
