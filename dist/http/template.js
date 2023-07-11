@@ -1,8 +1,6 @@
 import { contentOfFile } from '../index.js';
 
-const pattern = /^\/template\/(.*)/;
-
-export const template = (base) => (incoming) => {
+export const template = (pattern, base) => (incoming) => {
     const data = pattern.exec(incoming.url);
     const url = data[1];
     const file = new URL(`${base}/${url}`);

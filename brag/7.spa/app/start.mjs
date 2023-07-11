@@ -2,12 +2,11 @@ import {
     Router,
     Server,
     RouteDefault,
-    RouteAssetPrefix,
     RouteAssetEqual,
-    template,
     html,
     scripts,
     RouteYop,
+    RouteTemplate,
 } from '../../../dist/index.js';
 
 const router = new Router([
@@ -23,10 +22,7 @@ const router = new Router([
             import.meta.url
         )
     ),
-    new RouteAssetPrefix(
-        '/template/',
-        template(new URL('./web', import.meta.url))
-    ),
+    new RouteTemplate(/^\/template\/(.*)/, new URL('./web', import.meta.url)),
     new RouteDefault(html(new URL('./web/index.html', import.meta.url))),
 ]);
 
