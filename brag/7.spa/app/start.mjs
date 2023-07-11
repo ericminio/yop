@@ -2,24 +2,22 @@ import {
     Router,
     Server,
     RouteDefault,
-    contentOfFile,
     RouteAssetPrefix,
     RouteAssetEqual,
     yop,
+    template,
+    html,
 } from '../../../dist/index.js';
 import { components } from './web/components.js';
-import { template } from './web/template.js';
-
-const home = () => ({
-    content: contentOfFile(new URL('./web/index.html', import.meta.url)),
-    contentType: 'text/html',
-});
 
 const router = new Router([
     new RouteAssetEqual('/yop.js', yop),
     new RouteAssetEqual('/app.js', components),
-    new RouteAssetPrefix('/template/', template),
-    new RouteDefault(home),
+    new RouteAssetPrefix(
+        '/template/',
+        template(new URL('./web/components', import.meta.url))
+    ),
+    new RouteDefault(html(new URL('./web/index.html', import.meta.url))),
 ]);
 
 export const server = new Server(5001, router.handler.bind(router));

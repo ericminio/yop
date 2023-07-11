@@ -1,9 +1,9 @@
 import { contentOfFile } from '../../../../dist/index.js';
 
 const scripts = [
-    './About/index.js',
-    './MainMenu/index.js',
-    './WelcomeHome/index.js',
+    './components/About/index.js',
+    './components/MainMenu/index.js',
+    './components/WelcomeHome/index.js',
 ].reduce(
     (acc, current) => acc + contentOfFile(new URL(current, import.meta.url)),
     ''

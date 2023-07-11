@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { eventually, page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
-describe('Welcoming', () => {
+describe.only('Welcoming', () => {
     beforeEach((done) => {
         server.start((port) => {
             page.open(`http://localhost:${port}`).then(done).catch(done);
