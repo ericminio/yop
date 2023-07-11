@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { eventually, page } from '../../dist/index.js';
-import { server } from './start.mjs';
+import { eventually, page } from '../../../dist/index.js';
+import { server } from '../app/start.mjs';
 
 describe('Welcoming', () => {
     beforeEach((done) => {

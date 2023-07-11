@@ -6,8 +6,8 @@ customElements.define(
         }
 
         async connectedCallback() {
-            const html = await fetch('/MainMenu/index.html').then((response) =>
-                response.text()
+            const html = await fetch('/template/MainMenu/index.html').then(
+                (response) => response.text()
             );
             this.outerHTML = html;
             this.ownerDocument
