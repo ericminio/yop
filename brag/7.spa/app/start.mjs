@@ -7,15 +7,25 @@ import {
     yop,
     template,
     html,
+    scripts,
 } from '../../../dist/index.js';
-import { components } from './web/components.js';
 
 const router = new Router([
     new RouteAssetEqual('/yop.js', yop),
-    new RouteAssetEqual('/app.js', components),
+    new RouteAssetEqual(
+        '/app.js',
+        scripts(
+            [
+                './web/About/index.js',
+                './web/MainMenu/index.js',
+                './web/WelcomeHome/index.js',
+            ],
+            import.meta.url
+        )
+    ),
     new RouteAssetPrefix(
         '/template/',
-        template(new URL('./web/components', import.meta.url))
+        template(new URL('./web', import.meta.url))
     ),
     new RouteDefault(html(new URL('./web/index.html', import.meta.url))),
 ]);

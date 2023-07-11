@@ -14,6 +14,7 @@ export * from './http/route-asset-prefix.js';
 export * from './http/route-default.js';
 export * from './http/template.js';
 export * from './http/html.js';
+export * from './http/scripts.js';
 export * from './spa/yop.js';
 export * from './sql/postgres.js';
 export * from './testing/eventually.js';

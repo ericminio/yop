@@ -1,16 +1,6 @@
-import { contentOfFile } from '../files/content-of-file.js';
+import { scripts } from '../http/scripts.js';
 
-const scripts = [
-    './store.js',
-    './event-bus.js',
-    './navigate.js',
-    './route.js',
-].reduce(
-    (acc, current) => acc + contentOfFile(new URL(current, import.meta.url)),
-    ''
+export const yop = scripts(
+    ['./store.js', './event-bus.js', './navigate.js', './route.js'],
+    import.meta.url
 );
-
-export const yop = () => ({
-    content: scripts,
-    contentType: 'application/javascript',
-});
