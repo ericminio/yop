@@ -4,14 +4,14 @@ import {
     RouteDefault,
     RouteAssetPrefix,
     RouteAssetEqual,
-    yop,
     template,
     html,
     scripts,
+    RouteYop,
 } from '../../../dist/index.js';
 
 const router = new Router([
-    new RouteAssetEqual('/yop.js', yop),
+    new RouteYop(),
     new RouteAssetEqual(
         '/app.js',
         scripts(
