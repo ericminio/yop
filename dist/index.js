@@ -9,6 +9,7 @@ export * from './http/router-log.js';
 export * from './http/server.js';
 export * from './http/serve-asset.js';
 export * from './http/serve-assets.js';
+export * from './http/serve-content.js';
 export * from './http/route-asset-equal.js';
 export * from './http/route-asset-prefix.js';
 export * from './http/route-default.js';
