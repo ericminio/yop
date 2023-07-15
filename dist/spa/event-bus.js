@@ -1,6 +1,7 @@
 class EventBus {
     constructor() {
         this.listeners = {};
+        this.patterns = [];
         this.id = 0;
     }
     isEmpty() {
@@ -19,12 +20,28 @@ class EventBus {
                 }
             }
         }
+        for (let i = 0; i < this.patterns.length; i++) {
+            const candidate = this.patterns[i];
+            if (candidate.pattern.test(key)) {
+                const listener = candidate.listener;
+                if (typeof listener == 'object') {
+                    listener.update(value, key);
+                }
+                if (typeof listener == 'function') {
+                    listener(value, key);
+                }
+            }
+        }
     }
     register(listener, key) {
         return this.save(listener, key, this.listeners);
     }
     unregister(id) {
         this.remove(id, this.listeners);
+        const found = this.patterns.find((p) => p.id === id);
+        if (found) {
+            this.patterns.splice(this.patterns.indexOf(found), 1);
+        }
     }
     unregisterAll(ids) {
         for (var i = 0; i < ids.length; i++) {
@@ -34,11 +51,15 @@ class EventBus {
     }
 
     save(listener, key, map) {
-        if (map[key] === undefined) {
-            map[key] = [];
-        }
         this.id = this.id + 1;
-        map[key].push({ id: this.id, listener: listener });
+        if (typeof key === 'string') {
+            if (map[key] === undefined) {
+                map[key] = [];
+            }
+            map[key].push({ id: this.id, listener: listener });
+        } else {
+            this.patterns.push({ id: this.id, pattern: key, listener });
+        }
         return this.id;
     }
     remove(id, map) {

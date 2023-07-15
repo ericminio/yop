@@ -90,6 +90,17 @@ describe('events bus', () => {
         expect(received).to.equal(42);
     });
 
+    it('accepts registration with regular expression', () => {
+        let received;
+        let callback = (value) => {
+            received = value;
+        };
+        eventBus.register(callback, /that event/);
+        eventBus.notify('matching that event :)', 42);
+
+        expect(received).to.equal(42);
+    });
+
     describe('unregister', () => {
         it('is available', () => {
             let spy;
@@ -127,6 +138,17 @@ describe('events bus', () => {
             eventBus.unregisterAll([one, two]);
 
             expect(eventBus.listeners).to.deep.equal({});
+        });
+        it('is available for registration made with regular expression', () => {
+            let spy;
+            const callback = (value) => {
+                spy = value;
+            };
+            const id = eventBus.register(callback, /that event/);
+            eventBus.unregister(id);
+            eventBus.notify('that event', 42);
+
+            expect(spy).to.equal(undefined);
         });
     });
 
