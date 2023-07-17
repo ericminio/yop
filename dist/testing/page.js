@@ -83,15 +83,12 @@ const color = (text) => {
     return style.color;
 };
 
-export const page = { open, close, section, set, input, enter, click, color };
-
 const find = (options) => {
     if (page.document === undefined) {
         throw new Error('page.document is undefined');
     }
-    let candidates = Array.from(
-        page.document.querySelectorAll(options.tag)
-    ).filter(
+    const document = options.in || page.document;
+    let candidates = Array.from(document.querySelectorAll(options.tag)).filter(
         (element) =>
             element.textContent.indexOf(options.text) !== -1 ||
             element.getAttribute('name') === options.text
@@ -108,4 +105,16 @@ const find = (options) => {
 
 const element = (selector) => {
     return page.document.querySelector(selector);
+};
+
+export const page = {
+    open,
+    find,
+    close,
+    section,
+    set,
+    input,
+    enter,
+    click,
+    color,
 };
