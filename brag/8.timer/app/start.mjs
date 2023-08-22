@@ -15,7 +15,7 @@ const router = new Router([
     new RouteAssetEqual(
         '/app.js',
         scripts(
-            ['./web/Timer/index.js', './web/WelcomeHome/index.js'],
+            ['./web/timer.js', './web/WelcomeHome/index.js'],
             import.meta.url
         )
     ),

@@ -6,9 +6,15 @@ document.YopTimer = class {
 
     start(listener) {
         this.listener = listener;
-        this.id = setInterval(() => {
-            this.tic();
-        }, this.cycle);
+        this.id = this.ticEachCycle();
+        // this.ticAfterCycle();
+    }
+
+    ticAfterCycle() {
+        setTimeout(() => this.tic(), this.cycle);
+    }
+    ticEachCycle() {
+        return setInterval(() => this.tic(), this.cycle);
     }
 
     tic() {
@@ -17,5 +23,8 @@ document.YopTimer = class {
         if (this.count === 0) {
             clearInterval(this.id);
         }
+        // if (this.count !== 0) {
+        //     this.ticAfterCycle();
+        // }
     }
 };
