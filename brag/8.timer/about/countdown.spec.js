@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { eventually, page, wait } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
-describe.only('Count down', () => {
+describe('Count down', () => {
     beforeEach((done) => {
         server.start((port) => {
             page.open(`http://localhost:${port}`).then(done).catch(done);
