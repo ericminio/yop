@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { eventually, page } from '../../../dist/index.js';
+import { eventually, page, wait } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
-describe.only('Home page', () => {
+describe.only('Count down', () => {
     beforeEach((done) => {
         server.start((port) => {
             page.open(`http://localhost:${port}`).then(done).catch(done);
@@ -12,18 +12,7 @@ describe.only('Home page', () => {
         server.stop(done);
     });
 
-    it('offers to start', async () => {
-        await eventually(page, () => {
-            expect(page.section('Welcome')).to.contain(
-                'Start whenever you are ready'
-            );
-        });
-        await eventually(page, () => {
-            expect(page.section('Timer')).to.contain('Remaining 15s');
-        });
-    });
-
-    it('starts timer when triggered', async () => {
+    it('can be triggered', async () => {
         await eventually(page, () => {
             expect(page.section('Welcome')).to.contain(
                 'Start whenever you are ready'
@@ -33,6 +22,23 @@ describe.only('Home page', () => {
 
         await eventually(page, () => {
             expect(page.section('Timer')).to.contain('Remaining 14s');
+        });
+    });
+
+    it('continues until zero', async () => {
+        await eventually(page, () => {
+            expect(page.section('Welcome')).to.contain(
+                'Start whenever you are ready'
+            );
+        });
+        page.document.yoptimer = new page.document.YopTimer({
+            delay: 150,
+            count: 5,
+        });
+        page.click('Start');
+
+        await eventually(page, () => {
+            expect(page.section('Timer')).to.contain('Remaining 0s');
         });
     });
 });

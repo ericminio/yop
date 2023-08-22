@@ -14,7 +14,10 @@ const router = new Router([
     new RouteYop(),
     new RouteAssetEqual(
         '/app.js',
-        scripts(['./web/WelcomeHome/index.js'], import.meta.url)
+        scripts(
+            ['./web/Timer/index.js', './web/WelcomeHome/index.js'],
+            import.meta.url
+        )
     ),
     new RouteTemplate(/^\/templates\/(.*)/, new URL('./web', import.meta.url)),
     new RouteDefault(html(new URL('./web/index.html', import.meta.url))),

@@ -1,3 +1,5 @@
+document.yoptimer = new document.YopTimer({ cycle: 1000, count: 15 });
+
 customElements.define(
     'welcome-home',
     class extends HTMLElement {
@@ -13,11 +15,7 @@ customElements.define(
             this.ownerDocument
                 .querySelector('#start')
                 .addEventListener('click', () => {
-                    setTimeout(() => {
-                        this.ownerDocument.querySelector(
-                            '#remaining'
-                        ).innerHTML = '14s';
-                    }, 1000);
+                    this.ownerDocument.yoptimer.start();
                 });
         }
     }
