@@ -4,7 +4,8 @@ document.YopTimer = class {
         this.count = count;
     }
 
-    start() {
+    start(listener) {
+        this.listener = listener;
         this.id = setInterval(() => {
             this.tic();
         }, this.cycle);
@@ -12,7 +13,7 @@ document.YopTimer = class {
 
     tic() {
         this.count -= 1;
-        document.querySelector('#remaining').innerHTML = `${this.count}s`;
+        this.listener(this.count);
         if (this.count === 0) {
             clearInterval(this.id);
         }

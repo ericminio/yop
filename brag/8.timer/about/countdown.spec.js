@@ -22,6 +22,7 @@ describe.only('Count down', () => {
 
         await eventually(page, () => {
             expect(page.section('Timer')).to.contain('Remaining 14s');
+            expect(page.section('Timer')).not.to.contain('Done');
         });
     });
 
@@ -39,6 +40,23 @@ describe.only('Count down', () => {
 
         await eventually(page, () => {
             expect(page.section('Timer')).to.contain('Remaining 0s');
+        });
+    });
+
+    it('notifies when done', async () => {
+        await eventually(page, () => {
+            expect(page.section('Welcome')).to.contain(
+                'Start whenever you are ready'
+            );
+        });
+        page.document.yoptimer = new page.document.YopTimer({
+            delay: 150,
+            count: 3,
+        });
+        page.click('Start');
+
+        await eventually(page, () => {
+            expect(page.section('Timer')).to.contain('Done');
         });
     });
 });

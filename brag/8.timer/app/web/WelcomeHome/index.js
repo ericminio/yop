@@ -15,8 +15,15 @@ customElements.define(
             this.ownerDocument
                 .querySelector('#start')
                 .addEventListener('click', () => {
-                    this.ownerDocument.yoptimer.start();
+                    this.ownerDocument.yoptimer.start(this.update.bind(this));
                 });
+        }
+
+        update(count) {
+            document.querySelector('#remaining').innerHTML = `${count}s`;
+            if (count === 0) {
+                document.querySelector('#done').innerHTML = 'Done';
+            }
         }
     }
 );
