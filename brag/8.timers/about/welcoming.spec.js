@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { eventually, page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
-describe('Welcoming', () => {
+describe.only('Home page', () => {
     beforeEach((done) => {
         server.start((port) => {
             page.open(`http://localhost:${port}`).then(done).catch(done);
@@ -17,6 +17,22 @@ describe('Welcoming', () => {
             expect(page.section('Welcome')).to.contain(
                 'Start whenever you are ready'
             );
+        });
+        await eventually(page, () => {
+            expect(page.section('Timer')).to.contain('Remaining 15s');
+        });
+    });
+
+    it('starts timer when triggered', async () => {
+        await eventually(page, () => {
+            expect(page.section('Welcome')).to.contain(
+                'Start whenever you are ready'
+            );
+        });
+        page.click('Start');
+
+        await eventually(page, () => {
+            expect(page.section('Timer')).to.contain('Remaining 14s');
         });
     });
 });

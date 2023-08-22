@@ -10,6 +10,15 @@ customElements.define(
                 (response) => response.text()
             );
             this.innerHTML = html;
+            this.ownerDocument
+                .querySelector('#start')
+                .addEventListener('click', () => {
+                    setTimeout(() => {
+                        this.ownerDocument.querySelector(
+                            '#remaining'
+                        ).innerHTML = '14s';
+                    }, 1000);
+                });
         }
     }
 );

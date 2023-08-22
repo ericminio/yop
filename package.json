@@ -17,9 +17,11 @@
     "scripts": {
         "test": "mocha $(find about brag -name '*.spec.js')",
         "prettier:check": "npx prettier --check .",
-        "prettier:write": "npx prettier --write ."
+        "prettier:write": "npx prettier --write .",
+        "nodemon": "nodemon --watch brag/8.timers/app -e js,mjs,cjs,json,html brag/8.timers/app/start.mjs"
     },
     "dependencies": {
+        "nodemon": "^3.0.1",
         "pg": "^8.11.0"
     }
 }
