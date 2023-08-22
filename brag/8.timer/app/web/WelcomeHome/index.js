@@ -1,5 +1,3 @@
-document.yoptimer = new document.YopTimer({ cycle: 1000, count: 15 });
-
 customElements.define(
     'welcome-home',
     class extends HTMLElement {
@@ -12,6 +10,12 @@ customElements.define(
                 (response) => response.text()
             );
             this.innerHTML = html;
+
+            this.ownerDocument.yoptimer = new document.YopTimer({
+                cycle: 1000,
+                count: 15,
+            });
+
             this.ownerDocument
                 .querySelector('#start')
                 .addEventListener('click', () => {
@@ -20,9 +24,12 @@ customElements.define(
         }
 
         update(count) {
-            document.querySelector('#remaining').innerHTML = `${count}s`;
+            this.ownerDocument.querySelector(
+                '#remaining'
+            ).innerHTML = `${count}s`;
+
             if (count === 0) {
-                document.querySelector('#done').innerHTML = 'Done';
+                this.ownerDocument.querySelector('#done').innerHTML = 'Done';
             }
         }
     }
