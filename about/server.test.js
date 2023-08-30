@@ -2,8 +2,8 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { Server } from '../dist/index.js';
 
-describe.only('server', () => {
-    describe.only('port', () => {
+describe('server', () => {
+    describe('port', () => {
         let server;
         let baseUrl;
         let secondServer;
@@ -19,7 +19,7 @@ describe.only('server', () => {
             await server.stop();
         });
 
-        it.only('defaults to 5001', async () => {
+        it('defaults to 5001', async () => {
             assert.equal(baseUrl, 'http://localhost:5001');
         });
 
@@ -83,6 +83,24 @@ describe.only('server', () => {
 
             assert.equal(answer.status, 501);
         });
+
+        it('accepts handler', async () => {
+            await server.stop();
+            server = new Server((incoming, response) => {
+                const answer = `${incoming.method} ${incoming.url}`;
+                response.writeHead(200, {
+                    'content-type': 'plain/text',
+                    'content-length': answer.length,
+                });
+                response.write(answer);
+                response.end();
+            });
+            const port = await server.start();
+            let answer = await fetch(`http://localhost:${port}/ping`);
+            let content = await answer.text();
+
+            assert.equal(content, 'GET /ping');
+        });
     });
 
     describe('the callback way', () => {
@@ -132,7 +150,7 @@ describe.only('server', () => {
         });
 
         describe('handler injection', () => {
-            it('replaces default handler', async (t) => {
+            it('replaces default handler', async () => {
                 server.use((incoming, response) => {
                     const answer = `${incoming.method} ${incoming.url}`;
                     response.writeHead(200, {

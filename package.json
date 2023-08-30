@@ -15,7 +15,9 @@
         "prettier": "2.8.4"
     },
     "scripts": {
-        "test": "node --test && mocha --exit $(find about brag -name '*.spec.js')",
+        "test-with-node": "node --test --experimental-test-coverage $(find about brag -name '*.test.js')",
+        "test-with-mocha": "mocha --exit $(find about brag -name '*.spec.js')",
+        "test": "npm run test-with-node && npm run test-with-mocha",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write .",
         "nodemon": "nodemon --watch brag/8.timer/app -e js,mjs,cjs,json,html brag/8.timer/app/start.mjs"

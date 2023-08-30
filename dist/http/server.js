@@ -3,11 +3,12 @@ import { notImplemented } from './route-501.js';
 
 export class Server {
     constructor(maybePort, maybeHandler) {
-        if (Number.isNaN(maybePort)) {
-            this.handler = maybePort;
-        } else {
-            this.handler = maybeHandler || notImplemented;
+        if (Number.isInteger(maybePort)) {
             this.port = maybePort;
+            this.handler = maybeHandler || notImplemented;
+        } else {
+            this.port = null;
+            this.handler = maybePort || notImplemented;
         }
         this.sockets = [];
         this.internal = http.createServer();
@@ -22,18 +23,24 @@ export class Server {
     }
     start(done) {
         if (this.started) {
-            if (!!done) {
+            if (done) {
                 done(this.port);
             } else {
                 return Promise.resolve(this.port);
             }
         } else {
-            this.started = true;
-            if (!!done) {
-                new PortFinder(this.internal, this.port).please(done);
+            const portFinder = new PortFinder(this.internal, this.port);
+            if (done) {
+                portFinder.please((port) => {
+                    this.started = true;
+                    done(port);
+                });
             } else {
                 return new Promise((resolve) => {
-                    new PortFinder(this.internal, this.port).please(resolve);
+                    portFinder.please((port) => {
+                        this.started = true;
+                        resolve(port);
+                    });
                 });
             }
         }
