@@ -42,6 +42,7 @@ const open = (spec, options) => {
 };
 
 const close = (done) => {
+    page.window.close();
     done();
 };
 
