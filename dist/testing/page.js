@@ -41,9 +41,11 @@ const open = (spec, options) => {
     });
 };
 
-const close = (done) => {
-    page.window.close();
-    done();
+const close = () => {
+    return new Promise((resolve) => {
+        page.window.close();
+        resolve();
+    });
 };
 
 const click = (text) => {

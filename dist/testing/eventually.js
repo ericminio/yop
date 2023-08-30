@@ -17,7 +17,10 @@ export const eventually = async (...params) => {
                 credit--;
                 if (credit === 0) {
                     if (!!page) {
-                        console.log(page.document.body.innerHTML);
+                        console.log(
+                            'FAILURE\nactual body:',
+                            page.document.body.innerHTML
+                        );
                     }
                     reject(error);
                 } else {
