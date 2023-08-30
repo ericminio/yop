@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { Server } from '../dist/index.js';
+import { Server } from '../dist/http/server.js';
 
 describe('server', () => {
     describe('port', () => {
