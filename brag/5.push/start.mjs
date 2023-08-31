@@ -10,7 +10,7 @@ const router = new Router([
     { matches: () => true, go: serveAssets(new URL('.', import.meta.url)) },
 ]);
 
-export const server = new Server(5000, router.handler.bind(router));
+export const server = new Server(router.handler.bind(router));
 
 if (
     !process.argv[1].endsWith('mocha') &&

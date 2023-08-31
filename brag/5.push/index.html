@@ -4,7 +4,7 @@
         <title>push</title>
         <script>
             const connect = () => {
-                const url = 'ws://localhost:5000/connect';
+                const url = `ws://${window.location.host}/connect`;
                 const webSocket = new WebSocket(url);
                 webSocket.addEventListener('open', (event) => {
                     document.querySelector('#message').textContent =
