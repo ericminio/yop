@@ -1,7 +1,7 @@
 import url from 'url';
 import { primeFactorsOf } from './prime-factors.js';
 
-export const serveDecomposition = (incoming, response) => {
+export const decompose = (incoming, response) => {
     const params = url.parse(incoming.url, true).query;
     const number = parseInt(params.number);
     const decomposition = primeFactorsOf(number);
