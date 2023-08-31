@@ -3,7 +3,7 @@ import { strict as assert } from 'node:assert';
 import { page, eventually } from '../../dist/index.js';
 import { server } from './start.mjs';
 
-describe('home page', () => {
+describe('api - home page', () => {
     beforeEach(async () => {
         const port = await server.start();
         await page.open(`http://localhost:${port}`);

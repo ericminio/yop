@@ -1,7 +1,9 @@
-import { expect } from 'chai';
+import { describe, it, beforeEach } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { page, eventually } from '../../dist/index.js';
 
-describe('home page', () => {
+describe('test audience - home page', () => {
     beforeEach(async () => {
         await page.open(new URL('./index.html', import.meta.url));
     });
@@ -11,7 +13,7 @@ describe('home page', () => {
         page.click('compute');
 
         await eventually(() =>
-            expect(page.section('Result')).to.contain('15 = 3 x 5')
+            assert.match(page.section('Result'), /15 = 3 x 5/)
         );
     });
 });

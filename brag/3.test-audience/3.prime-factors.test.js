@@ -1,9 +1,13 @@
-import { describe, it } from 'node:test';
+import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { primeFactorsOf } from './prime-factors.js';
+import { expose } from '../../dist/index.js';
+const primeFactorsOf = expose({
+    symbol: 'primeFactorsOf',
+    file: './brag/3.test-audience/prime-factors.js',
+});
 
-describe('api - prime factors decomposition', () => {
+describe('test audience - prime factors decomposition', () => {
     it('works for our favorite number 42', () => {
         assert.deepStrictEqual(primeFactorsOf(42), [2, 3, 7]);
     });
