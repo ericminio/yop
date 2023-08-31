@@ -1,19 +1,21 @@
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { Postgres } from '../../dist/index.js';
-import { expect } from 'chai';
 
 describe('Postgres', () => {
     it('can execute one select', async () => {
         const database = new Postgres();
         const rows = await database.execute("select 'Joe' as name");
-        expect(rows.length).to.equal(1);
-        expect(rows[0].name).to.equal('Joe');
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].name, 'Joe');
     });
 
     it('can execute one select with one parameter', async () => {
         const database = new Postgres();
         const rows = await database.execute('select $1 as name', ['Jack']);
-        expect(rows.length).to.equal(1);
-        expect(rows[0].name).to.equal('Jack');
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].name, 'Jack');
     });
 
     it('can execute several statements and return the last results', async () => {
@@ -31,8 +33,8 @@ describe('Postgres', () => {
             },
             'select count(id)::integer as count from product',
         ]);
-        expect(rows.length).to.equal(1);
-        expect(rows[0].count).to.equal(2);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].count, 2);
     });
 
     it('can execute several statements as one', async () => {
@@ -50,8 +52,8 @@ describe('Postgres', () => {
             prepare,
             'select count(id)::integer as count from product',
         ]);
-        expect(rows.length).to.equal(1);
-        expect(rows[0].count).to.equal(2);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].count, 2);
     });
 
     it('reports errors', async () => {
@@ -60,7 +62,7 @@ describe('Postgres', () => {
             const rows = await database.execute("select 'Joe' as");
             throw new Error('should fail');
         } catch (error) {
-            expect(error.message).to.equal('syntax error at end of input');
+            assert.equal(error.message, 'syntax error at end of input');
         }
     });
 });
