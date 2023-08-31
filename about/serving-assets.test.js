@@ -1,4 +1,6 @@
-import { expect } from 'chai';
+import { describe, it, beforeEach, afterEach } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { serveAssets, Server } from '../dist/index.js';
 import fs from 'fs';
 const port = 5001;
@@ -6,30 +8,30 @@ const baseUrl = `http://localhost:${port}`;
 
 describe('Serving assets handler', () => {
     let server;
-    beforeEach((done) => {
+    beforeEach(async () => {
         server = new Server(port);
-        server.start(() => done());
+        await server.start();
     });
-    afterEach((done) => {
-        server.stop(done);
+    afterEach(async () => {
+        await server.stop();
     });
 
     it('can server html', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
         const response = await fetch(`${baseUrl}/serving-asset-index.html`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal('text/html');
-        expect(await response.text()).to.contain('<title>serving html</title>');
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'text/html');
+        assert.match(await response.text(), /<title>serving html<\/title>/);
     });
 
     it('defaults to 404', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
         const response = await fetch(`${baseUrl}/`);
 
-        expect(response.status).to.equal(404);
-        expect(response.headers.get('content-type')).to.equal('text/plain');
-        expect(await response.text()).to.equal('NOT FOUND');
+        assert.equal(response.status, 404);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(await response.text(), 'NOT FOUND');
     });
 
     describe('when index.html is present', () => {
@@ -55,10 +57,11 @@ describe('Serving assets handler', () => {
             server.use(serveAssets(new URL('.', import.meta.url)));
             const response = await fetch(`${baseUrl}/`);
 
-            expect(response.status).to.equal(200);
-            expect(response.headers.get('content-type')).to.equal('text/html');
-            expect(await response.text()).to.contain(
-                '<title>serving index.html</title>'
+            assert.equal(response.status, 200);
+            assert.equal(response.headers.get('content-type'), 'text/html');
+            assert.match(
+                await response.text(),
+                /<title>serving index.html<\/title>/
             );
         });
     });
@@ -67,11 +70,13 @@ describe('Serving assets handler', () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
         const response = await fetch(`${baseUrl}/serving-asset-code.js`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal(
+        assert.equal(response.status, 200);
+        assert.equal(
+            response.headers.get('content-type'),
             'application/javascript'
         );
-        expect((await response.text()).trim()).to.equal(
+        assert.equal(
+            (await response.text()).trim(),
             'const sum = (a, b) => a + b;'
         );
     });
@@ -86,9 +91,10 @@ describe('Serving assets handler', () => {
         };
         let response = await fetch(`${baseUrl}/serving-asset-css.css`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal('text/css');
-        expect((await response.text()).trim()).to.equal(
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'text/css');
+        assert.equal(
+            (await response.text()).trim(),
             'body {\n    color: green;\n}'
         );
     });

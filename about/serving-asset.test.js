@@ -1,16 +1,18 @@
-import { expect } from 'chai';
+import { describe, it, beforeEach, afterEach } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { serveAsset, Server, contentOfBinaryFile } from '../dist/index.js';
 const port = 5001;
 const baseUrl = `http://localhost:${port}`;
 
 describe('Serving asset handler', () => {
     let server;
-    beforeEach((done) => {
+    beforeEach(async () => {
         server = new Server(port);
-        server.start(() => done());
+        await server.start();
     });
-    afterEach((done) => {
-        server.stop(done);
+    afterEach(async () => {
+        await server.stop();
     });
 
     it('can server html', async () => {
@@ -19,10 +21,10 @@ describe('Serving asset handler', () => {
         );
         const response = await fetch(`${baseUrl}/`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal('text/html');
-        expect(response.headers.get('cache-control')).to.equal('max-age=45');
-        expect(await response.text()).to.contain('<title>serving html</title>');
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'text/html');
+        assert.equal(response.headers.get('cache-control'), 'max-age=45');
+        assert.match(await response.text(), /<title>serving html<\/title>/);
     });
 
     it('can server javascript', async () => {
@@ -31,11 +33,13 @@ describe('Serving asset handler', () => {
         );
         const response = await fetch(`${baseUrl}/`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal(
+        assert.equal(response.status, 200);
+        assert.equal(
+            response.headers.get('content-type'),
             'application/javascript'
         );
-        expect((await response.text()).trim()).to.equal(
+        assert.equal(
+            (await response.text()).trim(),
             'const sum = (a, b) => a + b;'
         );
     });
@@ -46,9 +50,10 @@ describe('Serving asset handler', () => {
         );
         const response = await fetch(`${baseUrl}/`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal('text/css');
-        expect((await response.text()).trim()).to.equal(
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'text/css');
+        assert.equal(
+            (await response.text()).trim(),
             'body {\n    color: green;\n}'
         );
     });
@@ -59,10 +64,10 @@ describe('Serving asset handler', () => {
         server.use(serveAsset(image));
         const response = await fetch(`${baseUrl}/`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal('image/png');
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'image/png');
         const actual = Buffer.from(await (await response.blob()).arrayBuffer());
-        expect(actual.equals(expected)).to.equal(true);
+        assert.ok(actual.equals(expected));
     });
 
     it('can serve jpg', async () => {
@@ -71,9 +76,9 @@ describe('Serving asset handler', () => {
         server.use(serveAsset(image));
         const response = await fetch(`${baseUrl}/`);
 
-        expect(response.status).to.equal(200);
-        expect(response.headers.get('content-type')).to.equal('image/jpeg');
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'image/jpeg');
         const actual = Buffer.from(await (await response.blob()).arrayBuffer());
-        expect(actual.equals(expected)).to.equal(true);
+        assert.ok(actual.equals(expected));
     });
 });
