@@ -2,14 +2,14 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
 import { serveAsset, Server, contentOfBinaryFile } from '../dist/index.js';
-const port = 5001;
-const baseUrl = `http://localhost:${port}`;
 
 describe('Serving asset handler', () => {
     let server;
+    let baseUrl;
     beforeEach(async () => {
-        server = new Server(port);
-        await server.start();
+        server = new Server();
+        const port = await server.start();
+        baseUrl = `http://localhost:${port}`;
     });
     afterEach(async () => {
         await server.stop();

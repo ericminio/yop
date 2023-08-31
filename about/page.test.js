@@ -17,17 +17,18 @@ describe('page', () => {
 
     describe('opening url', () => {
         let server;
-        let port = 5001;
+        let baseUrl;
         beforeEach(async () => {
-            server = new Server(port, serveAsset(file));
-            await server.start();
+            server = new Server(serveAsset(file));
+            const port = await server.start();
+            baseUrl = `http://localhost:${port}`;
         });
         afterEach(async () => {
             await server.stop();
         });
 
         it('works', async () => {
-            await page.open(`http://localhost:${port}`);
+            await page.open(`${baseUrl}`);
 
             assert.equal(page.document.title, 'well done page!');
         });

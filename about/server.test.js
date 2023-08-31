@@ -34,7 +34,7 @@ describe('server', () => {
         });
 
         it('can be forced', async () => {
-            secondServer = new Server(5005, (_, response) => {
+            secondServer = new Server(5042, (_, response) => {
                 const answer = 'port forced';
                 response.writeHead(200, {
                     'content-type': 'plain/text',
@@ -43,16 +43,16 @@ describe('server', () => {
                 response.end(answer);
             });
             await secondServer.start();
-            let answer = await fetch(`http://localhost:5005`);
+            let answer = await fetch(`http://localhost:5042`);
             let content = await answer.text();
 
             assert.equal(content, 'port forced');
         });
 
         it('welcomes default handler', async () => {
-            secondServer = new Server(5005);
+            secondServer = new Server(5043);
             await secondServer.start();
-            let answer = await fetch(`http://localhost:5005`);
+            let answer = await fetch(`http://localhost:5043`);
 
             assert.equal(answer.status, 501);
         });

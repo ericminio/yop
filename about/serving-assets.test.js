@@ -3,14 +3,14 @@ import { strict as assert } from 'node:assert';
 
 import { serveAssets, Server } from '../dist/index.js';
 import fs from 'fs';
-const port = 5001;
-const baseUrl = `http://localhost:${port}`;
 
 describe('Serving assets handler', () => {
     let server;
+    let baseUrl;
     beforeEach(async () => {
-        server = new Server(port);
-        await server.start();
+        server = new Server();
+        const port = await server.start();
+        baseUrl = `http://localhost:${port}`;
     });
     afterEach(async () => {
         await server.stop();
@@ -83,12 +83,6 @@ describe('Serving assets handler', () => {
 
     it('can server css', async () => {
         server.use(serveAssets(new URL('.', import.meta.url)));
-        const home = {
-            hostname: 'localhost',
-            port: port,
-            path: '/serving-asset-css.css',
-            method: 'GET',
-        };
         let response = await fetch(`${baseUrl}/serving-asset-css.css`);
 
         assert.equal(response.status, 200);
