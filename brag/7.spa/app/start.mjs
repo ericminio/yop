@@ -16,8 +16,8 @@ const router = new Router([
         scripts(
             [
                 './web/About/index.js',
+                './web/HomePage/index.js',
                 './web/MainMenu/index.js',
-                './web/WelcomeHome/index.js',
             ],
             import.meta.url
         )

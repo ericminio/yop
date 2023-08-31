@@ -6,10 +6,9 @@ customElements.define(
         }
 
         async connectedCallback() {
-            const html = await fetch('/templates/About/index.html').then(
+            this.innerHTML = await fetch('/templates/About/index.html').then(
                 (response) => response.text()
             );
-            this.innerHTML = html;
         }
     }
 );

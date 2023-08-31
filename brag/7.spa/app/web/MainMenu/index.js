@@ -6,10 +6,9 @@ customElements.define(
         }
 
         async connectedCallback() {
-            const html = await fetch('/templates/MainMenu/index.html').then(
+            this.innerHTML = await fetch('/templates/MainMenu/index.html').then(
                 (response) => response.text()
             );
-            this.innerHTML = html;
             this.querySelector('#menu-about').addEventListener('click', () => {
                 navigate.to('/about');
             });
