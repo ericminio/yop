@@ -3,7 +3,6 @@ export * from './code/exposex.js';
 export * from './files/content-of-file.js';
 export * from './http/headers.js';
 export * from './http/payload.js';
-export * from './http/route-302.js';
 export * from './http/router.js';
 export * from './http/router-log.js';
 export * from './http/server.js';
