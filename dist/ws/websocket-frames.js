@@ -9,28 +9,28 @@ export const encodeSingleFrameOfText = (text) => {
 
 const FIRST_BIT_OF_BYTE_MASK = 0x80;
 const LAST_BIT_OF_BYTE_MASK = 0x01;
-const isFirstBitSet = (byte) => {
+export const isFirstBitSet = (byte) => {
     return (byte & FIRST_BIT_OF_BYTE_MASK) === FIRST_BIT_OF_BYTE_MASK;
 };
-const isLastBitSet = (byte) => {
+export const isLastBitSet = (byte) => {
     return (byte & LAST_BIT_OF_BYTE_MASK) === LAST_BIT_OF_BYTE_MASK;
 };
-const isFrameFinal = (buffer) => {
+export const isFrameFinal = (buffer) => {
     return isFirstBitSet(buffer.readUInt8(0));
 };
-const isText = (buffer) => {
+export const isText = (buffer) => {
     return isLastBitSet(buffer.readUInt8(0));
 };
-const decodeLength = (buffer) => {
+export const decodeLength = (buffer) => {
     const secondByte = buffer.readUInt8(1);
 
     return (
         secondByte - (isFirstBitSet(secondByte) ? FIRST_BIT_OF_BYTE_MASK : 0)
     );
 };
-const extractMask = (buffer) =>
+export const extractMask = (buffer) =>
     Buffer.from([2, 3, 4, 5].map((offset) => buffer.readUInt8(offset)));
-const extractData = (buffer) => {
+export const extractData = (buffer) => {
     const length = decodeLength(buffer);
     let data = Buffer.alloc(length);
     for (var i = 0; i < length; i++) {

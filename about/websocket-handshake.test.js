@@ -1,4 +1,6 @@
-import { expect } from 'chai';
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { acceptHeader } from '../dist/index.js';
 
 describe('Sec-WebSocket-Accept', () => {
@@ -6,13 +8,13 @@ describe('Sec-WebSocket-Accept', () => {
         const key = 'dGhlIHNhbXBsZSBub25jZQ==';
         const accept = acceptHeader(key);
 
-        expect(accept).to.equal('s3pPLMBiTxaQ9kYGzzhZRbK+xOo=');
+        assert.equal(accept, 's3pPLMBiTxaQ9kYGzzhZRbK+xOo=');
     });
 
     it('can be called twince', () => {
         const key = 'dGhlIHNhbXBsZSBub25jZQ==';
         const accept = acceptHeader(key);
 
-        expect(accept).to.equal('s3pPLMBiTxaQ9kYGzzhZRbK+xOo=');
+        assert.equal(accept, 's3pPLMBiTxaQ9kYGzzhZRbK+xOo=');
     });
 });

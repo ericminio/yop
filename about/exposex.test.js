@@ -1,4 +1,6 @@
-import { expect } from 'chai';
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { exposex } from '../dist/index.js';
 
 describe('exposing from several files with non-module code', () => {
@@ -8,7 +10,7 @@ describe('exposing from several files with non-module code', () => {
             files: ['./about/exposex-dep.js', './about/exposex-code.js'],
         });
 
-        expect(far(3, 2)).to.equal(3 * 3 + 2 * 2);
+        assert.equal(far(3, 2), 3 * 3 + 2 * 2);
     });
 
     it('offers exposing several symbols', () => {
@@ -17,7 +19,7 @@ describe('exposing from several files with non-module code', () => {
             files: ['./about/exposex-dep.js', './about/exposex-code.js'],
         });
 
-        expect(far(3, 2)).to.equal(3 * 3 + 2 * 2);
-        expect(square(3)).to.equal(3 * 3);
+        assert.equal(far(3, 2), 3 * 3 + 2 * 2);
+        assert.equal(square(3), 3 * 3);
     });
 });

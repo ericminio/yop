@@ -1,4 +1,6 @@
-import { expect } from 'chai';
+import { describe, it } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { expose } from '../dist/index.js';
 
 describe('exposing non-module code', () => {
@@ -7,12 +9,12 @@ describe('exposing non-module code', () => {
             'const sum = (a, b) => { return a+b; }; return sum;'
         )();
 
-        expect(add(40, 2)).to.equal(42);
+        assert.equal(add(40, 2), 42);
     });
 
     it('is available', () => {
         const add = expose({ symbol: 'sum', file: './about/expose-sample.js' });
 
-        expect(add(40, 2)).to.equal(42);
+        assert.equal(add(40, 2), 42);
     });
 });
