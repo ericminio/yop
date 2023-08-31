@@ -1,7 +1,9 @@
-import { expect } from 'chai';
+import { describe, it, beforeEach, afterEach } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { page, eventually } from '../../dist/index.js';
 
-describe('prime factors decomposition', () => {
+describe('async - prime factors decomposition', () => {
     beforeEach(async () => {
         await page.open(new URL('./index.html', import.meta.url));
     });
@@ -11,7 +13,7 @@ describe('prime factors decomposition', () => {
         page.click('compute');
 
         await eventually(() =>
-            expect(page.section('Results')).to.contain('2 x 2 x 2')
+            assert.match(page.section('Results'), /2 x 2 x 2/)
         );
     });
 
@@ -19,6 +21,6 @@ describe('prime factors decomposition', () => {
         page.set('Number to decompose').value = '42';
         page.click('compute');
 
-        expect(page.section('Results')).to.contain('waiting...');
+        assert.match(page.section('Results'), /waiting.../);
     });
 });
