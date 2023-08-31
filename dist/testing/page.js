@@ -55,9 +55,7 @@ const click = (text) => {
 const set = (prompt) => {
     let label = find({ tag: 'label', text: prompt });
     if (label.htmlFor.length === 0) {
-        throw new Error(
-            `label with text '${prompt}' is missing htmlFor attribute`
-        );
+        throw new Error(`label with text '${prompt}' is missing for attribute`);
     }
     let candidate = element(`#${label.htmlFor}`);
     if (candidate === null) {
@@ -87,8 +85,8 @@ const color = (text) => {
 };
 
 const find = (options) => {
-    if (page.document === undefined) {
-        throw new Error('page.document is undefined');
+    if (!page.document) {
+        throw new Error('page.document must be defined');
     }
     const document = options.in || page.document;
     let candidates = Array.from(document.querySelectorAll(options.tag)).filter(
