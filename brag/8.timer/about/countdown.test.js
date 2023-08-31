@@ -3,7 +3,7 @@ import { strict as assert } from 'node:assert';
 import { eventually, page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
-describe('Count down', () => {
+describe('timers - Count down', () => {
     beforeEach(async () => {
         const port = await server.start();
         await page.open(`http://localhost:${port}`);

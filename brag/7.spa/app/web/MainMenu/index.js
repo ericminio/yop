@@ -9,12 +9,10 @@ customElements.define(
             const html = await fetch('/templates/MainMenu/index.html').then(
                 (response) => response.text()
             );
-            this.outerHTML = html;
-            this.ownerDocument
-                .querySelector('#menu-about')
-                .addEventListener('click', () => {
-                    navigate.to('/about');
-                });
+            this.innerHTML = html;
+            this.querySelector('#menu-about').addEventListener('click', () => {
+                navigate.to('/about');
+            });
         }
     }
 );

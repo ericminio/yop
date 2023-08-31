@@ -82,9 +82,11 @@ class PortFinder {
                 callback(this.port);
             }
         });
-        this.server.on('error', () => {
-            this.port += 1;
-            this.server.listen(this.port);
+        this.server.on('error', (error) => {
+            if (!this.found) {
+                this.port += 1;
+                this.server.listen(this.port);
+            }
         });
         this.server.listen(this.port);
     }
