@@ -1,4 +1,6 @@
-import { expect } from 'chai';
+import { describe, it, beforeEach } from 'node:test';
+import { strict as assert } from 'node:assert';
+
 import { expose } from '../../dist/index.js';
 const EventBus = expose({
     symbol: 'EventBus',
@@ -21,7 +23,7 @@ describe('events bus', () => {
         eventBus.register(component, 'this event');
         eventBus.notify('this event', 42);
 
-        expect(received).to.equal(42);
+        assert.equal(received, 42);
     });
 
     it('will not update registered component for a different event', () => {
@@ -34,7 +36,7 @@ describe('events bus', () => {
         eventBus.register(component, 'this event');
         eventBus.notify('that event', 42);
 
-        expect(received).to.equal(undefined);
+        assert.equal(received, undefined);
     });
 
     it('will update all components registered with this event', () => {
@@ -58,8 +60,8 @@ describe('events bus', () => {
         );
         eventBus.notify('event', 42);
 
-        expect(first).to.equal(42);
-        expect(second).to.equal(42);
+        assert.equal(first, 42);
+        assert.equal(second, 42);
     });
 
     it('will call registered callback', () => {
@@ -70,7 +72,7 @@ describe('events bus', () => {
         eventBus.register(callback, 'that event');
         eventBus.notify('that event', 42);
 
-        expect(received).to.equal(42);
+        assert.equal(received, 42);
     });
 
     it('needs binding to call registered callback in context', () => {
@@ -87,7 +89,7 @@ describe('events bus', () => {
         new Foo();
         eventBus.notify('event', 3);
 
-        expect(received).to.equal(42);
+        assert.equal(received, 42);
     });
 
     it('accepts registration with regular expression', () => {
@@ -98,7 +100,7 @@ describe('events bus', () => {
         eventBus.register(callback, /that event/);
         eventBus.notify('matching that event :)', 42);
 
-        expect(received).to.equal(42);
+        assert.equal(received, 42);
     });
 
     describe('unregister', () => {
@@ -115,7 +117,7 @@ describe('events bus', () => {
             eventBus.unregister(id);
             eventBus.notify('event', 42);
 
-            expect(spy).to.equal(undefined);
+            assert.equal(spy, undefined);
         });
         it('ignores unknown id', () => {
             let spy;
@@ -130,14 +132,14 @@ describe('events bus', () => {
             eventBus.unregister(id + 1);
             eventBus.notify('event', 42);
 
-            expect(spy).to.equal(42);
+            assert.equal(spy, 42);
         });
         it('is available for a bulk of ids', () => {
             let one = eventBus.register({ update: () => {} }, 'this event');
             let two = eventBus.register({ update: () => {} }, 'that event');
             eventBus.unregisterAll([one, two]);
 
-            expect(eventBus.listeners).to.deep.equal({});
+            assert.deepStrictEqual(eventBus.listeners, {});
         });
         it('is available for registration made with regular expression', () => {
             let spy;
@@ -148,22 +150,22 @@ describe('events bus', () => {
             eventBus.unregister(id);
             eventBus.notify('that event', 42);
 
-            expect(spy).to.equal(undefined);
+            assert.equal(spy, undefined);
         });
     });
 
     describe('emptyness', () => {
         it('is the starting point', () => {
-            expect(eventBus.isEmpty()).to.equal(true);
+            assert.ok(eventBus.isEmpty());
         });
         it('becomes history once registration happens', () => {
             eventBus.register({ update: () => {} }, 'this event');
-            expect(eventBus.isEmpty()).to.equal(false);
+            assert.equal(eventBus.isEmpty(), false);
         });
         it('can be effective again after unregistration', () => {
             let id = eventBus.register({ update: () => {} }, 'event');
             eventBus.unregister(id);
-            expect(eventBus.isEmpty()).to.equal(true);
+            assert.ok(eventBus.isEmpty());
         });
     });
 });
