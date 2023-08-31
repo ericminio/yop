@@ -1,26 +1,25 @@
-import { expect } from 'chai';
+import { describe, it, beforeEach, afterEach } from 'node:test';
+import { strict as assert } from 'node:assert';
 import { page, eventually, wait } from '../../dist/index.js';
 import { clearRegistrations } from './notification-service.js';
 import { server } from './start.mjs';
 
 describe('websocket server', () => {
-    let serverPort;
     let baseUrl;
-    beforeEach((done) => {
-        server.start((port) => {
-            serverPort = port;
-            baseUrl = `http://localhost:${port}`;
-            clearRegistrations();
-            page.open(`${baseUrl}/`).then(done).catch(done);
-        });
+    beforeEach(async () => {
+        const port = await server.start();
+        baseUrl = `http://localhost:${port}`;
+        clearRegistrations();
+        await page.open(`${baseUrl}`);
     });
-    afterEach((done) => {
-        server.stop(done);
+    afterEach(async () => {
+        await page.close();
+        await server.stop();
     });
 
     it('can upgrade an http connection to websocket', async () => {
         await eventually(() =>
-            expect(page.section('Message')).to.contain('connected')
+            assert.match(page.section('Message'), /connected/)
         );
     });
 
@@ -34,20 +33,20 @@ describe('websocket server', () => {
             }),
         });
         await eventually(() =>
-            expect(page.section('Message')).to.contain('hello world')
+            assert.match(page.section('Message'), /hello world/)
         );
     });
 
     it('resists bad request', async () => {
         await wait(15);
         try {
-            const response = await fetch(`${baseUrl}/notify`, {
+            await fetch(`${baseUrl}/notify`, {
                 method: 'POST',
                 body: JSON.stringify({ random: 'field' }),
             });
         } catch (error) {
             const { status } = JSON.parse(error.message);
-            expect(status).to.equal(400);
+            assert.equal(status, 400);
         }
     });
 });
