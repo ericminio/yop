@@ -120,4 +120,5 @@ export const page = {
     enter,
     click,
     color,
+    element,
 };

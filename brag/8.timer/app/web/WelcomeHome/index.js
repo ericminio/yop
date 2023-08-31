@@ -3,6 +3,10 @@ customElements.define(
     class extends HTMLElement {
         constructor() {
             super();
+            this.yoptimer = new YopTimer({
+                delay: 1000,
+                count: 15,
+            });
         }
 
         async connectedCallback() {
@@ -10,26 +14,16 @@ customElements.define(
                 (response) => response.text()
             );
             this.innerHTML = html;
-
-            this.ownerDocument.yoptimer = new document.YopTimer({
-                cycle: 1000,
-                count: 15,
+            this.querySelector('#start').addEventListener('click', () => {
+                this.yoptimer.start(this.update.bind(this));
             });
-
-            this.ownerDocument
-                .querySelector('#start')
-                .addEventListener('click', () => {
-                    this.ownerDocument.yoptimer.start(this.update.bind(this));
-                });
         }
 
         update(count) {
-            this.ownerDocument.querySelector(
-                '#remaining'
-            ).innerHTML = `${count}s`;
+            this.querySelector('#remaining').innerHTML = `${count}s`;
 
             if (count === 0) {
-                this.ownerDocument.querySelector('#done').innerHTML = 'Done';
+                this.querySelector('#done').innerHTML = 'Done';
             }
         }
     }

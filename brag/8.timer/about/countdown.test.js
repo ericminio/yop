@@ -35,8 +35,8 @@ describe('timers - Count down', () => {
                 /Start whenever you are ready/
             );
         });
-        page.document.yoptimer = new page.document.YopTimer({
-            delay: 150,
+        page.element('welcome-home').yoptimer = new page.window.YopTimer({
+            delay: 50,
             count: 3,
         });
         page.click('Start');
