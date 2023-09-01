@@ -2,16 +2,9 @@ import {
     Router,
     Server,
     contentOfFile,
+    fail,
     fileExists,
 } from '../../../dist/index.js';
-
-const fail = (status, text) => (_, response) => {
-    response.writeHead(status, {
-        'content-type': 'text/plain',
-        'content-length': text.length,
-    });
-    response.end(text);
-};
 
 const router = new Router([
     {
