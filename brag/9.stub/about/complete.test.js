@@ -13,6 +13,7 @@ describe('stub', () => {
     });
 
     it('serves expected json', async () => {
+        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/value.json';
         const response = await fetch(`${baseUrl}`);
 
         assert.equal(response.status, 200);

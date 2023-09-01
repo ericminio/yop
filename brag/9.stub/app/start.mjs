@@ -1,11 +1,10 @@
-import { Router, RouterLog, Server } from '../../../dist/index.js';
+import { Router, Server, contentOfFile } from '../../../dist/index.js';
 
 const router = new Router([
-    new RouterLog(),
     {
         matches: () => true,
         go: (_, response) => {
-            const answer = JSON.stringify({ alive: true });
+            const answer = contentOfFile(process.env.YOP_STUB_FILE);
             response.writeHead(200, {
                 'content-type': 'application/json',
                 'content-length': answer.length,
