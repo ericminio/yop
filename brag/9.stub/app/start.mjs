@@ -5,47 +5,33 @@ import {
     fileExists,
 } from '../../../dist/index.js';
 
+const fail = (status, text) => (_, response) => {
+    response.writeHead(status, {
+        'content-type': 'text/plain',
+        'content-length': text.length,
+    });
+    response.end(text);
+};
+
 const router = new Router([
     {
         matches: () => !process.env.YOP_STUB_FILE,
-        go: (_, response) => {
-            const answer = 'YOP_STUB_FILE env variable not set';
-            response.writeHead(400, {
-                'content-type': 'text/plain',
-                'content-length': answer.length,
-            });
-            response.end(answer);
-        },
+        go: fail(400, 'YOP_STUB_FILE env variable not set'),
     },
     {
         matches: () => !fileExists(process.env.YOP_STUB_FILE),
-        go: (_, response) => {
-            const answer = 'NOT FOUND';
-            response.writeHead(404, {
-                'content-type': 'text/plain',
-                'content-length': answer.length,
-            });
-            response.end(answer);
-        },
+        go: fail(404, 'NOT FOUND'),
     },
     {
         matches: () => {
-            const answer = contentOfFile(process.env.YOP_STUB_FILE);
             try {
-                JSON.parse(answer);
+                JSON.parse(contentOfFile(process.env.YOP_STUB_FILE));
                 return false;
             } catch (error) {
                 return true;
             }
         },
-        go: (_, response) => {
-            const answer = 'Not valid JSON';
-            response.writeHead(400, {
-                'content-type': 'text/plain',
-                'content-length': answer.length,
-            });
-            response.end(answer);
-        },
+        go: fail(400, 'Not valid JSON'),
     },
     {
         matches: () => true,
