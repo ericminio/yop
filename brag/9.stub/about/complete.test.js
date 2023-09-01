@@ -29,4 +29,16 @@ describe('stub', () => {
         assert.equal(response.headers.get('content-type'), 'text/plain');
         assert.equal(await response.text(), 'NOT FOUND');
     });
+
+    it('resists non-json file', async () => {
+        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/not-json.txt';
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 400);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(
+            await response.text(),
+            `Unexpected token 'h', "this is not json" is not valid JSON`
+        );
+    });
 });

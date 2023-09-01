@@ -10,6 +10,16 @@ const router = new Router([
         matches: () => fileExists(process.env.YOP_STUB_FILE),
         go: (_, response) => {
             const answer = contentOfFile(process.env.YOP_STUB_FILE);
+            try {
+                JSON.parse(answer);
+            } catch (error) {
+                response.writeHead(400, {
+                    'content-type': 'text/plain',
+                    'content-length': error.message.length,
+                });
+                response.end(error.message);
+                return;
+            }
             response.writeHead(200, {
                 'content-type': 'application/json',
                 'content-length': answer.length,
