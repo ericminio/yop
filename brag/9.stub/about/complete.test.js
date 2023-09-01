@@ -41,4 +41,16 @@ describe('stub', () => {
             `Unexpected token 'h', "this is not json" is not valid JSON`
         );
     });
+
+    it('resists env file not set', async () => {
+        delete process.env.YOP_STUB_FILE;
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 400);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(
+            await response.text(),
+            'YOP_STUB_FILE env variable not set'
+        );
+    });
 });

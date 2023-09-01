@@ -28,6 +28,17 @@ const router = new Router([
         },
     },
     {
+        matches: () => !process.env.YOP_STUB_FILE,
+        go: (_, response) => {
+            const answer = 'YOP_STUB_FILE env variable not set';
+            response.writeHead(400, {
+                'content-type': 'text/plain',
+                'content-length': answer.length,
+            });
+            response.end(answer);
+        },
+    },
+    {
         matches: () => true,
         go: (_, response) => {
             const answer = 'NOT FOUND';
