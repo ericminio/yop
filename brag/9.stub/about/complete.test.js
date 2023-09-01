@@ -36,10 +36,7 @@ describe('stub', () => {
 
         assert.equal(response.status, 400);
         assert.equal(response.headers.get('content-type'), 'text/plain');
-        assert.equal(
-            await response.text(),
-            `Unexpected token 'h', "this is not json" is not valid JSON`
-        );
+        assert.equal(await response.text(), `Not valid JSON`);
     });
 
     it('resists env file not set', async () => {
