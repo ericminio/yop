@@ -20,4 +20,13 @@ describe('stub', () => {
         assert.equal(response.headers.get('content-type'), 'application/json');
         assert.deepStrictEqual(await response.json(), { alive: true });
     });
+
+    it('resists non-existing file', async () => {
+        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/unknown.json';
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 404);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(await response.text(), 'NOT FOUND');
+    });
 });
