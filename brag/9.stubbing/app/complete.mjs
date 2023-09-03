@@ -1,5 +1,5 @@
 import { Router, Server, contentOfFile } from '../../../dist/index.js';
-import { commonGuards } from './common.js';
+import { commonGuards } from './common-guards.js';
 
 const router = new Router([
     ...commonGuards,
