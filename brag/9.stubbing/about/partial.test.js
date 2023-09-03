@@ -59,6 +59,19 @@ describe('stubbing - partial', () => {
         assert.equal(await response.text(), `Not valid JSON`);
     });
 
+    it('resists missing upstream data provider', async () => {
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
+        delete stub.upstreamData;
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 400);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(
+            await response.text(),
+            'upstream data provider is missing'
+        );
+    });
+
     it('resists missing merge strategy', async () => {
         process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
         stub.upstreamData = async () => ({ field: 'anything', alive: false });

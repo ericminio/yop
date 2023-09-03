@@ -27,6 +27,10 @@ const router = new Router([
         go: fail(400, 'Not valid JSON'),
     },
     {
+        matches: () => !stub.upstreamData,
+        go: fail(400, 'upstream data provider is missing'),
+    },
+    {
         matches: () => !stub.mergeStrategy,
         go: fail(400, 'merge strategy is missing'),
     },
