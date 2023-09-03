@@ -39,7 +39,7 @@ const router = new Router([
     },
 ]);
 
-export const server = new Server(router.handler.bind(router));
+export const stub = new Server(router.handler.bind(router));
 
 if (!process.argv[1].endsWith('test.js')) {
     server.start((port) => {

@@ -1,19 +1,19 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { server } from '../app/start.mjs';
+import { stub } from '../app/complete.mjs';
 
-describe('stub', () => {
+describe('stubbing - complete', () => {
     let baseUrl;
     beforeEach(async () => {
-        const port = await server.start();
+        const port = await stub.start();
         baseUrl = `http://localhost:${port}`;
     });
     afterEach(async () => {
-        await server.stop();
+        await stub.stop();
     });
 
     it('serves expected json', async () => {
-        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/value.json';
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
         const response = await fetch(`${baseUrl}`);
 
         assert.equal(response.status, 200);
@@ -22,7 +22,7 @@ describe('stub', () => {
     });
 
     it('resists non-existing file', async () => {
-        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/unknown.json';
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/unknown.json';
         const response = await fetch(`${baseUrl}`);
 
         assert.equal(response.status, 404);
@@ -31,7 +31,7 @@ describe('stub', () => {
     });
 
     it('resists non-json file', async () => {
-        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/not-json.txt';
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/not-json.txt';
         const response = await fetch(`${baseUrl}`);
 
         assert.equal(response.status, 400);

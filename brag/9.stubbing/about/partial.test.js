@@ -2,7 +2,7 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { stub } from '../app/partial.mjs';
 
-describe('stubs - partial', () => {
+describe('stubbing - partial', () => {
     let baseUrl;
     beforeEach(async () => {
         const port = await stub.start();
@@ -13,7 +13,7 @@ describe('stubs - partial', () => {
     });
 
     it('serves expected json', async () => {
-        process.env.YOP_STUB_FILE = './brag/9.stub/about/data/value.json';
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
         stub.upstreamAdapter = {
             data: async () => ({ field: 'anything' }),
         };
