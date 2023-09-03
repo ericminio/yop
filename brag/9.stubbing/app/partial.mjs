@@ -27,6 +27,10 @@ const router = new Router([
         go: fail(400, 'Not valid JSON'),
     },
     {
+        matches: () => !stub.mergeStrategy,
+        go: fail(400, 'merge strategy is missing'),
+    },
+    {
         matches: () => true,
         go: async (_, response) => {
             const dataFromFile = JSON.parse(
