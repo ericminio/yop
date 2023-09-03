@@ -21,6 +21,18 @@ describe('stubbing - complete', () => {
         assert.deepStrictEqual(await response.json(), { alive: true });
     });
 
+    it('resists env file not set', async () => {
+        delete process.env.YOP_STUB_FILE;
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 400);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(
+            await response.text(),
+            'YOP_STUB_FILE env variable not set'
+        );
+    });
+
     it('resists non-existing file', async () => {
         process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/unknown.json';
         const response = await fetch(`${baseUrl}`);
@@ -37,17 +49,5 @@ describe('stubbing - complete', () => {
         assert.equal(response.status, 400);
         assert.equal(response.headers.get('content-type'), 'text/plain');
         assert.equal(await response.text(), `Not valid JSON`);
-    });
-
-    it('resists env file not set', async () => {
-        delete process.env.YOP_STUB_FILE;
-        const response = await fetch(`${baseUrl}`);
-
-        assert.equal(response.status, 400);
-        assert.equal(response.headers.get('content-type'), 'text/plain');
-        assert.equal(
-            await response.text(),
-            'YOP_STUB_FILE env variable not set'
-        );
     });
 });

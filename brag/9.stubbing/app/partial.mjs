@@ -1,13 +1,38 @@
-import { Router, Server, contentOfFile } from '../../../dist/index.js';
+import {
+    Router,
+    Server,
+    contentOfFile,
+    fail,
+    fileExists,
+} from '../../../dist/index.js';
 
 const router = new Router([
     {
+        matches: () => !process.env.YOP_STUB_FILE,
+        go: fail(400, 'YOP_STUB_FILE env variable not set'),
+    },
+    {
+        matches: () => !fileExists(process.env.YOP_STUB_FILE),
+        go: fail(404, 'NOT FOUND'),
+    },
+    {
+        matches: () => {
+            try {
+                JSON.parse(contentOfFile(process.env.YOP_STUB_FILE));
+                return false;
+            } catch (error) {
+                return true;
+            }
+        },
+        go: fail(400, 'Not valid JSON'),
+    },
+    {
         matches: () => true,
         go: async (_, response) => {
-            const dataFromUpstream = await stub.upstreamData();
             const dataFromFile = JSON.parse(
                 contentOfFile(process.env.YOP_STUB_FILE)
             );
+            const dataFromUpstream = await stub.upstreamData();
             const answer = JSON.stringify(
                 stub.mergeStrategy(dataFromUpstream, dataFromFile)
             );

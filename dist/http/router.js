@@ -1,3 +1,5 @@
+import { fail } from './fail.js';
+
 export class Router {
     constructor(routes) {
         this.routes = routes;
@@ -9,7 +11,12 @@ export class Router {
             let matching = await route.matches(incoming, this);
             if (matching) {
                 found = true;
-                await route.go(incoming, response, this);
+                try {
+                    await route.go(incoming, response, this);
+                } catch (error) {
+                    console.log(error);
+                    fail(500, error.message)(incoming, response);
+                }
                 break;
             }
         }
