@@ -94,4 +94,17 @@ describe('stubbing - partial', () => {
         assert.equal(response.headers.get('content-type'), 'text/plain');
         assert.equal(await response.text(), 'merge strategy is missing');
     });
+
+    it('resists failing merge strategy', async () => {
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
+        stub.upstreamData = async () => ({ field: 'anything', alive: false });
+        stub.mergeStrategy = () => {
+            throw new Error('data merge failed');
+        };
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 500);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(await response.text(), 'data merge failed');
+    });
 });
