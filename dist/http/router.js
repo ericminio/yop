@@ -14,7 +14,6 @@ export class Router {
                 try {
                     await route.go(incoming, response, this);
                 } catch (error) {
-                    console.log(error);
                     fail(500, error.message)(incoming, response);
                 }
                 break;

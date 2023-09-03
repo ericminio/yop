@@ -72,6 +72,18 @@ describe('stubbing - partial', () => {
         );
     });
 
+    it('resists failing upstream data provider', async () => {
+        process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
+        stub.upstreamData = async () => {
+            throw new Error('upstream data not available');
+        };
+        const response = await fetch(`${baseUrl}`);
+
+        assert.equal(response.status, 500);
+        assert.equal(response.headers.get('content-type'), 'text/plain');
+        assert.equal(await response.text(), 'upstream data not available');
+    });
+
     it('resists missing merge strategy', async () => {
         process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
         stub.upstreamData = async () => ({ field: 'anything', alive: false });

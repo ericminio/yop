@@ -40,6 +40,7 @@ const router = new Router([
             const dataFromFile = JSON.parse(
                 contentOfFile(process.env.YOP_STUB_FILE)
             );
+
             const dataFromUpstream = await stub.upstreamData();
             const answer = JSON.stringify(
                 stub.mergeStrategy(dataFromUpstream, dataFromFile)
