@@ -12,11 +12,13 @@ describe('stubbing - partial', () => {
         await stub.stop();
     });
 
-    it('serves expected json', async () => {
+    it('applies provided merge strategy', async () => {
         process.env.YOP_STUB_FILE = './brag/9.stubbing/about/data/value.json';
-        stub.upstreamAdapter = {
-            data: async () => ({ field: 'anything' }),
-        };
+        stub.upstreamData = async () => ({ field: 'anything', alive: false });
+        stub.mergeStrategy = (dataFromUpstream, dataFromFile) => ({
+            ...dataFromUpstream,
+            ...dataFromFile,
+        });
         const response = await fetch(`${baseUrl}`);
 
         assert.equal(response.status, 200);

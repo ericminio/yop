@@ -4,14 +4,13 @@ const router = new Router([
     {
         matches: () => true,
         go: async (_, response) => {
-            const dataFromUpstream = await stub.upstreamAdapter.data();
+            const dataFromUpstream = await stub.upstreamData();
             const dataFromFile = JSON.parse(
                 contentOfFile(process.env.YOP_STUB_FILE)
             );
-            const answer = JSON.stringify({
-                ...dataFromUpstream,
-                ...dataFromFile,
-            });
+            const answer = JSON.stringify(
+                stub.mergeStrategy(dataFromUpstream, dataFromFile)
+            );
             response.writeHead(200, {
                 'content-type': 'application/json',
                 'content-length': answer.length,
