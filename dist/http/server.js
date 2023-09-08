@@ -76,8 +76,12 @@ class PortFinder {
     }
 
     please(callback) {
-        this.server.removeAllListeners('listening');
         this.server.removeAllListeners('error');
+        this.server.listeners('listening').forEach((listener) => {
+            if (!/setupConnectionsTracking/.test(listener.toString())) {
+                this.server.removeListener('listening', listener);
+            }
+        });
         this.server.on('listening', () => {
             if (!this.found) {
                 this.found = true;
