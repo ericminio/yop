@@ -29,18 +29,11 @@ export class Server {
                 return Promise.resolve(this.port);
             }
         } else {
-            const portFinder = new PortFinder(this.internal, this.port);
             if (done) {
-                portFinder.please((port) => {
-                    this.started = true;
-                    done(port);
-                });
+                this.findPort(done);
             } else {
                 return new Promise((resolve) => {
-                    portFinder.please((port) => {
-                        this.started = true;
-                        resolve(port);
-                    });
+                    this.findPort(resolve);
                 });
             }
         }
@@ -64,6 +57,13 @@ export class Server {
         this.internal.close(() => {
             this.started = false;
             then();
+        });
+    }
+    findPort(then) {
+        const portFinder = new PortFinder(this.internal, this.port);
+        portFinder.please((port) => {
+            this.started = true;
+            then(port);
         });
     }
 }

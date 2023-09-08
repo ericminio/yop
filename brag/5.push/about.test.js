@@ -7,10 +7,14 @@ import { server } from './start.mjs';
 describe('websocket server', () => {
     let baseUrl;
     beforeEach(async () => {
-        const port = await server.start();
-        baseUrl = `http://localhost:${port}`;
-        clearRegistrations();
-        await page.open(`${baseUrl}`);
+        try {
+            const port = await server.start();
+            baseUrl = `http://localhost:${port}`;
+            clearRegistrations();
+            await page.open(`${baseUrl}`);
+        } catch (error) {
+            console.log(error);
+        }
     });
     afterEach(async () => {
         await page.close();
