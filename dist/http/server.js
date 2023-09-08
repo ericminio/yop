@@ -20,6 +20,7 @@ export class Server {
         });
         this.use(this.handler);
         this.started = false;
+        this.portFinder = new PortFinder(this.internal, this.port);
     }
     start(done) {
         if (this.started) {
@@ -60,9 +61,9 @@ export class Server {
         });
     }
     findPort(then) {
-        const portFinder = new PortFinder(this.internal, this.port);
-        portFinder.please((port) => {
+        this.portFinder.please((port) => {
             this.started = true;
+            this.port = port;
             then(port);
         });
     }
@@ -72,10 +73,11 @@ class PortFinder {
     constructor(server, port) {
         this.port = port || 5001;
         this.server = server;
-        this.found = false;
     }
 
     please(callback) {
+        this.server.removeAllListeners('listening');
+        this.server.removeAllListeners('error');
         this.server.on('listening', () => {
             if (!this.found) {
                 this.found = true;
@@ -88,6 +90,7 @@ class PortFinder {
                 this.server.listen(this.port);
             }
         });
+        this.found = false;
         this.server.listen(this.port);
     }
 }
