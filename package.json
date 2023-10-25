@@ -10,7 +10,8 @@
     "type": "module",
     "devDependencies": {
         "jsdom": "^22.0.0",
-        "prettier": "2.8.4"
+        "prettier": "2.8.4",
+        "selenium-webdriver": "^4.14.0"
     },
     "scripts": {
         "test": "node --test --experimental-test-coverage $(find about brag -name '*.test.js')",

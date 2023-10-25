@@ -1,12 +1,14 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { page, eventually, wait } from '../../dist/index.js';
+import { Page, eventually, wait } from '../../dist/index.js';
 import { clearRegistrations } from './notification-service.js';
 import { server } from './start.mjs';
 
 describe('websocket server', () => {
     let baseUrl;
+    let page;
     beforeEach(async () => {
+        page = new Page();
         try {
             const port = await server.start();
             baseUrl = `http://localhost:${port}`;

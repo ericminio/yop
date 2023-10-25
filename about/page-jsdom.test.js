@@ -1,11 +1,13 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { serveAsset, eventually, page, Server } from '../dist/index.js';
+import { serveAsset, eventually, Server } from '../dist/index.js';
+import { Page } from '../dist/testing/page-jsdom.js';
 import { URL } from 'url';
 
-describe('page', () => {
+describe('page jsdom', () => {
     let file = new URL('./page-index.html', import.meta.url);
+    let page = new Page();
 
     describe('opening file', () => {
         it('works', async () => {

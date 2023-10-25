@@ -1,10 +1,12 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { eventually, page } from '../../../dist/index.js';
+import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
 describe('spa - Welcoming', () => {
+    let page;
     beforeEach(async () => {
+        page = new Page();
         const port = await server.start();
         await page.open(`http://localhost:${port}`);
     });

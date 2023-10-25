@@ -1,10 +1,12 @@
 import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { page } from '../../dist/index.js';
+import { Page } from '../../dist/index.js';
 
 describe('test audience - ux', () => {
+    let page;
     beforeEach(async () => {
+        page = new Page();
         await page.open(new URL('./index.html', import.meta.url));
     });
 
