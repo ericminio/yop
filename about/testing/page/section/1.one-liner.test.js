@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { oneliner } from '../../../../dist/testing/oneliner.js';
 
-describe('page section text', () => {
+describe('page section text returned as one liner', () => {
     it('removes extra space', () => {
         assert.equal(oneliner(' a  b   c    '), 'a b c');
     });
