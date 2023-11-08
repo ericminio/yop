@@ -1,5 +1,5 @@
 import { Builder, By } from 'selenium-webdriver';
-import { trimplus } from './trimplus.js';
+import { oneliner } from './oneliner.js';
 
 export class Page {
     constructor() {}
@@ -37,7 +37,7 @@ export class Page {
                 (candidate) => candidate.indexOf(text) !== -1
             );
             const value = candidates.sort((a, b) => a.length - b.length)[0];
-            return trimplus(value);
+            return oneliner(value);
         } catch (error) {
             throw new Error(`Unable to locate section`);
         }
