@@ -19,8 +19,10 @@ export class Page {
     }
 
     async close() {
-        await this.driver.quit();
-        this.driver = null;
+        if (!!this.driver) {
+            await this.driver.quit();
+            this.driver = null;
+        }
     }
 
     click(text) {

@@ -12,6 +12,9 @@ describe('page', () => {
     before(() => {
         page = new Page();
     });
+    after(async () => {
+        await page.close();
+    });
 
     describe('opening file', () => {
         before(async () => {
