@@ -37,11 +37,24 @@ export class Page {
     }
 
     async enter(prompt, value) {
-        const label = await this.find({ tag: 'label', text: prompt });
-        const id = await label.element.getAttribute('htmlFor');
-        const input = await this.driver.findElement(By.id(id));
+        const input = await this.input(prompt);
         await input.clear();
         await input.sendKeys(value);
+    }
+
+    async input(prompt) {
+        const label = await this.find({ tag: 'label', text: prompt });
+        const id = await label.element.getAttribute('htmlFor');
+        if (!id || id.length === 0) {
+            throw new Error(
+                `label with text '${prompt}' is missing for attribute`
+            );
+        }
+        try {
+            return await this.driver.findElement(By.id(id));
+        } catch (error) {
+            throw new Error(`input with id '${id}' not found`);
+        }
     }
 
     async find({ tag, text }) {
