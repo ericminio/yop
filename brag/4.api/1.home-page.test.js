@@ -16,7 +16,7 @@ describe('api - home page', () => {
     });
 
     it('offers prime factors decomposition', async () => {
-        page.set('Number to decompose').value = '42';
+        page.enter('Number to decompose', '42');
         page.click('compute');
 
         await eventually(() =>

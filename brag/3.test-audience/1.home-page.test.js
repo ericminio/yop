@@ -11,7 +11,7 @@ describe('test audience - home page', () => {
     });
 
     it('offers prime factors decomposition', async () => {
-        page.set('Number to decompose').value = '15';
+        page.enter('Number to decompose', '15');
         page.click('compute');
 
         await eventually(() =>

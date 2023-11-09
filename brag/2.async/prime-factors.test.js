@@ -11,7 +11,7 @@ describe('async - prime factors decomposition', () => {
     });
 
     it('is available', async () => {
-        page.set('Number to decompose').value = '8';
+        page.enter('Number to decompose', '8');
         page.click('compute');
 
         await eventually(() =>
@@ -20,7 +20,7 @@ describe('async - prime factors decomposition', () => {
     });
 
     it('discloses waiting state immediately', async () => {
-        page.set('Number to decompose').value = '42';
+        page.enter('Number to decompose', '42');
         page.click('compute');
 
         assert.match(page.section('Results'), /waiting.../);
