@@ -27,25 +27,18 @@ export class Page {
     }
 
     async section(text) {
-        try {
-            const sections = await this.driver.findElements(By.css('section'));
-            const texts = [];
-            for (let s of sections) {
-                texts.push(await s.getText());
-            }
-            const candidates = texts.filter(
-                (candidate) => candidate.indexOf(text) !== -1
-            );
-            const value = candidates.sort((a, b) => a.length - b.length)[0];
-            return oneliner(value);
-        } catch (error) {
-            throw new Error(`Unable to locate section`);
-        }
+        const selected = await this.find({ tag: 'section', text });
+        return oneliner(selected.text);
     }
 
     async click(text) {
+        const selected = await this.find({ tag: 'button', text });
+        await selected.element.click();
+    }
+
+    async find({ tag, text }) {
         try {
-            const buttons = await this.driver.findElements(By.css('button'));
+            const buttons = await this.driver.findElements(By.css(tag));
             const candidates = [];
             for (let i = 0; i < buttons.length; i++) {
                 const candidate = buttons[i];
@@ -57,9 +50,9 @@ export class Page {
             const selected = candidates.sort(
                 (a, b) => a.text.length - b.text.length
             )[0];
-            await selected.element.click();
+            return selected;
         } catch (error) {
-            throw new Error(`Unable to locate button`);
+            throw new Error(`Unable to locate ${tag}`);
         }
     }
 }
