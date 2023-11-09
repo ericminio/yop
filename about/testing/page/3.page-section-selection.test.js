@@ -9,24 +9,28 @@ describe('page', () => {
 
     before(async () => {
         page = new Page();
+        await page.open(new URL('./page-sections.html', import.meta.url));
     });
     after(async () => {
         await page.close();
     });
 
     it('offers section selection', async () => {
-        await page.open(new URL('./page-index.html', import.meta.url));
-
         assert.match(await page.section('Welcome'), /Hello world/);
     });
 
     it('selects first smallest section with matching content', async () => {
-        await page.open(
-            new URL('./page-nested-sections.html', import.meta.url)
-        );
         const monday = await page.section('Monday');
 
         assert.match(monday, /Dentist/);
         assert.doesNotMatch(monday, /Shopping/);
+    });
+
+    it('returns section content as one line', async () => {
+        assert.match(await page.section('Mouse'), /Quantity - 1 +/);
+        assert.equal(
+            await page.section('Monitor'),
+            'Monitor Quantity - 2 + $ 300'
+        );
     });
 });
