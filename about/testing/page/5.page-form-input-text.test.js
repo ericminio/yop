@@ -17,9 +17,9 @@ describe('page - setting input via label', () => {
     });
 
     it('works as expected', async () => {
-        page.set('Number').value = '42';
-        page.click('Go');
+        await page.enter('Number', '42');
+        await page.click('Go');
 
-        assert.match(page.section('Happy path'), /42/);
+        assert.match(await page.section('Happy path'), /42/);
     });
 });

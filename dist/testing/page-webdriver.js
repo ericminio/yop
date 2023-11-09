@@ -36,6 +36,14 @@ export class Page {
         await selected.element.click();
     }
 
+    async enter(prompt, value) {
+        const label = await this.find({ tag: 'label', text: prompt });
+        const id = await label.element.getAttribute('htmlFor');
+        const input = await this.driver.findElement(By.id(id));
+        await input.clear();
+        await input.sendKeys(value);
+    }
+
     async find({ tag, text }) {
         const buttons = await this.driver.findElements(By.css(tag));
         const candidates = [];
