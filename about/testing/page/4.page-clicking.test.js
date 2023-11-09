@@ -21,4 +21,10 @@ describe('page - clicking on element', () => {
 
         assert.equal(await page.section('Message'), 'Message great indeed');
     });
+
+    it('can click on a button with matching name', async () => {
+        page.click('order');
+
+        assert.equal(await page.section('Message'), 'Message order in!');
+    });
 });

@@ -37,22 +37,25 @@ export class Page {
     }
 
     async find({ tag, text }) {
-        try {
-            const buttons = await this.driver.findElements(By.css(tag));
-            const candidates = [];
-            for (let i = 0; i < buttons.length; i++) {
-                const candidate = buttons[i];
-                const actual = await candidate.getText();
-                if (actual.indexOf(text) !== -1) {
-                    candidates.push({ element: candidate, text: actual });
-                }
+        const buttons = await this.driver.findElements(By.css(tag));
+        const candidates = [];
+        for (let i = 0; i < buttons.length; i++) {
+            const candidate = buttons[i];
+            const actualText = await candidate.getText();
+            const actualName = await candidate.getAttribute('name');
+            if (
+                actualText.indexOf(text) !== -1 ||
+                (actualName && actualName.indexOf(text) !== -1)
+            ) {
+                candidates.push({ element: candidate, text: actualText });
             }
-            const selected = candidates.sort(
-                (a, b) => a.text.length - b.text.length
-            )[0];
-            return selected;
-        } catch (error) {
-            throw new Error(`Unable to locate ${tag}`);
         }
+        if (candidates.length === 0) {
+            throw new Error(`${tag} with text or name '${text}' not found`);
+        }
+        const selected = candidates.sort(
+            (a, b) => a.text.length - b.text.length
+        )[0];
+        return selected;
     }
 }
