@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>inputs page!</title>
+    </head>
+    <body>
+        <section>
+            <h1>Happy path</h1>
+            <label for="number">Number:</label>
+            <input id="number" />
+            <button type="button" id="happy-path-go">Go</button>
+            <div id="happy-path-result"></div>
+        </section>
+        <section>
+            <h1>Missing for</h1>
+            <label>Number for missing htmlFor</label>
+            <input id="number" />
+        </section>
+        <section>
+            <h1>Missing input id</h1>
+            <label for="input-with-missing-id"
+                >Number for missing input id</label
+            >
+            <input />
+        </section>
+
+        <script>
+            document
+                .getElementById('happy-path-go')
+                .addEventListener('click', () => {
+                    document.getElementById('happy-path-result').innerHTML =
+                        document.getElementById('number').value;
+                });
+        </script>
+    </body>
+</html>
