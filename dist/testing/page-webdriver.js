@@ -15,15 +15,15 @@ export class Page {
         await this.driver.get(target);
     }
 
-    async title() {
-        return await this.driver.executeScript('return document.title');
-    }
-
     async close() {
         if (!!this.driver) {
             await this.driver.quit();
             this.driver = null;
         }
+    }
+
+    async title() {
+        return await this.driver.executeScript('return document.title');
     }
 
     async section(text) {
