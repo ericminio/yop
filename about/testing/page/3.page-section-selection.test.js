@@ -4,7 +4,7 @@ import { strict as assert } from 'node:assert';
 import { URL } from 'url';
 import { Page } from '../../../dist/index.js';
 
-describe('page', () => {
+describe('page section selection', () => {
     let page;
 
     before(async () => {
@@ -15,7 +15,7 @@ describe('page', () => {
         await page.close();
     });
 
-    it('offers section selection', async () => {
+    it('selects by partial content', async () => {
         assert.match(await page.section('Welcome'), /Hello world/);
     });
 

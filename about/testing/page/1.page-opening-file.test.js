@@ -4,7 +4,7 @@ import { strict as assert } from 'node:assert';
 import { URL } from 'url';
 import { Page } from '../../../dist/index.js';
 
-describe('page', () => {
+describe('page opening file', () => {
     const file = new URL('./page-index.html', import.meta.url);
     let page;
 

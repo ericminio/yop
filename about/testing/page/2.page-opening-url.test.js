@@ -5,7 +5,7 @@ import { Server, html, serveContent } from '../../../dist/index.js';
 import { URL } from 'url';
 import { Page } from '../../../dist/index.js';
 
-describe('page', () => {
+describe('page opening url', () => {
     const file = new URL('./page-index.html', import.meta.url);
     let server;
     let baseUrl;
