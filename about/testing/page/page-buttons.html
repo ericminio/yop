@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>buttons page!</title>
+        <script>
+            const message = (text) => {
+                document.getElementById('message').textContent = text;
+            }
+        </script>
+    </head>
+    <body>
+        <section>
+            <h1>Find by text</h1>
+            <button type="button" id="text">great button</button>
+        </section>
+        <section>
+            <h1>Find by name</h1>
+            <button type="button" id="name" name="order">Send</button>
+        </section>
+
+        <section>
+            <h1>Message</h1>
+            <div id="message"></div>
+        </section>
+
+        <script>
+            document.getElementById('text').addEventListener('click', () => {
+                message('great indeed');
+            });
+            document.getElementById('name').addEventListener('click', () => {
+                message('order in!');
+            });
+        </script>
+    </body>
+</html>
