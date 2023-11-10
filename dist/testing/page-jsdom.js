@@ -61,25 +61,11 @@ export class Page {
             .trim();
     }
 
-    click(text) {
-        this.find({ tag: 'button', text }).click();
-    }
-
-    enter(prompt, value) {
-        let field = this.input(prompt);
-        field.value = value;
-        field.dispatchEvent(new this.window.Event('input'));
-    }
-
     color(text) {
         const label = this.find({ tag: 'label', text });
         const style = this.document.defaultView.getComputedStyle(label, null);
 
         return style.color;
-    }
-
-    element(selector) {
-        return this.document.querySelector(selector);
     }
 
     activeElementId() {
@@ -92,6 +78,20 @@ export class Page {
 
     inputId(prompt) {
         return this.input(prompt).id;
+    }
+
+    element(selector) {
+        return this.document.querySelector(selector);
+    }
+
+    click(text) {
+        this.find({ tag: 'button', text }).click();
+    }
+
+    enter(prompt, value) {
+        let field = this.input(prompt);
+        field.value = value;
+        field.dispatchEvent(new this.window.Event('input'));
     }
 
     input(prompt) {

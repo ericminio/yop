@@ -31,15 +31,11 @@ export class Page {
         return oneliner(selected.text);
     }
 
-    async click(text) {
-        const selected = await this.find({ tag: 'button', text });
-        await selected.element.click();
-    }
+    async color(text) {
+        const label = await this.find({ tag: 'label', text });
+        const style = await label.element.getCssValue('color');
 
-    async enter(prompt, value) {
-        const input = await this.input(prompt);
-        await input.clear();
-        await input.sendKeys(value);
+        return style;
     }
 
     async activeElementId() {
@@ -55,6 +51,17 @@ export class Page {
     async inputId(prompt) {
         const element = await this.input(prompt);
         return await element.getAttribute('id');
+    }
+
+    async click(text) {
+        const selected = await this.find({ tag: 'button', text });
+        await selected.element.click();
+    }
+
+    async enter(prompt, value) {
+        const input = await this.input(prompt);
+        await input.clear();
+        await input.sendKeys(value);
     }
 
     async input(prompt) {
