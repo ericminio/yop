@@ -31,9 +31,11 @@ describe('timers - Count down', () => {
     });
 
     it('notifies when done', async () => {
-        page.element('home-page').yoptimer = new page.window.YopTimer({
-            delay: 50,
-            count: 3,
+        await page.executeScript((window, document) => {
+            document.querySelector('home-page').yoptimer = new window.YopTimer({
+                delay: 50,
+                count: 3,
+            });
         });
         await page.click('Start');
 

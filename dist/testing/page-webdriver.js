@@ -22,6 +22,11 @@ export class Page {
         }
     }
 
+    async executeScript(code) {
+        const script = `(${code})(window, document);`;
+        await this.driver.executeScript(script);
+    }
+
     async location() {
         return await this.driver.getCurrentUrl();
     }

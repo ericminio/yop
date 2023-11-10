@@ -51,6 +51,10 @@ export class Page {
         });
     }
 
+    executeScript(code) {
+        code(this.window, this.document);
+    }
+
     location() {
         return this.window.location.href;
     }
