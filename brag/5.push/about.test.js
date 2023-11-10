@@ -24,8 +24,8 @@ describe('websocket server', () => {
     });
 
     it('can upgrade an http connection to websocket', async () => {
-        await eventually(() =>
-            assert.match(page.section('Message'), /connected/)
+        await eventually(async () =>
+            assert.match(await page.section('Message'), /connected/)
         );
     });
 
@@ -38,8 +38,8 @@ describe('websocket server', () => {
                 message: 'hello world',
             }),
         });
-        await eventually(() =>
-            assert.match(page.section('Message'), /hello world/)
+        await eventually(async () =>
+            assert.match(await page.section('Message'), /hello world/)
         );
     });
 
