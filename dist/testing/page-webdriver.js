@@ -23,8 +23,8 @@ export class Page {
     }
 
     async executeScript(code) {
-        const script = `(${code})(window, document);`;
-        await this.driver.executeScript(script);
+        const script = `return (${code})(window, document);`;
+        return await this.driver.executeScript(script);
     }
 
     async location() {
@@ -32,7 +32,7 @@ export class Page {
     }
 
     async title() {
-        return await this.driver.executeScript('return document.title');
+        return await this.executeScript((_, document) => document.title);
     }
 
     async html() {
