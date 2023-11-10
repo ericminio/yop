@@ -59,6 +59,10 @@ export class Page {
         return this.document.title;
     }
 
+    html() {
+        return this.document.body.innerHTML;
+    }
+
     section(text) {
         return this.find({ tag: 'section', text })
             .textContent.replace(/\s\s+/g, ' ')

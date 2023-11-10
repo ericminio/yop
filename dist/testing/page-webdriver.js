@@ -30,6 +30,11 @@ export class Page {
         return await this.driver.executeScript('return document.title');
     }
 
+    async html() {
+        const body = await this.driver.findElement(By.css('body'));
+        return await body.getAttribute('innerHTML');
+    }
+
     async section(text) {
         const selected = await this.find({ tag: 'section', text });
         return oneliner(selected.text);
