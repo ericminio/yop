@@ -43,7 +43,7 @@ export class Page {
     }
 
     async activeElementId() {
-        const activeElement = await this.driver.findElement(By.id('number'));
+        const activeElement = await this.driver.switchTo().activeElement();
         return await activeElement.getAttribute('id');
     }
 
