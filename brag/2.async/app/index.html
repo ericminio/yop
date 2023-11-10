@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>prime factors</title>
+        <link href="./main.css" rel="stylesheet" />
+        <script type="application/javascript" src="./page.js"></script>
+        <script type="application/javascript" src="./prime-factors.js"></script>
+    </head>
+
+    <body>
+        <section class="form">
+            <label for="number">Number to decompose</label>
+            <input id="number" />
+            <button id="go">compute</button>
+        </section>
+        <section class="results">
+            <h2>Results</h2>
+            <label id="decomposition"></label>
+        </section>
+
+        <script>
+            const compute = ({ source, target }) => {
+                return () => {
+                    clearResult(target)
+                        .then(decompose(source))
+                        .then(displayResult(target));
+                };
+            };
+
+            element('#go').addEventListener(
+                'click',
+                compute({
+                    source: element('#number'),
+                    target: element('#decomposition'),
+                })
+            );
+        </script>
+    </body>
+</html>
