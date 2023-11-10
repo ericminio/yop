@@ -15,13 +15,13 @@ describe('test audience - ux', () => {
 
     it('gives focus to input field', async () => {
         assert.equal(
-            await page.activeElement(),
-            await page.input('Number to decompose')
+            await page.activeElementId(),
+            await page.inputId('Number to decompose')
         );
     });
 
     it('displays an example', async () => {
-        assert.equal(await page.input('Number to decompose').value, '42');
+        assert.equal(await page.inputValue('Number to decompose'), '42');
         assert.match(await page.section('Result'), /42 = 2 x 3 x 7/);
     });
 

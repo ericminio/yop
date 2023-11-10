@@ -42,6 +42,21 @@ export class Page {
         await input.sendKeys(value);
     }
 
+    async activeElementId() {
+        const activeElement = await this.driver.findElement(By.id('number'));
+        return await activeElement.getAttribute('id');
+    }
+
+    async inputValue(prompt) {
+        const element = await this.input(prompt);
+        return await element.getAttribute('value');
+    }
+
+    async inputId(prompt) {
+        const element = await this.input(prompt);
+        return await element.getAttribute('id');
+    }
+
     async input(prompt) {
         const label = await this.find({ tag: 'label', text: prompt });
         const id = await label.element.getAttribute('htmlFor');

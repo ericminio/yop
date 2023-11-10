@@ -82,8 +82,16 @@ export class Page {
         return this.document.querySelector(selector);
     }
 
-    activeElement() {
-        return this.document.activeElement;
+    activeElementId() {
+        return this.document.activeElement.id;
+    }
+
+    inputValue(prompt) {
+        return this.input(prompt).value;
+    }
+
+    inputId(prompt) {
+        return this.input(prompt).id;
     }
 
     input(prompt) {
