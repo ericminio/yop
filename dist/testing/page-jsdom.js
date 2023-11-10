@@ -82,6 +82,10 @@ export class Page {
         return this.document.querySelector(selector);
     }
 
+    activeElement() {
+        return this.document.activeElement;
+    }
+
     input(prompt) {
         let label = this.find({ tag: 'label', text: prompt });
         if (label.htmlFor.length === 0) {
