@@ -51,7 +51,11 @@ export class Page {
         });
     }
 
-    async title() {
+    location() {
+        return this.window.location.href;
+    }
+
+    title() {
         return this.document.title;
     }
 

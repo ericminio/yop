@@ -22,6 +22,10 @@ export class Page {
         }
     }
 
+    async location() {
+        return await this.driver.getCurrentUrl();
+    }
+
     async title() {
         return await this.driver.executeScript('return document.title');
     }

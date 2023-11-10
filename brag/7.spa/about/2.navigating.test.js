@@ -1,29 +1,52 @@
-import { describe, it, beforeEach, afterEach } from 'node:test';
+import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
 describe('spa - Navigating', () => {
     let page;
-    beforeEach(async () => {
+    let baseUrl;
+    before(async () => {
         page = new Page();
         const port = await server.start();
-        await page.open(`http://localhost:${port}`);
+        baseUrl = `http://localhost:${port}`;
+        await page.open(baseUrl);
+        await eventually(async () => {
+            assert.match(await page.section('Menu'), /About/);
+        });
+        page.click('About');
     });
-    afterEach(async () => {
+    after(async () => {
         await page.close();
         await server.stop();
     });
 
     it('leads elsewhere', async () => {
-        await eventually(() => {
-            assert.match(page.section('Menu'), /About/);
+        await eventually(async () => {
+            assert.equal(await page.location(), `${baseUrl}/about`);
         });
-        page.click('About');
-        await eventually(() => {
-            assert.match(page.section('About page'), /this is the about page/);
-            assert.doesNotMatch(page.document.body.textContent, /Welcome Home/);
+    });
+
+    it('displays the targetted page', async () => {
+        await eventually(async () => {
+            assert.match(
+                await page.section('About page'),
+                /this is the about page/
+            );
         });
-        assert.equal(page.window.location.pathname, '/about');
+    });
+
+    it('has left initial page', async () => {
+        await eventually(async () => {
+            try {
+                await page.section('Welcome Home');
+                fail('should not be found');
+            } catch (error) {
+                assert.equal(
+                    error.message,
+                    "section with text or name 'Welcome Home' not found"
+                );
+            }
+        });
     });
 });

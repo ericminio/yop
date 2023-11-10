@@ -1,37 +1,39 @@
-import { describe, it, beforeEach, afterEach } from 'node:test';
+import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
 describe('spa - Welcoming', () => {
     let page;
-    beforeEach(async () => {
+    let baseUrl;
+    before(async () => {
         page = new Page();
         const port = await server.start();
-        await page.open(`http://localhost:${port}`);
+        baseUrl = `http://localhost:${port}`;
+        await page.open(baseUrl);
     });
-    afterEach(async () => {
+    after(async () => {
         await page.close();
         await server.stop();
     });
 
     it('welcomes home', async () => {
-        await eventually(() => {
-            assert.match(page.section('Welcome Home'), /.*/);
+        await eventually(async () => {
+            assert.match(await page.section('Welcome Home'), /.*/);
         });
     });
 
     it('is home page', async () => {
-        await eventually(() => {
-            assert.notEqual(page.section('Welcome Home'), undefined);
+        await eventually(async () => {
+            assert.notEqual(await page.section('Welcome Home'), undefined);
         });
-        assert.equal(page.window.location.pathname, '/');
+        assert.equal(await page.location(), `${baseUrl}/`);
     });
 
     it('offers options', async () => {
-        await eventually(page, () => {
-            assert.match(page.section('Menu'), /Home/);
-            assert.match(page.section('Menu'), /About/);
+        await eventually(page, async () => {
+            assert.match(await page.section('Menu'), /Home/);
+            assert.match(await page.section('Menu'), /About/);
         });
     });
 });
