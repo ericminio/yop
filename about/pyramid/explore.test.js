@@ -8,12 +8,12 @@ const inspect = async ({ folder, test, report }) => {
     } catch {}
     await mkdir(report);
 
-    await writeFile(`${report.pathname}/1.js`, 'one');
-    await writeFile(`${report.pathname}/2.js`, 'one');
+    await writeFile(`${report.pathname}/compute.js`, 'one');
+    await writeFile(`${report.pathname}/wire.js`, 'one');
 };
 
 describe('generating tests', () => {
-    it('creates expected test files', async () => {
+    it('creates test files for exercised code only', async () => {
         await inspect({
             folder: new URL('./app', import.meta.url),
             test: new URL('./incoming/situation/situation.js', import.meta.url),
@@ -23,6 +23,6 @@ describe('generating tests', () => {
             new URL('./incoming/situation/tests', import.meta.url)
         );
 
-        assert.equal(files.length, 2);
+        assert.deepEqual(files, ['compute.js', 'wire.js']);
     });
 });
