@@ -3,13 +3,6 @@ import { strict as assert } from 'node:assert';
 import { readdir, rm, mkdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 
-const clean = async (report) => {
-    try {
-        await rm(report, { recursive: true, force: true });
-    } catch {}
-    await mkdir(report);
-};
-
 const inspect = async ({ folder, situation, report }) => {
     await clean(report);
     try {
@@ -30,29 +23,18 @@ const inspect = async ({ folder, situation, report }) => {
     }
 };
 
+const clean = async (report) => {
+    try {
+        await rm(report, { recursive: true, force: true });
+    } catch {}
+    await mkdir(report);
+};
+
 const extractCoverageInfo = (output, situation) => {
     const data = JSON.stringify(output);
     const start = data.substring(data.indexOf('test:coverage'));
     return start.substring(0, start.indexOf(situation.pathname));
 };
-
-const splitCoverageInfoByFile = (coverage) =>
-    coverage
-        .split(/\\"\\u0004path\\"./)
-        .filter((info) => info.indexOf('\\"\\u000etotalLineCount') !== -1)
-        .map((fileinfo) => {
-            const [path, filecoverageinfo] = fileinfo.split(
-                '\\"\\u000etotalLineCount'
-            );
-            return {
-                path,
-                exercised:
-                    filecoverageinfo.indexOf('coveredFunctionCountI\\u0000') ===
-                    -1,
-            };
-        });
-
-const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
 
 const exercisedScripts = (folder, coverage) => {
     const filesinfo = splitCoverageInfoByFile(coverage);
@@ -62,6 +44,19 @@ const exercisedScripts = (folder, coverage) => {
 
     return candidates;
 };
+
+const splitCoverageInfoByFile = (coverage) =>
+    coverage
+        .split(/\\"\\u0004path\\"./)
+        .filter((info) => info.indexOf('\\"\\u000etotalLineCount') !== -1)
+        .map((info) => info.split('\\"\\u000etotalLineCount'))
+        .map(([path, filecoverageinfo]) => ({
+            path,
+            exercised:
+                filecoverageinfo.indexOf('coveredFunctionCountI\\u0000') === -1,
+        }));
+
+const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
 
 describe('generating tests', () => {
     it('creates test files for exercised code only', async () => {
