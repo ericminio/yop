@@ -22,7 +22,7 @@ const inspect = async ({ folder, situation, report }) => {
         );
         console.log({ output });
     } catch (error) {
-        const coverage = extratcCoverageInfo(error.stdout, situation);
+        const coverage = extractCoverageInfo(error.stdout, situation);
         const files = exercisedScripts(folder, coverage);
         files.forEach(async (file) => {
             await writeFile(`${report.pathname}${file}`, 'content');
@@ -30,38 +30,38 @@ const inspect = async ({ folder, situation, report }) => {
     }
 };
 
-const extratcCoverageInfo = (output, situation) => {
+const extractCoverageInfo = (output, situation) => {
     const data = JSON.stringify(output);
     const start = data.substring(data.indexOf('test:coverage'));
     return start.substring(0, start.indexOf(situation.pathname));
 };
 
-const exercisedScripts = (folder, coverage) => {
-    const filesinfo = coverage.split(/\\"\\u0004path\\"./);
-    for (let i = 0; i < filesinfo.length; i++) {
-        let file = filesinfo[i];
-        const [filename, filecoverageinfo] = file.split(
-            '\\"\\u000etotalLineCount'
-        );
-        if (!!filecoverageinfo) {
-            filesinfo[i] = {
-                path: filename,
+const splitCoverageInfoByFile = (coverage) =>
+    coverage
+        .split(/\\"\\u0004path\\"./)
+        .filter((info) => info.indexOf('\\"\\u000etotalLineCount') !== -1)
+        .map((fileinfo) => {
+            const [path, filecoverageinfo] = fileinfo.split(
+                '\\"\\u000etotalLineCount'
+            );
+            return {
+                path,
                 exercised:
-                    filecoverageinfo.indexOf(
-                        '\\"\\u0014coveredFunctionCountI\\u0000'
-                    ) === -1,
+                    filecoverageinfo.indexOf('coveredFunctionCountI\\u0000') ===
+                    -1,
             };
-        }
-    }
+        });
 
+const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
+
+const exercisedScripts = (folder, coverage) => {
+    const filesinfo = splitCoverageInfoByFile(coverage);
     const candidates = filesinfo
         .filter(exercisedJs)
         .map((candidate) => candidate.path.substring(folder.pathname.length));
 
     return candidates;
 };
-
-const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
 
 describe('generating tests', () => {
     it('creates test files for exercised code only', async () => {
