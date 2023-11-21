@@ -15,64 +15,62 @@ const inspect = async ({ folder, situation, report }) => {
     try {
         const output = execFileSync(
             'node',
-            ['--experimental-test-coverage', '--test', situation.test.pathname],
+            ['--experimental-test-coverage', '--test', situation.pathname],
             {
                 encoding: 'utf8',
             }
         );
         console.log({ output });
     } catch (error) {
-        const files = exercisedScripts(folder, situation, error.stdout);
-
+        const coverage = extratcCoverageInfo(error.stdout, situation);
+        const files = exercisedScripts(folder, coverage);
         files.forEach(async (file) => {
             await writeFile(`${report.pathname}${file}`, 'content');
         });
     }
 };
 
-const exercisedScripts = (folder, situation, coverageInfo) => {
-    const data = JSON.stringify(coverageInfo);
+const extratcCoverageInfo = (output, situation) => {
+    const data = JSON.stringify(output);
     const start = data.substring(data.indexOf('test:coverage'));
-    const coverage = start.substring(0, start.indexOf(situation.test.pathname));
-    let output = coverage;
+    return start.substring(0, start.indexOf(situation.pathname));
+};
 
-    const filesinfo = output.split(/\\"\\u0004path\\"./);
-
-    const splits = [
-        '\\"\\u0012coveredLinePercent',
-        '\\"\\u0014coveredFunctionCount',
-        '\\"\\u000etotalLineCount',
-    ];
+const exercisedScripts = (folder, coverage) => {
+    const filesinfo = coverage.split(/\\"\\u0004path\\"./);
     for (let i = 0; i < filesinfo.length; i++) {
         let file = filesinfo[i];
-        splits.forEach((split) => {
-            file = file.split(split).join(`\n${split}`);
-        });
-        const info = file.split('\n');
-        filesinfo[i] = {
-            path: info[0],
-            exercised: info[2] !== '\\"\\u0014coveredFunctionCountI\\u0000',
-        };
+        const [filename, filecoverageinfo] = file.split(
+            '\\"\\u000etotalLineCount'
+        );
+        if (!!filecoverageinfo) {
+            filesinfo[i] = {
+                path: filename,
+                exercised:
+                    filecoverageinfo.indexOf(
+                        '\\"\\u0014coveredFunctionCountI\\u0000'
+                    ) === -1,
+            };
+        }
     }
 
     const candidates = filesinfo
-        .filter((file) => /\.js$/.test(file.path) && file.exercised)
+        .filter(exercisedJs)
         .map((candidate) => candidate.path.substring(folder.pathname.length));
 
     return candidates;
 };
 
+const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
+
 describe('generating tests', () => {
     it('creates test files for exercised code only', async () => {
         await inspect({
             folder: new URL('./incoming/app', import.meta.url),
-            situation: {
-                folder: new URL('./incoming/situation', import.meta.url),
-                test: new URL(
-                    './incoming/situation/situation.js',
-                    import.meta.url
-                ),
-            },
+            situation: new URL(
+                './incoming/situation/situation.js',
+                import.meta.url
+            ),
             report: new URL('./incoming/situation/tests', import.meta.url),
         });
         const files = await readdir(
