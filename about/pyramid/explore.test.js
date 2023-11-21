@@ -22,43 +22,44 @@ const inspect = async ({ folder, situation, report }) => {
         );
         console.log({ output });
     } catch (error) {
-        const data = JSON.stringify(error.stdout);
-        const start = data.substring(data.indexOf('test:coverage'));
-        const coverage = start.substring(
-            0,
-            start.indexOf(situation.test.pathname)
-        );
-        let output = coverage;
+        const files = exercisedScripts(folder, situation, error.stdout);
 
-        const filesinfo = output.split(/\\"\\u0004path\\"./);
-
-        const splits = [
-            '\\"\\u0012coveredLinePercent',
-            '\\"\\u0014coveredFunctionCount',
-            '\\"\\u000etotalLineCount',
-        ];
-        for (let i = 0; i < filesinfo.length; i++) {
-            let file = filesinfo[i];
-            splits.forEach((split) => {
-                file = file.split(split).join(`\n${split}`);
-            });
-            const info = file.split('\n');
-            filesinfo[i] = {
-                path: info[0],
-                exercised: info[2] !== '\\"\\u0014coveredFunctionCountI\\u0000',
-            };
-        }
-
-        const candidates = filesinfo
-            .filter((file) => /\.js$/.test(file.path) && file.exercised)
-            .map((candidate) =>
-                candidate.path.substring(folder.pathname.length)
-            );
-
-        candidates.forEach(async (candidate) => {
-            await writeFile(`${report.pathname}${candidate}`, 'content');
+        files.forEach(async (file) => {
+            await writeFile(`${report.pathname}${file}`, 'content');
         });
     }
+};
+
+const exercisedScripts = (folder, situation, coverageInfo) => {
+    const data = JSON.stringify(coverageInfo);
+    const start = data.substring(data.indexOf('test:coverage'));
+    const coverage = start.substring(0, start.indexOf(situation.test.pathname));
+    let output = coverage;
+
+    const filesinfo = output.split(/\\"\\u0004path\\"./);
+
+    const splits = [
+        '\\"\\u0012coveredLinePercent',
+        '\\"\\u0014coveredFunctionCount',
+        '\\"\\u000etotalLineCount',
+    ];
+    for (let i = 0; i < filesinfo.length; i++) {
+        let file = filesinfo[i];
+        splits.forEach((split) => {
+            file = file.split(split).join(`\n${split}`);
+        });
+        const info = file.split('\n');
+        filesinfo[i] = {
+            path: info[0],
+            exercised: info[2] !== '\\"\\u0014coveredFunctionCountI\\u0000',
+        };
+    }
+
+    const candidates = filesinfo
+        .filter((file) => /\.js$/.test(file.path) && file.exercised)
+        .map((candidate) => candidate.path.substring(folder.pathname.length));
+
+    return candidates;
 };
 
 describe('generating tests', () => {
