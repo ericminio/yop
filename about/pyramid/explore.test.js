@@ -1,26 +1,21 @@
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readdir, rm, mkdir, writeFile } from 'node:fs/promises';
-import { execFile, execFileSync } from 'node:child_process';
-import { tap } from 'node:test/reporters';
-import { run } from 'node:test';
-import { writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
-const inspect = async ({ folder, situation, report }) => {
+const clean = async (report) => {
     try {
         await rm(report, { recursive: true, force: true });
     } catch {}
     await mkdir(report);
+};
 
+const inspect = async ({ folder, situation, report }) => {
+    await clean(report);
     try {
         const output = execFileSync(
             'node',
-            [
-                '--experimental-test-coverage',
-                '--test',
-                // '--test-reporter=dot',
-                situation.test.pathname,
-            ],
+            ['--experimental-test-coverage', '--test', situation.test.pathname],
             {
                 encoding: 'utf8',
             }
