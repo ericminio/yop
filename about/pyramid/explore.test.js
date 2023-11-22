@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readdir, rm, mkdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 const inspect = async ({ folder, situation, report }) => {
     await clean(report);
@@ -15,10 +16,17 @@ const inspect = async ({ folder, situation, report }) => {
         );
         console.log({ output });
     } catch (error) {
+        // await writeFile(
+        //     `${report.pathname}/output`,
+        //     JSON.stringify(error.stdout)
+        // );
         const coverage = extractCoverageInfo(error.stdout, situation);
         const files = exercisedScripts(folder, coverage);
         files.forEach(async (file) => {
-            await writeFile(`${report.pathname}${file}`, 'content');
+            await writeFile(
+                `${report.pathname}${file}`,
+                'decomposing also works for 42'
+            );
         });
     }
 };
@@ -73,5 +81,24 @@ describe('generating tests', () => {
         );
 
         assert.deepEqual(files, ['compute.js', 'wire.js']);
+    });
+
+    it('generated tests call for exepectation clarification', async () => {
+        await inspect({
+            folder: new URL('./incoming/app', import.meta.url),
+            situation: new URL(
+                './incoming/situation/situation.js',
+                import.meta.url
+            ),
+            report: new URL('./incoming/situation/tests', import.meta.url),
+        });
+        const files = await readdir(
+            new URL('./incoming/situation/tests', import.meta.url)
+        );
+        const code = readFileSync(
+            new URL('./incoming/situation/tests/compute.js', import.meta.url)
+        ).toString();
+
+        assert.equal(code, 'decomposing also works for 42');
     });
 });
