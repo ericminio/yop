@@ -1,4 +1,4 @@
-import { describe, it } from 'node:test';
+import { describe, it, before } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readdir, rm, mkdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -67,7 +67,7 @@ const splitCoverageInfoByFile = (coverage) =>
 const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
 
 describe('generating tests', () => {
-    it('creates test files for exercised code only', async () => {
+    before(async () => {
         await inspect({
             folder: new URL('./incoming/app', import.meta.url),
             situation: new URL(
@@ -76,6 +76,8 @@ describe('generating tests', () => {
             ),
             report: new URL('./incoming/situation/tests', import.meta.url),
         });
+    });
+    it('creates test files for exercised code only', async () => {
         const files = await readdir(
             new URL('./incoming/situation/tests', import.meta.url)
         );
@@ -83,18 +85,7 @@ describe('generating tests', () => {
         assert.deepEqual(files, ['compute.js', 'wire.js']);
     });
 
-    it('generated tests call for exepectation clarification', async () => {
-        await inspect({
-            folder: new URL('./incoming/app', import.meta.url),
-            situation: new URL(
-                './incoming/situation/situation.js',
-                import.meta.url
-            ),
-            report: new URL('./incoming/situation/tests', import.meta.url),
-        });
-        const files = await readdir(
-            new URL('./incoming/situation/tests', import.meta.url)
-        );
+    it('generated tests call for expectation clarification', async () => {
         const code = readFileSync(
             new URL('./incoming/situation/tests/compute.js', import.meta.url)
         ).toString();
