@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 
 import { URL } from 'url';
-import { Page } from '../../../dist/index.js';
+import { Page, eventually } from '../../../dist/index.js';
 
 describe('page - setting input via label', () => {
     const file = new URL('./page-inputs.html', import.meta.url);
@@ -20,7 +20,9 @@ describe('page - setting input via label', () => {
         await page.enter('Number', '42');
         await page.click('Go');
 
-        assert.match(await page.section('Happy path'), /42/);
+        await eventually(async () => {
+            assert.match(await page.section('Happy path'), /42/);
+        });
     });
 
     it('informs of missing for attribute on label', async () => {
@@ -38,6 +40,7 @@ describe('page - setting input via label', () => {
     it('informs of missing id attribute on input', async () => {
         try {
             await page.enter('Number for missing input id', '42');
+            fail();
         } catch (error) {
             assert.equal(
                 error.message,

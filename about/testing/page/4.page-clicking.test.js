@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 
 import { URL } from 'url';
-import { Page } from '../../../dist/index.js';
+import { Page, eventually } from '../../../dist/index.js';
 
 describe('page - clicking on element', () => {
     const file = new URL('./page-buttons.html', import.meta.url);
@@ -19,12 +19,16 @@ describe('page - clicking on element', () => {
     it('is offered on button with partially matching label', async () => {
         page.click('great');
 
-        assert.equal(await page.section('Message'), 'Message great indeed');
+        await eventually(async () => {
+            assert.equal(await page.section('Message'), 'Message great indeed');
+        });
     });
 
     it('can click on a button with matching name', async () => {
         page.click('order');
 
-        assert.equal(await page.section('Message'), 'Message order in!');
+        await eventually(async () => {
+            assert.equal(await page.section('Message'), 'Message order in!');
+        });
     });
 });
