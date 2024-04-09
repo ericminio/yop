@@ -22,7 +22,9 @@ jobs:
                   cd .github/workflows
                   docker-compose up -d db
             - name: wait for db
-              run: .github/workflows/support/wait.sh
+              run: |
+                  cd .github/workflows
+                  ./support/wait.sh
             - name: build dev environment
               run: |
                   cd .github/workflows
