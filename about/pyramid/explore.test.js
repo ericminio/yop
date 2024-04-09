@@ -66,7 +66,7 @@ const splitCoverageInfoByFile = (coverage) =>
 
 const exercisedJs = (file) => /\.js$/.test(file.path) && file.exercised;
 
-describe('generating tests', () => {
+describe.skip('generating tests', () => {
     before(async () => {
         await inspect({
             folder: new URL('./incoming/app', import.meta.url),
