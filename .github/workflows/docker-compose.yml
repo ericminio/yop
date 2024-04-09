@@ -21,10 +21,10 @@ services:
         ports:
             - 5001:5001
         volumes:
-            - ./package.json:/root/code/package.json
-            - ./package-lock.json:/root/code/package-lock.json
-            - ./.nvmrc:/root/code/.nvmrc
+            - ../../package.json:/root/code/package.json
+            - ../../package-lock.json:/root/code/package-lock.json
+            - ../../.nvmrc:/root/code/.nvmrc
             - ./support/run.sh:/root/code/run.sh
-            - ./about:/root/code/about
-            - ./brag:/root/code/brag
-            - ./dist:/root/code/dist
+            - ../../about:/root/code/about
+            - ../../brag:/root/code/brag
+            - ../../dist:/root/code/dist

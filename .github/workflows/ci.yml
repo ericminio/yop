@@ -18,10 +18,16 @@ jobs:
                   sudo echo "172.17.0.1 host.docker.internal" | sudo tee -a /etc/hosts
                   cat /etc/hosts
             - name: start db
-              run: docker-compose up -d db
+              run: |
+                  cd .github/workflows
+                  docker-compose up -d db
             - name: wait for db
-              run: ./support/wait.sh
+              run: .github/workflows/support/wait.sh
             - name: build dev environment
-              run: docker-compose build dev
+              run: |
+                  cd .github/workflows
+                  docker-compose build dev
             - name: tests
-              run: docker-compose run --service-ports --rm --name ubuntu-yop dev ./run.sh
+              run: |
+                  cd .github/workflows
+                  docker-compose run --service-ports --rm --name ubuntu-yop dev ./run.sh
