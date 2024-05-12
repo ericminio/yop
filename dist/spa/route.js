@@ -1,5 +1,5 @@
 customElements.define(
-    'spa-route',
+    'yop-route',
     class extends HTMLElement {
         connectedCallback() {
             if (this.getAttribute('then') !== null) {
