@@ -1,9 +1,9 @@
-import { describe, it, before, after } from 'node:test';
+import { describe, test, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
 
-describe('hexagonal - Welcoming', () => {
+describe('hexagonal - vision', () => {
     let page;
     let baseUrl;
     before(async () => {
@@ -17,9 +17,9 @@ describe('hexagonal - Welcoming', () => {
         await server.stop();
     });
 
-    it('is warm enough', async () => {
+    test('starting score is zero', async () => {
         await eventually(async () => {
-            assert.match(await page.section('Welcome'), /.*/);
+            assert.match(await page.section('Score'), /0/);
         });
     });
 });
