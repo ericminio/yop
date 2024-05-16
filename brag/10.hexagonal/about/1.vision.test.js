@@ -22,4 +22,12 @@ describe('hexagonal - vision', () => {
             assert.match(await page.section('Score'), /0/);
         });
     });
+
+    test('score increases when answering the question correctly', async () => {
+        page.click('Test-Driven Development');
+
+        await eventually(async () => {
+            assert.match(await page.section('Score'), /1/);
+        });
+    });
 });
