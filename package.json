@@ -16,6 +16,7 @@
     },
     "scripts": {
         "test": "node --test --experimental-test-coverage $(find about brag -name '*.test.js')",
+        "test:this": "node --test $(find brag/3.test-audience -name '*.test.js')",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write .",
         "nodemon": "nodemon --watch brag/8.timer/app -e js,mjs,cjs,json,html brag/8.timer/app/start.mjs"
