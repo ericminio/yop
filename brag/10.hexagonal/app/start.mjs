@@ -17,6 +17,7 @@ const router = new Router([
                 './domain/state.js',
                 './domain/useCases.js',
                 './web/HomePage/index.js',
+                './web/GameScore/index.js',
             ],
             import.meta.url
         )

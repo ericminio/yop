@@ -9,15 +9,9 @@ customElements.define(
             this.innerHTML = await fetch('/templates/HomePage/index.html').then(
                 (response) => response.text()
             );
-            this.updateScore(state.score);
             eventBus.register(this.updateChoices.bind(this), 'choices set');
             eventBus.register(this.updateQuestion.bind(this), 'question set');
-            eventBus.register(this.updateScore.bind(this), 'score increased');
             eventBus.register(this.gameOver.bind(this), 'game over');
-        }
-
-        updateScore(score) {
-            this.querySelector('#score').innerHTML = score;
         }
 
         updateQuestion(question) {
