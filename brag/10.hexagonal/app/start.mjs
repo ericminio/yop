@@ -7,6 +7,7 @@ import {
     scripts,
     RouteYop,
     RouteTemplate,
+    RouteCss,
 } from '../../../dist/index.js';
 
 const router = new Router([
@@ -24,6 +25,7 @@ const router = new Router([
     ),
     new RouteYop(),
     new RouteTemplate(/^\/templates\/(.*)/, new URL('./web', import.meta.url)),
+    new RouteCss(/^\/css\/(.*)/, new URL('./web', import.meta.url)),
     new RouteDefault(html(new URL('./web/index.html', import.meta.url))),
 ]);
 
