@@ -20,13 +20,15 @@ customElements.define(
         }
 
         updateChoices(choices) {
-            let list = '';
-            for (const { choice } of choices) {
-                list += `<button id="choice-${choice}">${choice}</button>`;
-            }
-            this.querySelector('#choices').innerHTML = list;
+            const choiceId = (choice) => `choice-${choice}`;
+            const choiceComponent = (choice) =>
+                `<button id="${choiceId(choice)}">${choice}</button>`;
+            this.querySelector('#choices').innerHTML = choices.reduce(
+                (list, { choice }) => list + choiceComponent(choice),
+                ''
+            );
             choices.forEach(({ choice }) => {
-                this.querySelector(`#choice-${choice}`).addEventListener(
+                this.querySelector(`#${choiceId(choice)}`).addEventListener(
                     'click',
                     () => play(choice)
                 );
@@ -34,10 +36,7 @@ customElements.define(
         }
 
         gameOver() {
-            this.updateMessage('Game Over');
-        }
-        updateMessage(text) {
-            this.querySelector('#message').innerHTML = text;
+            this.querySelector('#message').innerHTML = 'Game Over';
         }
     }
 );
