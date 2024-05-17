@@ -4,6 +4,18 @@
         <title>Hexagonal</title>
         <script src="/yop.js"></script>
         <script src="/app.js"></script>
+        <script>
+            setTimeout(() => {
+                setChallenge({
+                    question: 'What should we do now?',
+                    choices: [
+                        { choice: 'Waterfall', isCorrect: false },
+                        { choice: 'TDD', isCorrect: true },
+                        { choice: 'A little of both', isCorrect: false },
+                    ],
+                });
+            }, 100);
+        </script>
     </head>
 
     <body>

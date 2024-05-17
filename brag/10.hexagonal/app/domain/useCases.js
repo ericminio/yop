@@ -4,6 +4,7 @@ var setChallenge = ({ question, choices }) => {
 };
 
 const play = (answer) => {
+    if (state.gameOver) return;
     const { isCorrect } = state.choices.find(({ choice }) => choice === answer);
     isCorrect ? increaseScore() : gameOver();
 };
@@ -14,5 +15,6 @@ const increaseScore = () => {
 };
 
 const gameOver = () => {
+    state.gameOver = true;
     eventBus.notify('game over');
 };
