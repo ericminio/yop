@@ -13,11 +13,16 @@ customElements.define(
                 'click',
                 increaseScore
             );
-            this.update(state.score);
-            eventBus.register(this, 'score increased');
+            this.updateScore(state.score);
+            eventBus.register(this.updateScore.bind(this), 'score increased');
+            eventBus.register(this.updateAnswer.bind(this), 'answer set');
         }
 
-        update(score) {
+        updateAnswer(answer) {
+            this.querySelector('#answer').innerHTML = answer;
+        }
+
+        updateScore(score) {
             this.querySelector('#score').innerHTML = score;
         }
     }

@@ -15,7 +15,7 @@ const router = new Router([
         scripts(
             [
                 './domain/state.js',
-                './domain/increaseScore.js',
+                './domain/useCases.js',
                 './web/HomePage/index.js',
             ],
             import.meta.url

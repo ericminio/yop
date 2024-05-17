@@ -24,7 +24,10 @@ describe('hexagonal - vision', () => {
     });
 
     test('score increases when answering the question correctly', async () => {
-        page.click('Test-Driven Development');
+        await page.executeScript((window) => {
+            window.setAnswer('TDD');
+        });
+        page.click('TDD');
 
         await eventually(async () => {
             assert.match(await page.section('Score'), /1/);

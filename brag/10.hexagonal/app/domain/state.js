@@ -1,3 +1,3 @@
-const state = {
+var state = {
     score: 0,
 };
