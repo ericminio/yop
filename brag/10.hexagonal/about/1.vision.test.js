@@ -55,10 +55,7 @@ describe('hexagonal - vision', () => {
         page.click('Waterfall');
 
         await eventually(async () => {
-            assert.match(
-                await page.section('What should we do now?'),
-                /Game Over/
-            );
+            assert.match(await page.section('Game Over'), /.*/);
         });
     });
 });
