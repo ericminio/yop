@@ -20,17 +20,17 @@ customElements.define(
         }
 
         updateChoices(choices) {
-            let html = '';
-            for (const { choice, isCorrect } of choices) {
-                html += `<button id="choice-${choice}">${choice}</button>`;
+            let list = '';
+            for (const { choice } of choices) {
+                list += `<button id="choice-${choice}">${choice}</button>`;
             }
-            this.querySelector('#choices').innerHTML = html;
-            for (const { choice, isCorrect } of choices) {
+            this.querySelector('#choices').innerHTML = list;
+            choices.forEach(({ choice }) => {
                 this.querySelector(`#choice-${choice}`).addEventListener(
                     'click',
-                    isCorrect ? increaseScore : gameOver
+                    () => play(choice)
                 );
-            }
+            });
         }
 
         gameOver() {
