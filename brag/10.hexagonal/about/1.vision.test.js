@@ -1,4 +1,4 @@
-import { describe, test, before, after } from 'node:test';
+import { describe, test, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/start.mjs';
@@ -16,6 +16,17 @@ describe('hexagonal - vision', () => {
         await page.close();
         await server.stop();
     });
+    beforeEach(async () => {
+        await page.executeScript((window) => {
+            window.setChallenge({
+                question: 'What should we do now?',
+                choices: [
+                    { choice: 'Waterfall', isCorrect: false },
+                    { choice: 'TDD', isCorrect: true },
+                ],
+            });
+        });
+    });
 
     test('starting score is zero', async () => {
         await eventually(async () => {
@@ -23,10 +34,16 @@ describe('hexagonal - vision', () => {
         });
     });
 
-    test('score increases when answering the question correctly', async () => {
-        await page.executeScript((window) => {
-            window.setChoices([{ choice: 'TDD', isCorrect: true }]);
+    test('the choices are presented', async () => {
+        await eventually(async () => {
+            assert.match(
+                await page.section('What should we do now?'),
+                /Waterfall*TDD/
+            );
         });
+    });
+
+    test('score increases when answering the question correctly', async () => {
         page.click('TDD');
 
         await eventually(async () => {
@@ -35,12 +52,6 @@ describe('hexagonal - vision', () => {
     });
 
     test('game over with wrong answer', async () => {
-        await page.executeScript((window) => {
-            window.setChoices([
-                { choice: 'Waterfall', isCorrect: false },
-                { choice: 'TDD', isCorrect: true },
-            ]);
-        });
         page.click('Waterfall');
 
         await eventually(async () => {

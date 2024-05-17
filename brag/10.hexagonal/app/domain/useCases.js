@@ -1,5 +1,6 @@
-var setChoices = (choices) => {
+var setChallenge = ({ question, choices }) => {
     state.choices = choices;
+    eventBus.notify('question set', question);
     eventBus.notify('choices set', choices);
 };
 
