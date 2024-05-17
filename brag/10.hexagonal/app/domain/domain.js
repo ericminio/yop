@@ -11,6 +11,10 @@ const play = (answer) => {
     if (state.gameOver) return;
     const { isCorrect } = state.choices.find(({ choice }) => choice === answer);
     isCorrect ? increaseScore() : gameOver();
+    const { choice: correctAnser } = state.choices.find(
+        ({ isCorrect }) => isCorrect
+    );
+    eventBus.notify('correct answer', correctAnser);
 };
 
 const increaseScore = () => {

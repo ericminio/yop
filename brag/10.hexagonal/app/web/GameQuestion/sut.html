@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>GameQuestion</title>
+        <script src="/yop.js"></script>
+        <script src="/index.js"></script>
+        <script>
+            setTimeout(() => {
+                setChallenge({
+                    question: 'Question',
+                    choices: [
+                        { choice: 'wrong', isCorrect: false },
+                        { choice: 'correct', isCorrect: true },
+                    ],
+                });
+            }, 15);
+        </script>
+    </head>
+
+    <body>
+        <game-question></game-question>
+    </body>
+</html>

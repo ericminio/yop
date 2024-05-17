@@ -10,6 +10,10 @@ customElements.define(
                 '/templates/GameQuestion/index.html'
             ).then((response) => response.text());
             eventBus.register(this, 'question set');
+            eventBus.register(
+                this.highlightCorrectAnswer.bind(this),
+                'correct answer'
+            );
         }
 
         update({ question, choices }) {
@@ -32,6 +36,11 @@ customElements.define(
                     `#${this.choiceId(choice)}`
                 ).addEventListener('click', () => play(choice));
             });
+        }
+
+        highlightCorrectAnswer(correctAnswer) {
+            this.querySelector(`#${this.choiceId(correctAnswer)}`).className =
+                'bg-green-600';
         }
     }
 );
