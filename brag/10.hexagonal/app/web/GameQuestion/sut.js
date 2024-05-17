@@ -6,7 +6,6 @@ import {
     RouteYop,
     Router,
     Server,
-    eventually,
     html,
     scripts,
 } from '../../../../../dist/index.js';
