@@ -14,12 +14,16 @@ customElements.define(
                 this.highlightCorrectAnswer.bind(this),
                 'correct answer'
             );
+            eventBus.register(
+                this.highlightWrongAnswer.bind(this),
+                'game over'
+            );
         }
 
         update({ question, choices }) {
             this.querySelector('#question').innerHTML = question;
             this.querySelector('#choices').innerHTML = choices
-                .map(({ choice }) => this.choiceComponent(choice))
+                .map(({ choice }) => this.choiceDefinition(choice))
                 .join('');
             this.wire(choices);
         }
@@ -27,8 +31,11 @@ customElements.define(
         choiceId(choice) {
             return `choice-${choice.toLowerCase().replaceAll(' ', '-')}`;
         }
-        choiceComponent(choice) {
+        choiceDefinition(choice) {
             return `<button id="${this.choiceId(choice)}">${choice}</button>`;
+        }
+        choiceElement(choice) {
+            return this.querySelector(`#${this.choiceId(choice)}`);
         }
         wire(choices) {
             choices.forEach(({ choice }) => {
@@ -38,9 +45,12 @@ customElements.define(
             });
         }
 
-        highlightCorrectAnswer(correctAnswer) {
-            this.querySelector(`#${this.choiceId(correctAnswer)}`).className =
-                'bg-green-600';
+        highlightCorrectAnswer(answer) {
+            this.choiceElement(answer).className = 'bg-green-600';
+        }
+
+        highlightWrongAnswer(answer) {
+            this.choiceElement(answer).className = 'bg-orange-600';
         }
     }
 );
