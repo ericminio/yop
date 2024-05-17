@@ -9,13 +9,16 @@ customElements.define(
             this.innerHTML = await fetch('/templates/HomePage/index.html').then(
                 (response) => response.text()
             );
-            this.querySelector('#answer').addEventListener('click', () => {
-                this.increaseScore();
-            });
+            this.querySelector('#answer').addEventListener(
+                'click',
+                increaseScore
+            );
+            this.update(state.score);
+            eventBus.register(this, 'score increased');
         }
 
-        increaseScore() {
-            this.querySelector('#score').innerHTML = '1';
+        update(score) {
+            this.querySelector('#score').innerHTML = score;
         }
     }
 );

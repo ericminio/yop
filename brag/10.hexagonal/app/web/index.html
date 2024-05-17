@@ -2,8 +2,17 @@
 <html lang="en">
     <head>
         <title>Hexagonal</title>
-        <script src="/app.js"></script>
         <script src="/yop.js"></script>
+        <script src="/app.js"></script>
+        <script>
+            const state = {
+                score: 0,
+            };
+            const increaseScore = () => {
+                state.score++;
+                eventBus.notify('score increased', state.score);
+            };
+        </script>
     </head>
 
     <body>
