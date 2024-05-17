@@ -1,7 +1,6 @@
 var setChallenge = ({ question, choices }) => {
     state.choices = choices;
-    eventBus.notify('question set', question);
-    eventBus.notify('choices set', choices);
+    eventBus.notify('question set', { question, choices });
 };
 
 const play = (answer) => {

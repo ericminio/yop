@@ -9,15 +9,11 @@ customElements.define(
             this.innerHTML = await fetch(
                 '/templates/GameQuestion/index.html'
             ).then((response) => response.text());
-            eventBus.register(this.updateChoices.bind(this), 'choices set');
-            eventBus.register(this.updateQuestion.bind(this), 'question set');
+            eventBus.register(this, 'question set');
         }
 
-        updateQuestion(question) {
+        update({ question, choices }) {
             this.querySelector('#question').innerHTML = question;
-        }
-
-        updateChoices(choices) {
             const choiceId = (choice) => `choice-${choice}`;
             const choiceComponent = (choice) =>
                 `<button id="${choiceId(choice)}">${choice}</button>`;
