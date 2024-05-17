@@ -10,7 +10,7 @@ const { state, setChallenge, play } = exposex({
     ],
 });
 
-describe('game over', () => {
+describe('joy', () => {
     before(async () => {
         setChallenge({
             question: 'What now?',
@@ -24,10 +24,12 @@ describe('game over', () => {
         state.score = 0;
     });
 
-    test('needs a deep restart', async () => {
-        play('Wrong');
-        assert.equal(state.score, 0);
+    test('comes for free', async () => {
         play('Correct');
-        assert.equal(state.score, 0);
+        assert.equal(state.score, 1);
+        play('Correct');
+        assert.equal(state.score, 2);
+        play('Correct');
+        assert.equal(state.score, 3);
     });
 });
