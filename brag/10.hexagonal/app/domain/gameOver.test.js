@@ -6,8 +6,7 @@ const { state, setChallenge, play } = exposex({
     symbol: '{state, setChallenge, play, gameOver}',
     files: [
         './dist/spa/event-bus.js',
-        './brag/10.hexagonal/app/domain/state.js',
-        './brag/10.hexagonal/app/domain/useCases.js',
+        './brag/10.hexagonal/app/domain/domain.js',
     ],
 });
 

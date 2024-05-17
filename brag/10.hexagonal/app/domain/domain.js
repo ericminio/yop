@@ -1,3 +1,7 @@
+const state = {
+    score: 0,
+};
+
 var setChallenge = ({ question, choices }) => {
     state.choices = choices;
     eventBus.notify('question set', { question, choices });

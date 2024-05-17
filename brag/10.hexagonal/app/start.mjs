@@ -14,8 +14,7 @@ const router = new Router([
         '/app.js',
         scripts(
             [
-                './domain/state.js',
-                './domain/useCases.js',
+                './domain/domain.js',
                 './web/HomePage/index.js',
                 './web/GameQuestion/index.js',
                 './web/GameScore/index.js',
