@@ -23,6 +23,7 @@ describe('hexagonal - vision', () => {
                 choices: [
                     { choice: 'Waterfall', isCorrect: false },
                     { choice: 'TDD', isCorrect: true },
+                    { choice: 'A little of both', isCorrect: false },
                 ],
             });
         });

@@ -21,7 +21,7 @@ customElements.define(
         }
 
         choiceId(choice) {
-            return `choice-${choice}`;
+            return `choice-${choice.toLowerCase().replaceAll(' ', '-')}`;
         }
         choiceComponent(choice) {
             return `<button id="${this.choiceId(choice)}">${choice}</button>`;
