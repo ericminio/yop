@@ -12,7 +12,14 @@ import {
 const router = new Router([
     new RouteAssetEqual(
         '/app.js',
-        scripts(['./web/HomePage/index.js'], import.meta.url)
+        scripts(
+            [
+                './domain/state.js',
+                './domain/increaseScore.js',
+                './web/HomePage/index.js',
+            ],
+            import.meta.url
+        )
     ),
     new RouteYop(),
     new RouteTemplate(/^\/templates\/(.*)/, new URL('./web', import.meta.url)),
