@@ -14,18 +14,23 @@ customElements.define(
 
         update({ question, choices }) {
             this.querySelector('#question').innerHTML = question;
-            const choiceId = (choice) => `choice-${choice}`;
-            const choiceComponent = (choice) =>
-                `<button id="${choiceId(choice)}">${choice}</button>`;
-            this.querySelector('#choices').innerHTML = choices.reduce(
-                (list, { choice }) => list + choiceComponent(choice),
-                ''
-            );
+            this.querySelector('#choices').innerHTML = choices
+                .map(({ choice }) => this.choiceComponent(choice))
+                .join('');
+            this.wire(choices);
+        }
+
+        choiceId(choice) {
+            return `choice-${choice}`;
+        }
+        choiceComponent(choice) {
+            return `<button id="${this.choiceId(choice)}">${choice}</button>`;
+        }
+        wire(choices) {
             choices.forEach(({ choice }) => {
-                this.querySelector(`#${choiceId(choice)}`).addEventListener(
-                    'click',
-                    () => play(choice)
-                );
+                this.querySelector(
+                    `#${this.choiceId(choice)}`
+                ).addEventListener('click', () => play(choice));
             });
         }
     }
