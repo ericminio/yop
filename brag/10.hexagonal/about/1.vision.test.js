@@ -25,12 +25,26 @@ describe('hexagonal - vision', () => {
 
     test('score increases when answering the question correctly', async () => {
         await page.executeScript((window) => {
-            window.setAnswer('TDD');
+            window.setChoices([{ choice: 'TDD', isCorrect: true }]);
         });
         page.click('TDD');
 
         await eventually(async () => {
             assert.match(await page.section('Score'), /1/);
+        });
+    });
+
+    test('game over with wrong answer', async () => {
+        await page.executeScript((window) => {
+            window.setChoices([
+                { choice: 'Waterfall', isCorrect: false },
+                { choice: 'TDD', isCorrect: true },
+            ]);
+        });
+        page.click('Waterfall');
+
+        await eventually(async () => {
+            assert.match(await page.section('Score'), /Game Over/);
         });
     });
 });
