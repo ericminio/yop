@@ -1,17 +1,9 @@
 import { describe, test, before, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-
-import { exposex } from '../../../../dist/index.js';
-const { state, setChallenge, play } = exposex({
-    symbol: '{state, setChallenge, play, gameOver}',
-    files: [
-        './dist/spa/event-bus.js',
-        './brag/10.hexagonal/app/domain/domain.js',
-    ],
-});
+import { state, setChallenge, play } from './sut.js';
 
 describe('joy', () => {
-    before(async () => {
+    before(() => {
         setChallenge({
             question: 'What now?',
             choices: [
@@ -20,11 +12,11 @@ describe('joy', () => {
             ],
         });
     });
-    beforeEach(async () => {
+    beforeEach(() => {
         state.score = 0;
     });
 
-    test('comes for free', async () => {
+    test('comes for free', () => {
         play('Correct');
         assert.equal(state.score, 1);
         play('Correct');
