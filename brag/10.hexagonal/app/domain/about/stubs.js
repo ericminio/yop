@@ -6,6 +6,7 @@ export class SingleChallengeChallenger {
                 { choice: 'wrong', isCorrect: false },
                 { choice: 'correct', isCorrect: true },
             ],
+            isLast: true,
         });
     }
 }

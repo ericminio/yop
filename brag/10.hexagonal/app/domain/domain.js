@@ -7,8 +7,8 @@ var nextChallenge = async () => {
     setChallenge(challenge);
 };
 
-var setChallenge = ({ question, choices }) => {
-    state.challenge = { question, choices };
+var setChallenge = (challenge) => {
+    state.challenge = challenge;
     eventBus.notify('question set', state.challenge);
 };
 
@@ -19,11 +19,18 @@ const play = (answer) => {
     const { isCorrect } = state.challenge.choices.find(
         ({ choice }) => choice === answer
     );
-    isCorrect ? increaseScore() : gameOver(answer);
+    isCorrect ? pass() : gameOver(answer);
     const { choice: correctAnser } = state.challenge.choices.find(
         ({ isCorrect }) => isCorrect
     );
     eventBus.notify('correct answer', correctAnser);
+};
+
+const pass = () => {
+    increaseScore();
+    if (state.challenge.isLast) {
+        eventBus.notify('you win!');
+    }
 };
 
 const increaseScore = () => {
