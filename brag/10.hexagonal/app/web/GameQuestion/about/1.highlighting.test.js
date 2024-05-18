@@ -2,6 +2,7 @@ import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { Page, eventually } from '../../../../../../dist/index.js';
 import { server } from './serve-sut.js';
+import { SingleChallengeChallenger } from '../../../domain/about/stubs.js';
 
 describe('GameQuestion', () => {
     let port;
@@ -15,8 +16,16 @@ describe('GameQuestion', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
+        await page.executeScript((window) => {
+            window.state.ports = {
+                challenge: ((adapter) => adapter.challenge.bind(adapter))(
+                    new SingleChallengeChallenger()
+                ),
+            };
+            void window.nextChallenge();
+        });
         await eventually(page, async () => {
-            assert.match(await page.section('Question'), /wrong*correct/);
+            assert.match(await page.section('What now?'), /wrong*correct/);
         });
     });
     afterEach(async () => {
