@@ -18,6 +18,7 @@ customElements.define(
                 this.highlightWrongAnswer.bind(this),
                 'game over'
             );
+            this.update(state.challenge);
         }
 
         update({ question, choices }) {

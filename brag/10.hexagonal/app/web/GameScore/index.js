@@ -9,8 +9,8 @@ customElements.define(
             this.innerHTML = await fetch(
                 '/templates/GameScore/index.html'
             ).then((response) => response.text());
-            this.updateScore(state.score);
             eventBus.register(this.updateScore.bind(this), 'score increased');
+            this.updateScore(state.score);
         }
 
         updateScore(score) {
