@@ -18,13 +18,17 @@ describe('hexagonal - vision', () => {
     });
     beforeEach(async () => {
         await page.executeScript((window) => {
-            window.setChallenge({
-                question: 'What now?',
-                choices: [
-                    { choice: 'Waterfall', isCorrect: false },
-                    { choice: 'TDD', isCorrect: true },
-                ],
-            });
+            window.state.gateways = {
+                challenge: async () =>
+                    Promise.resolve({
+                        question: 'What now?',
+                        choices: [
+                            { choice: 'Waterfall', isCorrect: false },
+                            { choice: 'TDD', isCorrect: true },
+                        ],
+                    }),
+            };
+            void window.nextChallenge();
         });
     });
 

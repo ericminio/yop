@@ -5,14 +5,17 @@
         <script src="/yop.js"></script>
         <script src="/app.js"></script>
         <script>
-            setChallenge({
-                question: 'What should we do now?',
-                choices: [
-                    { choice: 'Waterfall', isCorrect: false },
-                    { choice: 'TDD', isCorrect: true },
-                    { choice: 'A little of both', isCorrect: false },
-                ],
-            });
+            state.gateways = {
+                challenge: async () => ({
+                    question: 'What should we do now?',
+                    choices: [
+                        { choice: 'Waterfall', isCorrect: false },
+                        { choice: 'TDD', isCorrect: true },
+                        { choice: 'A little of both', isCorrect: false },
+                    ],
+                }),
+            };
+            nextChallenge();
         </script>
     </head>
 

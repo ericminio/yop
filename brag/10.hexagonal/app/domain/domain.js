@@ -1,5 +1,10 @@
-const state = {
+var state = {
     score: 0,
+};
+
+var nextChallenge = async () => {
+    const challenge = await state.gateways.challenge();
+    setChallenge(challenge);
 };
 
 var setChallenge = ({ question, choices }) => {
