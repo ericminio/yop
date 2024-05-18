@@ -2,10 +2,10 @@ import { describe, test, before, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { state, setChallenge, play } from './sut.js';
 
-describe('joy', () => {
+describe('game over', () => {
     before(() => {
         setChallenge({
-            question: 'What now?',
+            question: 'Maybe',
             choices: [
                 { choice: 'Wrong', isCorrect: false },
                 { choice: 'Correct', isCorrect: true },
@@ -16,12 +16,10 @@ describe('joy', () => {
         state.score = 0;
     });
 
-    test('comes for free', () => {
+    test('needs a deep restart', () => {
+        play('Wrong');
+        assert.equal(state.score, 0);
         play('Correct');
-        assert.equal(state.score, 1);
-        play('Correct');
-        assert.equal(state.score, 2);
-        play('Correct');
-        assert.equal(state.score, 3);
+        assert.equal(state.score, 0);
     });
 });

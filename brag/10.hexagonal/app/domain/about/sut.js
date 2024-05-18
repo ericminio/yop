@@ -1,4 +1,4 @@
-import { exposex } from '../../../../dist/index.js';
+import { exposex } from '../../../../../dist/index.js';
 
 export const { state, setChallenge, play } = exposex({
     symbol: '{state, setChallenge, play, gameOver}',

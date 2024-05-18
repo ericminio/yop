@@ -19,7 +19,7 @@ describe('hexagonal - vision', () => {
     beforeEach(async () => {
         await page.executeScript((window) => {
             window.setChallenge({
-                question: 'What should we do now?',
+                question: 'What now?',
                 choices: [
                     { choice: 'Waterfall', isCorrect: false },
                     { choice: 'TDD', isCorrect: true },
@@ -29,24 +29,21 @@ describe('hexagonal - vision', () => {
     });
 
     test('starting score is zero', async () => {
-        await eventually(async () => {
+        await eventually(page, async () => {
             assert.match(await page.section('Score'), /0/);
         });
     });
 
     test('the choices are presented', async () => {
-        await eventually(async () => {
-            assert.match(
-                await page.section('What should we do now?'),
-                /Waterfall*TDD/
-            );
+        await eventually(page, async () => {
+            assert.match(await page.section('What now?'), /Waterfall*TDD/);
         });
     });
 
     test('score increases when answering the question correctly', async () => {
         page.click('TDD');
 
-        await eventually(async () => {
+        await eventually(page, async () => {
             assert.match(await page.section('Score'), /1/);
         });
     });
@@ -54,7 +51,7 @@ describe('hexagonal - vision', () => {
     test('game over with wrong answer', async () => {
         page.click('Waterfall');
 
-        await eventually(async () => {
+        await eventually(page, async () => {
             assert.match(await page.section('Game Over'), /.*/);
         });
     });
