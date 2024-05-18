@@ -1,18 +1,14 @@
 import { describe, test, before, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { state, nextChallenge, play } from './sut.js';
+import { SingleChallengeChallenger } from './stubs.js';
 
 describe('game over', () => {
     before(async () => {
         state.ports = {
-            challenge: async () =>
-                Promise.resolve({
-                    question: 'What now?',
-                    choices: [
-                        { choice: 'wrong', isCorrect: false },
-                        { choice: 'correct', isCorrect: true },
-                    ],
-                }),
+            challenge: ((adapter) => adapter.challenge.bind(adapter))(
+                new SingleChallengeChallenger()
+            ),
         };
         await nextChallenge();
     });

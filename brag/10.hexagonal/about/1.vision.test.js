@@ -23,8 +23,8 @@ describe('hexagonal - vision', () => {
                     Promise.resolve({
                         question: 'What now?',
                         choices: [
-                            { choice: 'Waterfall', isCorrect: false },
                             { choice: 'TDD', isCorrect: true },
+                            { choice: 'Waterfall', isCorrect: false },
                         ],
                     }),
             };
@@ -40,7 +40,7 @@ describe('hexagonal - vision', () => {
 
     test('the choices are presented', async () => {
         await eventually(page, async () => {
-            assert.match(await page.section('What now?'), /Waterfall*TDD/);
+            assert.match(await page.section('What now?'), /TDD*Waterfall/);
         });
     });
 
