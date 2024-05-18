@@ -1,16 +1,19 @@
 import {
     RouteAssetEqual,
-    RouteCss,
-    RouteDefault,
-    RouteTemplate,
     RouteYop,
     Router,
     Server,
+    css,
     html,
     scripts,
 } from '../../../../../dist/index.js';
 
 const router = new Router([
+    new RouteAssetEqual(
+        '/',
+        html(new URL('../../web/GameQuestion/sut.html', import.meta.url))
+    ),
+    new RouteYop(),
     new RouteAssetEqual(
         '/index.js',
         scripts(
@@ -18,14 +21,13 @@ const router = new Router([
             import.meta.url
         )
     ),
-    new RouteYop(),
-    new RouteTemplate(
-        /^\/templates\/(.*)/,
-        new URL('../../web', import.meta.url)
+    new RouteAssetEqual(
+        '/templates/GameQuestion/index.html',
+        html(new URL('../../web/GameQuestion/index.html', import.meta.url))
     ),
-    new RouteCss(/^\/css\/(.*)/, new URL('../../web', import.meta.url)),
-    new RouteDefault(
-        html(new URL('../../web/GameQuestion/sut.html', import.meta.url))
+    new RouteAssetEqual(
+        '/css/GameQuestion/index.css',
+        css(new URL('../../web/GameQuestion/index.css', import.meta.url))
     ),
 ]);
 
