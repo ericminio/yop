@@ -1,7 +1,7 @@
 import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { server } from './sut.js';
-import { Page, eventually } from '../../../../../dist/index.js';
+import { Page, eventually } from '../../../../../../dist/index.js';
+import { server } from './serve-sut.js';
 
 describe('GameQuestion', () => {
     let port;
