@@ -1,19 +1,17 @@
-import { describe, it, before, beforeEach } from 'node:test';
+import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { state, nextChallenge, play } from './sut.js';
 import { SingleChallengeChallenger } from './stubs.js';
 
 describe('loosing', () => {
-    before(async () => {
+    beforeEach(async () => {
+        state.score = 0;
         state.ports = {
             challenge: ((adapter) => adapter.challenge.bind(adapter))(
                 new SingleChallengeChallenger()
             ),
         };
         await nextChallenge();
-    });
-    beforeEach(() => {
-        state.score = 0;
     });
 
     it('is a dead end', () => {

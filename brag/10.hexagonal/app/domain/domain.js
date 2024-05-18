@@ -14,6 +14,8 @@ var setChallenge = ({ question, choices }) => {
 
 const play = (answer) => {
     if (state.gameOver) return;
+    if (state.challenge.answered) return;
+    state.challenge.answered = true;
     const { isCorrect } = state.challenge.choices.find(
         ({ choice }) => choice === answer
     );
