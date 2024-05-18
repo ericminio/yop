@@ -1,7 +1,7 @@
 import { describe, test, before, after, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
-import { server } from '../app/start.mjs';
+import { server } from '../app/web/server.js';
 
 describe('hexagonal - vision', () => {
     let page;
