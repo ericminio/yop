@@ -18,7 +18,7 @@ describe('hexagonal - vision', () => {
     });
     beforeEach(async () => {
         await page.executeScript((window) => {
-            window.state.gateways = {
+            window.state.ports = {
                 challenge: async () =>
                     Promise.resolve({
                         question: 'What now?',

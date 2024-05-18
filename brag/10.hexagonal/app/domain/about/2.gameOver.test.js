@@ -1,25 +1,29 @@
 import { describe, test, before, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { state, setChallenge, play } from './sut.js';
+import { state, nextChallenge, play } from './sut.js';
 
 describe('game over', () => {
-    before(() => {
-        setChallenge({
-            question: 'Maybe',
-            choices: [
-                { choice: 'Wrong', isCorrect: false },
-                { choice: 'Correct', isCorrect: true },
-            ],
-        });
+    before(async () => {
+        state.ports = {
+            challenge: async () =>
+                Promise.resolve({
+                    question: 'What now?',
+                    choices: [
+                        { choice: 'wrong', isCorrect: false },
+                        { choice: 'correct', isCorrect: true },
+                    ],
+                }),
+        };
+        await nextChallenge();
     });
     beforeEach(() => {
         state.score = 0;
     });
 
     test('needs a deep restart', () => {
-        play('Wrong');
+        play('wrong');
         assert.equal(state.score, 0);
-        play('Correct');
+        play('correct');
         assert.equal(state.score, 0);
     });
 });

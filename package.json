@@ -17,6 +17,7 @@
     "scripts": {
         "test": "node --test --experimental-test-coverage $(find about brag -name '*.test.js')",
         "test:hexagonal": "node --test $(find brag/10.hexagonal -name '*.test.js')",
+        "test:hexagonal-domain": "node --test $(find brag/10.hexagonal/app/domain -name '*.test.js')",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write .",
         "nodemon": "nodemon --watch brag/8.timer/app -e js,mjs,cjs,json,html brag/8.timer/app/start.mjs"
