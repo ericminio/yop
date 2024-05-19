@@ -81,9 +81,7 @@ describe('hexagonal - vision', () => {
 
     test('you win when answering correctly the last question', async () => {
         page.click('TDD');
-        await page.executeScript((window) => {
-            void window.nextChallenge();
-        });
+        page.click('next challenge');
         await eventually(page, async () => {
             assert.match(
                 await page.section('First step?'),

@@ -20,6 +20,7 @@ const router = new Router([
                 './GameMessage/index.js',
                 './GameQuestion/index.js',
                 './GameScore/index.js',
+                './GameNextChallengeInvite/index.js',
             ],
             import.meta.url
         )
