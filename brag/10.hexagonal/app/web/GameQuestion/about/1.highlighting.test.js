@@ -16,15 +16,13 @@ describe('GameQuestion', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
-        await page.executeScript((window) => {
-            window.state.ports = {
-                nextChallenge: ((adapter) =>
-                    adapter.nextChallenge.bind(adapter))(
-                    new SingleChallengeChallenger()
-                ),
-            };
-            void window.nextChallenge();
-        });
+        page.window.state.ports = {
+            nextChallenge: ((adapter) => adapter.nextChallenge.bind(adapter))(
+                new SingleChallengeChallenger()
+            ),
+        };
+        page.window.nextChallenge();
+
         await eventually(page, async () => {
             assert.match(await page.section('What now?'), /wrong*correct/);
         });

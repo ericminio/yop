@@ -18,14 +18,12 @@ describe('GameNextChallengeInvite', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
-        await page.executeScript((window) => {
-            window.setChallenge({
-                question: 'What now?',
-                choices: [
-                    { choice: 'TDD', isCorrect: true },
-                    { choice: 'Waterfall', isCorrect: false },
-                ],
-            });
+        page.window.setChallenge({
+            question: 'What now?',
+            choices: [
+                { choice: 'TDD', isCorrect: true },
+                { choice: 'Waterfall', isCorrect: false },
+            ],
         });
         await eventually(page, async () => {
             assert.equal(reduced(await page.html()), empty);
@@ -42,35 +40,32 @@ describe('GameNextChallengeInvite', () => {
     });
 
     it('is not displayed when loosing', async () => {
-        await page.executeScript((window) => {
-            window.play('Waterfall');
-        });
+        page.window.play('Waterfall');
+
         await eventually(page, async () => {
             assert.equal(reduced(await page.html()), empty);
         });
     });
 
     it('is displayed when passing challenge was not last', async () => {
-        await page.executeScript((window) => {
-            window.play('TDD');
-        });
+        page.window.play('TDD');
+
         await eventually(page, async () => {
             assert.match(await page.section('next challenge'), /.*/);
         });
     });
 
     it('is not displayed when passing challenge was last', async () => {
-        await page.executeScript((window) => {
-            window.setChallenge({
-                question: 'What now?',
-                choices: [
-                    { choice: 'TDD', isCorrect: true },
-                    { choice: 'Waterfall', isCorrect: false },
-                ],
-                isLast: true,
-            });
-            window.play('TDD');
+        page.window.setChallenge({
+            question: 'What now?',
+            choices: [
+                { choice: 'TDD', isCorrect: true },
+                { choice: 'Waterfall', isCorrect: false },
+            ],
+            isLast: true,
         });
+        page.window.play('TDD');
+
         await eventually(page, async () => {
             assert.equal(reduced(await page.html()), empty);
         });

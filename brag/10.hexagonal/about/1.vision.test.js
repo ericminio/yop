@@ -24,31 +24,29 @@ describe('hexagonal - vision', () => {
     });
     beforeEach(async () => {
         await page.open(baseUrl);
-        await page.executeScript((window) => {
-            window.state.ports = {
-                nextChallenge: ((adapter) =>
-                    adapter.nextChallenge.bind(adapter))(
-                    new ChallengerStub([
-                        {
-                            question: 'What now?',
-                            choices: [
-                                { choice: 'TDD', isCorrect: true },
-                                { choice: 'Waterfall', isCorrect: false },
-                            ],
-                        },
-                        {
-                            question: 'First step?',
-                            choices: [
-                                { choice: 'Test', isCorrect: true },
-                                { choice: 'Code', isCorrect: false },
-                                { choice: 'Refactor', isCorrect: false },
-                            ],
-                        },
-                    ])
-                ),
-            };
-            void window.nextChallenge();
-        });
+        page.window.state.ports = {
+            nextChallenge: ((adapter) => adapter.nextChallenge.bind(adapter))(
+                new ChallengerStub([
+                    {
+                        question: 'What now?',
+                        choices: [
+                            { choice: 'TDD', isCorrect: true },
+                            { choice: 'Waterfall', isCorrect: false },
+                        ],
+                    },
+                    {
+                        question: 'First step?',
+                        choices: [
+                            { choice: 'Test', isCorrect: true },
+                            { choice: 'Code', isCorrect: false },
+                            { choice: 'Refactor', isCorrect: false },
+                        ],
+                    },
+                ])
+            ),
+        };
+        page.window.nextChallenge();
+
         await eventually(page, async () => {
             assert.match(await page.section('What now?'), /TDD*Waterfall/);
         });
