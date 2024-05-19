@@ -9,6 +9,7 @@ import {
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/web/server.js';
+import { TwoChallengesChallenger } from '../app/domain/about/stubs.js';
 
 describe('hexagonal - vision', () => {
     let page;
@@ -25,14 +26,26 @@ describe('hexagonal - vision', () => {
         await page.open(baseUrl);
         await page.executeScript((window) => {
             window.state.ports = {
-                challenge: async () =>
-                    Promise.resolve({
-                        question: 'What now?',
-                        choices: [
-                            { choice: 'TDD', isCorrect: true },
-                            { choice: 'Waterfall', isCorrect: false },
-                        ],
-                    }),
+                challenge: ((adapter) => adapter.challenge.bind(adapter))(
+                    new TwoChallengesChallenger([
+                        {
+                            question: 'What now?',
+                            choices: [
+                                { choice: 'TDD', isCorrect: true },
+                                { choice: 'Waterfall', isCorrect: false },
+                            ],
+                        },
+                        {
+                            question: 'First step?',
+                            choices: [
+                                { choice: 'Test', isCorrect: true },
+                                { choice: 'Code', isCorrect: false },
+                                { choice: 'Refactor', isCorrect: false },
+                            ],
+                            isLast: true,
+                        },
+                    ])
+                ),
             };
             void window.nextChallenge();
         });
@@ -69,18 +82,6 @@ describe('hexagonal - vision', () => {
     test('you win when answering correctly the last question', async () => {
         page.click('TDD');
         await page.executeScript((window) => {
-            window.state.ports = {
-                challenge: async () =>
-                    Promise.resolve({
-                        question: 'First step?',
-                        choices: [
-                            { choice: 'Test', isCorrect: true },
-                            { choice: 'Code', isCorrect: false },
-                            { choice: 'Refactor', isCorrect: false },
-                        ],
-                        isLast: true,
-                    }),
-            };
             void window.nextChallenge();
         });
         await eventually(page, async () => {
