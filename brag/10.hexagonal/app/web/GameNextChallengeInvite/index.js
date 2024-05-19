@@ -6,12 +6,20 @@ customElements.define(
         }
 
         async connectedCallback() {
-            this.innerHTML = await fetch(
+            this.template = await fetch(
                 '/templates/GameNextChallengeInvite/index.html'
             ).then((response) => response.text());
-            this.querySelector('#next').addEventListener('click', () => {
-                nextChallenge();
-            });
+            this.innerHTML = '&nbsp;';
+            eventBus.register(this, 'score increased');
+        }
+
+        update() {
+            if (!state.challenge.isLast) {
+                this.innerHTML = this.template;
+                this.querySelector('#next').addEventListener('click', () => {
+                    nextChallenge();
+                });
+            }
         }
     }
 );

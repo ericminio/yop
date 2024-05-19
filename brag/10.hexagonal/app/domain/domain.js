@@ -12,7 +12,7 @@ var setChallenge = (challenge) => {
     eventBus.notify('question set', state.challenge);
 };
 
-const play = (answer) => {
+var play = (answer) => {
     if (state.gameOver) return;
     if (state.challenge.answered) return;
     state.challenge.answered = true;
