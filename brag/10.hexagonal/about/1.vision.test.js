@@ -9,7 +9,7 @@ import {
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/web/server.js';
-import { TwoChallengesChallenger } from '../app/domain/about/stubs.js';
+import { ChallengerStub } from '../app/domain/about/stubs.js';
 
 describe('hexagonal - vision', () => {
     let page;
@@ -28,7 +28,7 @@ describe('hexagonal - vision', () => {
             window.state.ports = {
                 nextChallenge: ((adapter) =>
                     adapter.nextChallenge.bind(adapter))(
-                    new TwoChallengesChallenger([
+                    new ChallengerStub([
                         {
                             question: 'What now?',
                             choices: [
@@ -43,7 +43,6 @@ describe('hexagonal - vision', () => {
                                 { choice: 'Code', isCorrect: false },
                                 { choice: 'Refactor', isCorrect: false },
                             ],
-                            isLast: true,
                         },
                     ])
                 ),

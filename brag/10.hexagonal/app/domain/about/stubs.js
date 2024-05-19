@@ -11,7 +11,7 @@ export class SingleChallengeChallenger {
     }
 }
 
-export class TwoChallengesChallenger {
+export class ChallengerStub {
     constructor(challenges) {
         this.index = 0;
         this.challenges = challenges;
@@ -20,6 +20,9 @@ export class TwoChallengesChallenger {
         const next = this.challenges[this.index];
         if (this.index < this.challenges.length - 1) {
             this.index += 1;
+            next.isLast = false;
+        } else {
+            next.isLast = true;
         }
         return next;
     }
