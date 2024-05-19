@@ -1,4 +1,11 @@
-import { describe, test, before, after, beforeEach } from 'node:test';
+import {
+    describe,
+    test,
+    before,
+    after,
+    beforeEach,
+    afterEach,
+} from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/web/server.js';
@@ -10,13 +17,12 @@ describe('hexagonal - vision', () => {
         page = new Page();
         const port = await server.start();
         baseUrl = `http://localhost:${port}`;
-        await page.open(baseUrl);
     });
     after(async () => {
-        await page.close();
         await server.stop();
     });
     beforeEach(async () => {
+        await page.open(baseUrl);
         await page.executeScript((window) => {
             window.state.ports = {
                 challenge: async () =>
@@ -30,17 +36,17 @@ describe('hexagonal - vision', () => {
             };
             void window.nextChallenge();
         });
+        await eventually(page, async () => {
+            assert.match(await page.section('What now?'), /TDD*Waterfall/);
+        });
+    });
+    afterEach(async () => {
+        await page.close();
     });
 
     test('starting score is zero', async () => {
         await eventually(page, async () => {
             assert.match(await page.section('Score'), /0/);
-        });
-    });
-
-    test('the choices are presented', async () => {
-        await eventually(page, async () => {
-            assert.match(await page.section('What now?'), /TDD*Waterfall/);
         });
     });
 
@@ -57,6 +63,36 @@ describe('hexagonal - vision', () => {
 
         await eventually(page, async () => {
             assert.match(await page.section('Game Over'), /.*/);
+        });
+    });
+
+    test('you win when answering correctly the last question', async () => {
+        page.click('TDD');
+        await page.executeScript((window) => {
+            window.state.ports = {
+                challenge: async () =>
+                    Promise.resolve({
+                        question: 'First step?',
+                        choices: [
+                            { choice: 'Test', isCorrect: true },
+                            { choice: 'Code', isCorrect: false },
+                            { choice: 'Refactor', isCorrect: false },
+                        ],
+                        isLast: true,
+                    }),
+            };
+            void window.nextChallenge();
+        });
+        await eventually(page, async () => {
+            assert.match(
+                await page.section('First step?'),
+                /Test*Code*Refactor/
+            );
+        });
+        page.click('Test');
+
+        await eventually(page, async () => {
+            assert.match(await page.section('You win! Congrats!!!'), /.*/);
         });
     });
 });
