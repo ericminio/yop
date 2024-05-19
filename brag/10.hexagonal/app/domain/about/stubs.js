@@ -1,5 +1,5 @@
 export class SingleChallengeChallenger {
-    async challenge() {
+    async nextChallenge() {
         return {
             question: 'What now?',
             choices: [
@@ -16,7 +16,7 @@ export class TwoChallengesChallenger {
         this.index = 0;
         this.challenges = challenges;
     }
-    async challenge() {
+    async nextChallenge() {
         const next = this.challenges[this.index];
         if (this.index < this.challenges.length - 1) {
             this.index += 1;

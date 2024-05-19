@@ -26,7 +26,8 @@ describe('hexagonal - vision', () => {
         await page.open(baseUrl);
         await page.executeScript((window) => {
             window.state.ports = {
-                challenge: ((adapter) => adapter.challenge.bind(adapter))(
+                nextChallenge: ((adapter) =>
+                    adapter.nextChallenge.bind(adapter))(
                     new TwoChallengesChallenger([
                         {
                             question: 'What now?',

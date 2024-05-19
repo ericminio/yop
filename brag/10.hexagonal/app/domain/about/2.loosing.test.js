@@ -7,7 +7,7 @@ describe('loosing', () => {
     beforeEach(async () => {
         state.score = 0;
         state.ports = {
-            challenge: ((adapter) => adapter.challenge.bind(adapter))(
+            nextChallenge: ((adapter) => adapter.nextChallenge.bind(adapter))(
                 new SingleChallengeChallenger()
             ),
         };

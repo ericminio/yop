@@ -18,7 +18,8 @@ describe('GameQuestion', () => {
         await page.open(`http://localhost:${port}`);
         await page.executeScript((window) => {
             window.state.ports = {
-                challenge: ((adapter) => adapter.challenge.bind(adapter))(
+                nextChallenge: ((adapter) =>
+                    adapter.nextChallenge.bind(adapter))(
                     new SingleChallengeChallenger()
                 ),
             };

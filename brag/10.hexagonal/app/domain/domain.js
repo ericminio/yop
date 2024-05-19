@@ -3,7 +3,7 @@ var state = {
 };
 
 var nextChallenge = async () => {
-    const challenge = await state.ports.challenge();
+    const challenge = await state.ports.nextChallenge();
     setChallenge(challenge);
 };
 
