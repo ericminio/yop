@@ -1,14 +1,16 @@
 import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { Page, eventually } from '../../../../../../dist/index.js';
-import { server } from './serve-sut.js';
+import { serverForComponent } from '../../about/servers.js';
 
 describe('GameNextChallengeInvite', () => {
-    const empty =
-        '<game-next-challenge-invite>&nbsp;</game-next-challenge-invite>';
-    const reduced = (html) => html.replace(/\s\s+/g, ' ').trim();
+    const server = serverForComponent('game-next-challenge-invite');
     let port;
     let page;
+    const empty =
+        '<game-next-challenge-invite>&nbsp;</game-next-challenge-invite>';
+    const clean = (html) => html.replace(/\s\s+/g, ' ').trim();
+
     before(async () => {
         page = new Page();
         port = await server.start();
@@ -26,7 +28,7 @@ describe('GameNextChallengeInvite', () => {
             ],
         });
         await eventually(page, async () => {
-            assert.equal(reduced(await page.html()), empty);
+            assert.equal(clean(await page.html()), empty);
         });
     });
     afterEach(async () => {
@@ -35,7 +37,7 @@ describe('GameNextChallengeInvite', () => {
 
     it('is not displayed by default', async () => {
         await eventually(page, async () => {
-            assert.equal(reduced(await page.html()), empty);
+            assert.equal(clean(await page.html()), empty);
         });
     });
 
@@ -43,7 +45,7 @@ describe('GameNextChallengeInvite', () => {
         page.window.play('Waterfall');
 
         await eventually(page, async () => {
-            assert.equal(reduced(await page.html()), empty);
+            assert.equal(clean(await page.html()), empty);
         });
     });
 
@@ -67,7 +69,7 @@ describe('GameNextChallengeInvite', () => {
         page.window.play('TDD');
 
         await eventually(page, async () => {
-            assert.equal(reduced(await page.html()), empty);
+            assert.equal(clean(await page.html()), empty);
         });
     });
 });
