@@ -1,6 +1,6 @@
 var state = {
     score: 0,
-    gameOver: false,
+    gameLost: false,
 };
 
 var nextChallenge = async () => {
@@ -14,13 +14,13 @@ var setChallenge = (challenge) => {
 };
 
 var play = (answer) => {
-    if (state.gameOver) return;
+    if (state.gameLost) return;
     if (state.challenge.answered) return;
     state.challenge.answered = true;
     const { isCorrect } = state.challenge.choices.find(
         ({ choice }) => choice === answer
     );
-    isCorrect ? pass() : gameOver(answer);
+    isCorrect ? pass() : gameLost(answer);
     const { choice: correctAnser } = state.challenge.choices.find(
         ({ isCorrect }) => isCorrect
     );
@@ -39,7 +39,7 @@ const increaseScore = () => {
     eventBus.notify('score increased', state.score);
 };
 
-const gameOver = (answer) => {
-    state.gameOver = true;
+const gameLost = (answer) => {
+    state.gameLost = true;
     eventBus.notify('game over', answer);
 };

@@ -17,7 +17,7 @@ customElements.define(
             return (
                 state.challenge.answered &&
                 !state.challenge.isLast &&
-                !state.gameOver
+                !state.gameLost
             );
         }
 

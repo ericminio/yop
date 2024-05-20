@@ -69,7 +69,7 @@ describe('hexagonal - vision', () => {
         });
     });
 
-    test('game over with wrong answer', async () => {
+    test('game is lost with wrong answer', async () => {
         page.click('Waterfall');
 
         await eventually(page, async () => {
@@ -77,7 +77,7 @@ describe('hexagonal - vision', () => {
         });
     });
 
-    test('you win when answering correctly the last question', async () => {
+    test('game is won when answering correctly the last question', async () => {
         page.click('TDD');
         page.click('next challenge');
         await eventually(page, async () => {

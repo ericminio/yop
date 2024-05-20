@@ -9,11 +9,11 @@ customElements.define(
             this.innerHTML = await fetch(
                 '/templates/GameMessage/index.html'
             ).then((response) => response.text());
-            eventBus.register(this.gameOver.bind(this), 'game over');
+            eventBus.register(this.gameLost.bind(this), 'game over');
             eventBus.register(this.win.bind(this), 'you win!');
         }
 
-        gameOver() {
+        gameLost() {
             this.querySelector('#message').innerHTML = 'Game Over';
         }
 

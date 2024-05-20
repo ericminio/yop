@@ -15,9 +15,9 @@ describe('loosing', () => {
     });
 
     it('is recorded', () => {
-        assert.equal(state.gameOver, false);
+        assert.equal(state.gameLost, false);
         play('wrong');
-        assert.equal(state.gameOver, true);
+        assert.equal(state.gameLost, true);
     });
 
     it('is a dead end', () => {
