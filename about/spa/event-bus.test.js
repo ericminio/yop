@@ -103,6 +103,17 @@ describe('events bus', () => {
         assert.equal(received, 42);
     });
 
+    it('accepts registration for all events', () => {
+        let received;
+        let callback = (value, key) => {
+            received = `${value}-${key}`;
+        };
+        eventBus.registerForAll(callback);
+        eventBus.notify('any event', 42);
+
+        assert.equal(received, '42-any event');
+    });
+
     describe('unregister', () => {
         it('is available', () => {
             let spy;
@@ -152,6 +163,17 @@ describe('events bus', () => {
 
             assert.equal(spy, undefined);
         });
+        it('is available for listeners listening all events', () => {
+            let spy;
+            const callback = (value) => {
+                spy = value;
+            };
+            const id = eventBus.registerForAll(callback);
+            eventBus.unregister(id);
+            eventBus.notify('any event', 42);
+
+            assert.equal(spy, undefined);
+        });
     });
 
     describe('emptyness', () => {
@@ -160,6 +182,14 @@ describe('events bus', () => {
         });
         it('becomes history once registration happens', () => {
             eventBus.register({ update: () => {} }, 'this event');
+            assert.equal(eventBus.isEmpty(), false);
+        });
+        it('becomes history once registration happens via regular expression', () => {
+            eventBus.register({ update: () => {} }, /this event/);
+            assert.equal(eventBus.isEmpty(), false);
+        });
+        it('becomes history once registration happens for all events', () => {
+            eventBus.registerForAll({ update: () => {} });
             assert.equal(eventBus.isEmpty(), false);
         });
         it('can be effective again after unregistration', () => {

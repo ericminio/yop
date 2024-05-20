@@ -1,57 +1,72 @@
 class EventBus {
     constructor() {
+        this.id = 0;
         this.listeners = {};
         this.patterns = [];
-        this.id = 0;
+        this.listenersForAll = [];
     }
     isEmpty() {
-        return Object.keys(this.listeners).length == 0;
+        return (
+            Object.keys(this.listeners).length == 0 &&
+            this.patterns.length === 0 &&
+            this.listenersForAll.length === 0
+        );
     }
     notify(key, value) {
-        let listeners = this.listeners[key];
-        if (listeners !== undefined) {
-            for (var i = 0; i < listeners.length; i++) {
-                var listener = listeners[i].listener;
-                if (typeof listener == 'object') {
-                    listener.update(value, key);
-                }
-                if (typeof listener == 'function') {
-                    listener(value, key);
-                }
+        if (this.listeners[key]) {
+            for (const { listener } of this.listeners[key]) {
+                this.notifyListener(listener, key, value);
             }
         }
-        for (let i = 0; i < this.patterns.length; i++) {
-            const candidate = this.patterns[i];
-            if (candidate.pattern.test(key)) {
-                const listener = candidate.listener;
-                if (typeof listener == 'object') {
-                    listener.update(value, key);
-                }
-                if (typeof listener == 'function') {
-                    listener(value, key);
-                }
+        for (const { pattern, listener } of this.patterns) {
+            if (pattern.test(key)) {
+                this.notifyListener(listener, key, value);
             }
+        }
+        for (const { listener } of this.listenersForAll) {
+            this.notifyListener(listener, key, value);
+        }
+    }
+    notifyListener(listener, key, value) {
+        if (typeof listener == 'object') {
+            listener.update(value, key);
+        }
+        if (typeof listener == 'function') {
+            listener(value, key);
         }
     }
     register(listener, key) {
         return this.save(listener, key, this.listeners);
     }
+    registerForAll(listener) {
+        this.id += 1;
+        this.listenersForAll.push({ id: this.id, listener: listener });
+        return this.id;
+    }
     unregister(id) {
         this.remove(id, this.listeners);
-        const found = this.patterns.find((p) => p.id === id);
-        if (found) {
-            this.patterns.splice(this.patterns.indexOf(found), 1);
+        const foundInPatterns = this.patterns.find((p) => p.id === id);
+        if (foundInPatterns) {
+            this.patterns.splice(this.patterns.indexOf(foundInPatterns), 1);
+        }
+        const foundInListenersForAll = this.listenersForAll.find(
+            (p) => p.id === id
+        );
+        if (foundInListenersForAll) {
+            this.listenersForAll.splice(
+                this.listenersForAll.indexOf(foundInListenersForAll),
+                1
+            );
         }
     }
     unregisterAll(ids) {
-        for (var i = 0; i < ids.length; i++) {
-            let id = ids[i];
+        for (const id of ids) {
             this.unregister(id);
         }
     }
 
     save(listener, key, map) {
-        this.id = this.id + 1;
+        this.id += 1;
         if (typeof key === 'string') {
             if (map[key] === undefined) {
                 map[key] = [];
@@ -63,9 +78,7 @@ class EventBus {
         return this.id;
     }
     remove(id, map) {
-        let keys = Object.keys(map);
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
+        for (const key of Object.keys(map)) {
             for (let j = 0; j < map[key].length; j++) {
                 let entry = map[key][j];
                 if (entry.id == id) {

@@ -1,5 +1,6 @@
 var state = {
     score: 0,
+    gameOver: false,
 };
 
 var nextChallenge = async () => {

@@ -14,6 +14,12 @@ describe('loosing', () => {
         await nextChallenge();
     });
 
+    it('is recorded', () => {
+        assert.equal(state.gameOver, false);
+        play('wrong');
+        assert.equal(state.gameOver, true);
+    });
+
     it('is a dead end', () => {
         play('wrong');
         assert.equal(state.score, 0);
