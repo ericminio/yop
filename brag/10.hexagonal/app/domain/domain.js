@@ -19,6 +19,7 @@ var play = async (answer) => {
     state.challenge.answered = true;
     const { isCorrect, correctAnswer } = await state.ports.validateAnswer({
         answer,
+        question: state.challenge.question,
     });
     isCorrect ? pass() : gameLost(answer);
     eventBus.notify('correct answer', correctAnswer);

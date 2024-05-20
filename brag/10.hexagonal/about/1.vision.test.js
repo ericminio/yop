@@ -24,27 +24,23 @@ describe('hexagonal - vision', () => {
     });
     beforeEach(async () => {
         await page.open(baseUrl);
-        page.window.state.ports = {
-            nextChallenge: ((adapter) => adapter.nextChallenge.bind(adapter))(
-                new ChallengerStub([
-                    {
-                        question: 'What now?',
-                        choices: [
-                            { choice: 'TDD', isCorrect: true },
-                            { choice: 'Waterfall', isCorrect: false },
-                        ],
-                    },
-                    {
-                        question: 'First step?',
-                        choices: [
-                            { choice: 'Test', isCorrect: true },
-                            { choice: 'Code', isCorrect: false },
-                            { choice: 'Refactor', isCorrect: false },
-                        ],
-                    },
-                ])
-            ),
-        };
+        const stub = new ChallengerStub([
+            {
+                question: 'What now?',
+                choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],
+                correctAnswer: 'TDD',
+            },
+            {
+                question: 'First step?',
+                choices: [
+                    { choice: 'Test' },
+                    { choice: 'Code' },
+                    { choice: 'Refactor' },
+                ],
+                correctAnswer: 'Test',
+            },
+        ]);
+        page.window.state.ports = stub;
         page.window.nextChallenge();
 
         await eventually(page, async () => {
@@ -79,6 +75,9 @@ describe('hexagonal - vision', () => {
 
     test('game is won when answering correctly the last question', async () => {
         page.click('TDD');
+        await eventually(page, async () => {
+            assert.match(await page.section('next challenge'), /.*/);
+        });
         page.click('next challenge');
         await eventually(page, async () => {
             assert.match(

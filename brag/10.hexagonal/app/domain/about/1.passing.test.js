@@ -7,11 +7,11 @@ describe('passing', () => {
         state.score = 0;
         state.ports = {
             nextChallenge: async () => ({
-                question: 'What now?',
+                question: '???',
                 choices: [{ choice: 'wrong' }, { choice: 'correct' }],
             }),
-            validateAnswer: async ({ answer }) => ({
-                isCorrect: answer === 'correct',
+            validateAnswer: async ({ answer, question }) => ({
+                isCorrect: answer === 'correct' && question === '???',
                 correctAnswer: 'correct',
             }),
         };

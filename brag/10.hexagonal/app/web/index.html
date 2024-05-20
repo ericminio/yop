@@ -9,11 +9,15 @@
                 nextChallenge: async () => ({
                     question: 'What should we do now?',
                     choices: [
-                        { choice: 'Waterfall', isCorrect: false },
-                        { choice: 'Test-Driven Development', isCorrect: true },
-                        { choice: 'A little of both', isCorrect: false },
+                        { choice: 'Waterfall' },
+                        { choice: 'Test-Driven Development' },
+                        { choice: 'A little of both' },
                     ],
                     isLast: true,
+                }),
+                validateAnswer: async ({ answer, question }) => ({
+                    isCorrect: answer === 'Test-Driven Development',
+                    correctAnswer: 'Test-Driven Development',
                 }),
             };
             nextChallenge();

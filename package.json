@@ -17,6 +17,7 @@
     "scripts": {
         "test": "node --test --experimental-test-coverage $(find about brag -name '*.test.js')",
         "test:hexagonal": "node --test $(find brag/10.hexagonal -name '*.test.js')",
+        "test:hexagonal-about": "node --test $(find brag/10.hexagonal/about -name '*.test.js')",
         "test:hexagonal-domain": "node --test $(find brag/10.hexagonal/app/domain -name '*.test.js')",
         "test:hexagonal-components": "node --test $(find brag/10.hexagonal/app/web -name '*.test.js')",
         "start:hexagonal": "node brag/10.hexagonal/app/start.mjs",
