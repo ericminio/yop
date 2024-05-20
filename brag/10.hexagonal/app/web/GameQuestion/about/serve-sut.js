@@ -1,5 +1,6 @@
 import {
     RouteAssetEqual,
+    RouteAssetPrefix,
     RouteYop,
     Router,
     Server,
@@ -7,19 +8,23 @@ import {
     html,
     scripts,
 } from '../../../../../../dist/index.js';
+import { sutHtml } from '../../about/suts.js';
 
 const router = new Router([
-    new RouteAssetEqual('/', html(new URL('./sut.html', import.meta.url))),
+    new RouteAssetEqual('/', () => ({
+        contentType: 'text/html',
+        content: sutHtml('game-question'),
+    })),
     new RouteAssetEqual(
         '/sut.js',
         scripts(['../../../domain/domain.js', '../index.js'], import.meta.url)
     ),
-    new RouteAssetEqual(
-        '/templates/GameQuestion/index.html',
+    new RouteAssetPrefix(
+        '/templates/',
         html(new URL('../index.html', import.meta.url))
     ),
-    new RouteAssetEqual(
-        '/css/GameQuestion/index.css',
+    new RouteAssetPrefix(
+        '/css/',
         css(new URL('../index.css', import.meta.url))
     ),
     new RouteYop(),
