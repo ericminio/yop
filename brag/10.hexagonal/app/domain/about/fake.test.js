@@ -1,13 +1,13 @@
 import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { ChallengerStub } from './stubs.js';
+import { ChallengerFake } from './fake.js';
 
-describe('ChallengerStub', () => {
+describe('ChallengerFake', () => {
     let stub;
 
     beforeEach(async () => {
-        stub = new ChallengerStub([
+        stub = new ChallengerFake([
             {
                 question: 'What now?',
                 choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],

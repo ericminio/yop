@@ -9,7 +9,7 @@ import {
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../dist/index.js';
 import { server } from '../app/web/server.js';
-import { ChallengerStub } from '../app/domain/about/stubs.js';
+import { ChallengerFake } from '../app/domain/about/fake.js';
 
 describe('hexagonal - vision', () => {
     let page;
@@ -24,7 +24,7 @@ describe('hexagonal - vision', () => {
     });
     beforeEach(async () => {
         await page.open(baseUrl);
-        const stub = new ChallengerStub([
+        const stub = new ChallengerFake([
             {
                 question: 'What now?',
                 choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],

@@ -1,4 +1,4 @@
-export class ChallengerStub {
+export class ChallengerFake {
     constructor(challenges) {
         this.index = 0;
         this.challenges = challenges.map(
