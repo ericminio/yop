@@ -17,13 +17,17 @@ describe('GameQuestion', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
-        page.window.setChallenge({
-            question: 'What now?',
-            choices: [
-                { choice: 'wrong', isCorrect: false },
-                { choice: 'correct', isCorrect: true },
-            ],
-        });
+        page.window.state.ports = {
+            nextChallenge: async () => ({
+                question: 'What now?',
+                choices: [{ choice: 'wrong' }, { choice: 'correct' }],
+            }),
+            validateAnswer: async ({ answer }) => ({
+                isCorrect: answer === 'correct',
+                correctAnswer: 'correct',
+            }),
+        };
+        await page.window.nextChallenge();
 
         await eventually(page, async () => {
             assert.match(await page.section('What now?'), /wrong*correct/);
@@ -38,7 +42,9 @@ describe('GameQuestion', () => {
         assert.equal(correct.className, '');
         page.click('wrong');
 
-        assert.match(correct.className, /bg-green-600/);
+        await eventually(page, async () => {
+            assert.match(correct.className, /bg-green-600/);
+        });
     });
 
     it('highlights wrong answer when played', async () => {
@@ -46,6 +52,8 @@ describe('GameQuestion', () => {
         assert.equal(wrong.className, '');
         page.click('wrong');
 
-        assert.match(wrong.className, /bg-orange-600/);
+        await eventually(page, async () => {
+            assert.match(wrong.className, /bg-orange-600/);
+        });
     });
 });

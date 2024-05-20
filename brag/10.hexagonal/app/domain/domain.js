@@ -13,18 +13,15 @@ var setChallenge = (challenge) => {
     eventBus.notify('question set', state.challenge);
 };
 
-var play = (answer) => {
+var play = async (answer) => {
     if (state.gameLost) return;
     if (state.challenge.answered) return;
     state.challenge.answered = true;
-    const { isCorrect } = state.challenge.choices.find(
-        ({ choice }) => choice === answer
-    );
+    const { isCorrect, correctAnswer } = await state.ports.validateAnswer({
+        answer,
+    });
     isCorrect ? pass() : gameLost(answer);
-    const { choice: correctAnser } = state.challenge.choices.find(
-        ({ isCorrect }) => isCorrect
-    );
-    eventBus.notify('correct answer', correctAnser);
+    eventBus.notify('correct answer', correctAnswer);
 };
 
 const pass = () => {

@@ -20,13 +20,18 @@ describe('GameNextChallengeInvite', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
-        page.window.setChallenge({
-            question: 'What now?',
-            choices: [
-                { choice: 'TDD', isCorrect: true },
-                { choice: 'Waterfall', isCorrect: false },
-            ],
-        });
+        page.window.state.ports = {
+            nextChallenge: async () => ({
+                question: 'What now?',
+                choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],
+            }),
+            validateAnswer: async ({ answer }) => ({
+                isCorrect: answer === 'TDD',
+                correctAnswer: 'TDD',
+            }),
+        };
+        await page.window.nextChallenge();
+
         await eventually(page, async () => {
             assert.equal(clean(await page.html()), empty);
         });
@@ -42,7 +47,7 @@ describe('GameNextChallengeInvite', () => {
     });
 
     it('is not displayed when loosing', async () => {
-        page.window.play('Waterfall');
+        await page.window.play('Waterfall');
 
         await eventually(page, async () => {
             assert.equal(clean(await page.html()), empty);
@@ -50,7 +55,7 @@ describe('GameNextChallengeInvite', () => {
     });
 
     it('is displayed when passing challenge was not last', async () => {
-        page.window.play('TDD');
+        await page.window.play('TDD');
 
         await eventually(page, async () => {
             assert.match(await page.section('next challenge'), /.*/);
@@ -60,13 +65,10 @@ describe('GameNextChallengeInvite', () => {
     it('is not displayed when passing challenge was last', async () => {
         page.window.setChallenge({
             question: 'What now?',
-            choices: [
-                { choice: 'TDD', isCorrect: true },
-                { choice: 'Waterfall', isCorrect: false },
-            ],
+            choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],
             isLast: true,
         });
-        page.window.play('TDD');
+        await page.window.play('TDD');
 
         await eventually(page, async () => {
             assert.equal(clean(await page.html()), empty);

@@ -1,37 +1,33 @@
 import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { state, nextChallenge, play } from './sut.js';
-import { ChallengerStub } from './stubs.js';
 
 describe('loosing', () => {
     beforeEach(async () => {
         state.score = 0;
         state.ports = {
-            nextChallenge: ((adapter) => adapter.nextChallenge.bind(adapter))(
-                new ChallengerStub([
-                    {
-                        question: 'What now?',
-                        choices: [
-                            { choice: 'wrong', isCorrect: false },
-                            { choice: 'correct', isCorrect: true },
-                        ],
-                    },
-                ])
-            ),
+            nextChallenge: async () => ({
+                question: 'What now?',
+                choices: [{ choice: 'wrong' }, { choice: 'correct' }],
+            }),
+            validateAnswer: async ({ answer }) => ({
+                isCorrect: answer === 'correct',
+                correctAnswer: 'correct',
+            }),
         };
         await nextChallenge();
     });
 
-    it('is recorded', () => {
+    it('is recorded', async () => {
         assert.equal(state.gameLost, false);
-        play('wrong');
+        await play('wrong');
         assert.equal(state.gameLost, true);
     });
 
-    it('is a dead end', () => {
-        play('wrong');
+    it('is a dead end', async () => {
+        await play('wrong');
         assert.equal(state.score, 0);
-        play('correct');
+        await play('correct');
         assert.equal(state.score, 0);
     });
 });
