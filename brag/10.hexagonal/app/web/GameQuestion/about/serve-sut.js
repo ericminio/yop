@@ -11,7 +11,7 @@ import {
 const router = new Router([
     new RouteAssetEqual('/', html(new URL('./sut.html', import.meta.url))),
     new RouteAssetEqual(
-        '/index.js',
+        '/sut.js',
         scripts(['../../../domain/domain.js', '../index.js'], import.meta.url)
     ),
     new RouteAssetEqual(
