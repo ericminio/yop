@@ -1,7 +1,6 @@
 import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { Page, eventually } from '../../../../../../dist/index.js';
-import { SingleChallengeChallenger } from '../../../domain/about/stubs.js';
 import { serverForComponent } from '../../about/servers.js';
 
 describe('GameQuestion', () => {
@@ -18,12 +17,13 @@ describe('GameQuestion', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
-        page.window.state.ports = {
-            nextChallenge: ((adapter) => adapter.nextChallenge.bind(adapter))(
-                new SingleChallengeChallenger()
-            ),
-        };
-        page.window.nextChallenge();
+        page.window.setChallenge({
+            question: 'What now?',
+            choices: [
+                { choice: 'wrong', isCorrect: false },
+                { choice: 'correct', isCorrect: true },
+            ],
+        });
 
         await eventually(page, async () => {
             assert.match(await page.section('What now?'), /wrong*correct/);

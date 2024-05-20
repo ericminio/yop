@@ -1,16 +1,3 @@
-export class SingleChallengeChallenger {
-    async nextChallenge() {
-        return {
-            question: 'What now?',
-            choices: [
-                { choice: 'wrong', isCorrect: false },
-                { choice: 'correct', isCorrect: true },
-            ],
-            isLast: true,
-        };
-    }
-}
-
 export class ChallengerStub {
     constructor(challenges) {
         this.index = 0;
