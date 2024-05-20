@@ -1,33 +1,6 @@
-import {
-    RouteAssetEqual,
-    RouteAssetPrefix,
-    RouteYop,
-    Router,
-    Server,
-    css,
-    html,
-    scripts,
-} from '../../../../../../dist/index.js';
-import { sutHtml } from '../../about/suts.js';
+import { Server } from '../../../../../../dist/index.js';
+import { routerForComponent } from '../../about/routers.js';
 
-const router = new Router([
-    new RouteAssetEqual('/', () => ({
-        contentType: 'text/html',
-        content: sutHtml('game-question'),
-    })),
-    new RouteAssetEqual(
-        '/sut.js',
-        scripts(['../../../domain/domain.js', '../index.js'], import.meta.url)
-    ),
-    new RouteAssetPrefix(
-        '/templates/',
-        html(new URL('../index.html', import.meta.url))
-    ),
-    new RouteAssetPrefix(
-        '/css/',
-        css(new URL('../index.css', import.meta.url))
-    ),
-    new RouteYop(),
-]);
+const router = routerForComponent('game-question');
 
 export const server = new Server(router.handler.bind(router));
