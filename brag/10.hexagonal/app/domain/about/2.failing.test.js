@@ -2,7 +2,7 @@ import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { state, nextChallenge, play } from './sut.js';
 
-describe('loosing', () => {
+describe('failing', () => {
     beforeEach(async () => {
         state.score = 0;
         state.ports = {
@@ -16,12 +16,6 @@ describe('loosing', () => {
             }),
         };
         await nextChallenge();
-    });
-
-    it('is recorded', async () => {
-        assert.equal(state.gameLost, false);
-        await play('wrong');
-        assert.equal(state.gameLost, true);
     });
 
     it('is a dead end', async () => {

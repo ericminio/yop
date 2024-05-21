@@ -9,7 +9,7 @@ customElements.define(
             this.innerHTML = await fetch(
                 '/templates/GameMessage/index.html'
             ).then((response) => response.text());
-            eventBus.register(this.gameLost.bind(this), 'game over');
+            eventBus.register(this.gameLost.bind(this), 'challenge failed');
             eventBus.register(this.win.bind(this), 'you win!');
         }
 

@@ -1,6 +1,5 @@
 var state = {
     score: 0,
-    gameLost: false,
 };
 
 var nextChallenge = async () => {
@@ -14,30 +13,24 @@ var setChallenge = (challenge) => {
 };
 
 var play = async (answer) => {
-    if (state.gameLost) return;
-    if (state.challenge.answered) return;
-    state.challenge.answered = true;
+    if (state.challenge.chosenAnswer) return;
+    state.challenge.chosenAnswer = answer;
     const { isCorrect, correctAnswer } = await state.ports.validateAnswer({
         answer,
         question: state.challenge.question,
     });
-    isCorrect ? pass() : gameLost(answer);
-    eventBus.notify('correct answer', correctAnswer);
+    state.challenge.correctAnswer = correctAnswer;
+    isCorrect ? passed() : failed();
 };
 
-const pass = () => {
-    increaseScore();
+const passed = () => {
+    state.score++;
+    eventBus.notify('challenge passed', state.score);
     if (state.challenge.isLast) {
         eventBus.notify('you win!');
     }
 };
 
-const increaseScore = () => {
-    state.score++;
-    eventBus.notify('score increased', state.score);
-};
-
-const gameLost = (answer) => {
-    state.gameLost = true;
-    eventBus.notify('game over', answer);
+const failed = () => {
+    eventBus.notify('challenge failed');
 };

@@ -15,9 +15,8 @@ customElements.define(
 
         isVisible() {
             return (
-                state.challenge.answered &&
-                !state.challenge.isLast &&
-                !state.gameLost
+                state.challenge.chosenAnswer ===
+                    state.challenge.correctAnswer && !state.challenge.isLast
             );
         }
 

@@ -9,7 +9,7 @@ customElements.define(
             this.innerHTML = await fetch(
                 '/templates/GameScore/index.html'
             ).then((response) => response.text());
-            eventBus.register(this.updateScore.bind(this), 'score increased');
+            eventBus.register(this.updateScore.bind(this), 'challenge passed');
             this.updateScore(state.score);
         }
 

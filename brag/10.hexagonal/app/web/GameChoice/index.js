@@ -18,11 +18,11 @@ customElements.define(
             );
             eventBus.register(
                 this.highlightCorrectAnswer.bind(this),
-                'correct answer'
+                'challenge passed'
             );
             eventBus.register(
                 this.highlightWrongAnswer.bind(this),
-                'game over'
+                'challenge failed'
             );
         }
 
@@ -30,13 +30,15 @@ customElements.define(
             return answer === this.choice;
         }
 
-        highlightCorrectAnswer(answer) {
+        highlightCorrectAnswer() {
+            const answer = state.challenge.chosenAnswer;
             if (this.isMe(answer)) {
                 this.choiceElement(answer).className = 'bg-green-600';
             }
         }
 
-        highlightWrongAnswer(answer) {
+        highlightWrongAnswer() {
+            const answer = state.challenge.chosenAnswer;
             if (this.isMe(answer)) {
                 this.choiceElement(answer).className = 'bg-orange-600';
             }

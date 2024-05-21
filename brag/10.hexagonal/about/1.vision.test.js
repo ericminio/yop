@@ -24,7 +24,7 @@ describe('hexagonal - vision', () => {
     });
     beforeEach(async () => {
         await page.open(baseUrl);
-        const stub = new ChallengerFake([
+        const fake = new ChallengerFake([
             {
                 question: 'What now?',
                 choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],
@@ -40,7 +40,7 @@ describe('hexagonal - vision', () => {
                 correctAnswer: 'Test',
             },
         ]);
-        page.window.state.ports = stub;
+        page.window.state.ports = fake;
         page.window.nextChallenge();
 
         await eventually(page, async () => {
