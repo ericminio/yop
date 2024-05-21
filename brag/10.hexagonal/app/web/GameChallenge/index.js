@@ -1,5 +1,5 @@
 customElements.define(
-    'game-question',
+    'game-challenge',
     class extends HTMLElement {
         constructor() {
             super();
@@ -7,7 +7,7 @@ customElements.define(
 
         async connectedCallback() {
             this.innerHTML = await fetch(
-                '/templates/GameQuestion/index.html'
+                '/templates/GameChallenge/index.html'
             ).then((response) => response.text());
             eventBus.register(this, 'question set');
             eventBus.register(

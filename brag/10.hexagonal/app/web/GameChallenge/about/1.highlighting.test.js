@@ -3,8 +3,8 @@ import { strict as assert } from 'node:assert';
 import { Page, eventually } from '../../../../../../dist/index.js';
 import { serverForComponent } from '../../about/servers.js';
 
-describe('GameQuestion', () => {
-    const server = serverForComponent('game-question');
+describe('GameChallenge', () => {
+    const server = serverForComponent('game-challenge');
     let port;
     let page;
 

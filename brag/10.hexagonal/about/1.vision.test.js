@@ -44,7 +44,7 @@ describe('hexagonal - vision', () => {
         page.window.nextChallenge();
 
         await eventually(page, async () => {
-            assert.match(await page.section('What now?'), /TDD*Waterfall/);
+            assert.match(await page.section('What now?'), /TDD.*Waterfall/);
         });
     });
     afterEach(async () => {
@@ -82,7 +82,7 @@ describe('hexagonal - vision', () => {
         await eventually(page, async () => {
             assert.match(
                 await page.section('First step?'),
-                /Test*Code*Refactor/
+                /Test.*Code.*Refactor/
             );
         });
         page.click('Test');

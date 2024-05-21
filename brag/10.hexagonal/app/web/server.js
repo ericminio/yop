@@ -18,7 +18,7 @@ const router = new Router([
                 '../domain/domain.js',
                 './HomePage/index.js',
                 './GameMessage/index.js',
-                './GameQuestion/index.js',
+                './GameChallenge/index.js',
                 './GameScore/index.js',
                 './GameNextChallengeInvite/index.js',
             ],
