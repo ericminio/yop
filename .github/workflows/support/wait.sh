@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./support/dir.sh
+source ./dir.sh
 
 DIR=$(current_dir ${BASH_SOURCE[0]})
 ready=0

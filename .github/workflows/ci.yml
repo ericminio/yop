@@ -24,7 +24,7 @@ jobs:
             - name: wait for db
               run: |
                   cd .github/workflows/support
-                  ./support/wait.sh
+                  ./wait.sh
             - name: build dev environment
               run: |
                   cd .github/workflows/support
