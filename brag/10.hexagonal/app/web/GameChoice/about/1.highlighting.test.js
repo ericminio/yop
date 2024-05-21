@@ -3,8 +3,24 @@ import { strict as assert } from 'node:assert';
 import { Page, eventually } from '../../../../../../dist/index.js';
 import { serverForComponent } from '../../about/servers.js';
 
-describe('GameChallenge', () => {
-    const server = serverForComponent('game-challenge');
+describe('GameChoice', () => {
+    const server = serverForComponent(
+        'GameChoice',
+        `
+        <game-choice choice="correct"></game-choice>
+        <game-choice choice="wrong"></game-choice>
+        `
+    );
+    const ports = {
+        nextChallenge: async () => ({
+            question: 'question?',
+            choices: [{ choice: 'wrong' }, { choice: 'correct' }],
+        }),
+        validateAnswer: async ({ answer }) => ({
+            isCorrect: answer === 'correct',
+            correctAnswer: 'correct',
+        }),
+    };
     let port;
     let page;
 
@@ -17,20 +33,11 @@ describe('GameChallenge', () => {
     });
     beforeEach(async () => {
         await page.open(`http://localhost:${port}`);
-        page.window.state.ports = {
-            nextChallenge: async () => ({
-                question: 'What now?',
-                choices: [{ choice: 'wrong' }, { choice: 'correct' }],
-            }),
-            validateAnswer: async ({ answer }) => ({
-                isCorrect: answer === 'correct',
-                correctAnswer: 'correct',
-            }),
-        };
+        page.window.state.ports = ports;
         await page.window.nextChallenge();
 
         await eventually(page, async () => {
-            assert.match(await page.section('What now?'), /wrong*correct/);
+            assert.match(page.html(), /choice-correct/);
         });
     });
     afterEach(async () => {
@@ -40,7 +47,7 @@ describe('GameChallenge', () => {
     it('highlights correct answer after play', async () => {
         const correct = page.element('#choice-correct');
         assert.equal(correct.className, '');
-        page.click('wrong');
+        await page.window.play('correct');
 
         await eventually(page, async () => {
             assert.match(correct.className, /bg-green-600/);
@@ -50,7 +57,7 @@ describe('GameChallenge', () => {
     it('highlights wrong answer when played', async () => {
         const wrong = page.element('#choice-wrong');
         assert.equal(wrong.className, '');
-        page.click('wrong');
+        await page.window.play('wrong');
 
         await eventually(page, async () => {
             assert.match(wrong.className, /bg-orange-600/);

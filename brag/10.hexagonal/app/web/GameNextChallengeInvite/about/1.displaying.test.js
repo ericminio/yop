@@ -4,7 +4,10 @@ import { Page, eventually } from '../../../../../../dist/index.js';
 import { serverForComponent } from '../../about/servers.js';
 
 describe('GameNextChallengeInvite', () => {
-    const server = serverForComponent('game-next-challenge-invite');
+    const server = serverForComponent(
+        'GameNextChallengeInvite',
+        '<game-next-challenge-invite></game-next-challenge-invite>'
+    );
     let port;
     let page;
     const empty =

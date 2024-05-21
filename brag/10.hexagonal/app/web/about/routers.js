@@ -7,42 +7,28 @@ import {
     html,
     scripts,
 } from '../../../../../dist/index.js';
-import { dashCaseToPascalCase } from './dashCaseToPascalCase.js';
 import { sutHtml } from './suts.js';
 
-export const routerForComponent = (tag) =>
+export const routerForComponent = (componentClass, body) =>
     new Router([
         new RouteAssetEqual('/', () => ({
             contentType: 'text/html',
-            content: sutHtml(tag),
+            content: sutHtml(body),
         })),
         new RouteAssetEqual(
             '/sut.js',
             scripts(
-                [
-                    '../../domain/domain.js',
-                    `../${dashCaseToPascalCase(tag)}/index.js`,
-                ],
+                ['../../domain/domain.js', `../${componentClass}/index.js`],
                 import.meta.url
             )
         ),
         new RouteAssetPrefix(
             '/templates/',
-            html(
-                new URL(
-                    `../${dashCaseToPascalCase(tag)}/index.html`,
-                    import.meta.url
-                )
-            )
+            html(new URL(`../${componentClass}/index.html`, import.meta.url))
         ),
         new RouteAssetPrefix(
             '/css/',
-            css(
-                new URL(
-                    `../${dashCaseToPascalCase(tag)}/index.css`,
-                    import.meta.url
-                )
-            )
+            css(new URL(`../${componentClass}/index.css`, import.meta.url))
         ),
         new RouteYop(),
     ]);

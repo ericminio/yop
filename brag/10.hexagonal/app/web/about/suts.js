@@ -1,4 +1,4 @@
-export const sutHtml = (tag) => {
+export const sutHtml = (html) => {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -8,7 +8,7 @@ export const sutHtml = (tag) => {
         </head>
 
         <body>
-            <${tag}></${tag}>
+            ${html}
         </body>
     </html>
     `;
