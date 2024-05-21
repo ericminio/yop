@@ -1,5 +1,6 @@
 import { describe, it, beforeEach } from 'node:test';
 import { eventBus, state, nextChallenge, play } from './sut.js';
+import { eventually } from '../../../../../dist/index.js';
 
 describe('winning', () => {
     beforeEach(async () => {

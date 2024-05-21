@@ -9,11 +9,12 @@ customElements.define(
             this.innerHTML = await fetch(
                 '/templates/GameChallenge/index.html'
             ).then((response) => response.text());
-            eventBus.register(this, 'question set');
+            eventBus.register(this, 'challenge set');
             this.update(state.challenge);
         }
 
-        update({ question, choices }) {
+        update() {
+            const { question, choices } = state.challenge;
             this.querySelector('#question').innerHTML = question;
             this.querySelector('#choices').innerHTML = choices
                 .map(({ choice }) => this.choiceDefinition(choice))

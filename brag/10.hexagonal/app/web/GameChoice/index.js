@@ -16,39 +16,42 @@ customElements.define(
             this.choiceElement(this.choice).addEventListener('click', () =>
                 play(this.choice)
             );
-            eventBus.register(
-                this.highlightCorrectAnswer.bind(this),
-                'challenge passed'
-            );
-            eventBus.register(
-                this.highlightWrongAnswer.bind(this),
-                'challenge failed'
-            );
+            eventBus.register(this, 'challenge passed');
+            eventBus.register(this, 'challenge failed');
         }
 
-        isMe(answer) {
-            return answer === this.choice;
+        wasMe() {
+            return state.challenge.chosenAnswer === this.choice;
         }
 
-        highlightCorrectAnswer() {
-            const answer = state.challenge.chosenAnswer;
-            if (this.isMe(answer)) {
-                this.choiceElement(answer).className = 'bg-green-600';
+        amITheCorrectAnswer() {
+            return state.challenge.correctAnswer === this.choice;
+        }
+
+        update() {
+            if (this.amITheCorrectAnswer()) {
+                this.hightlightAsCorrect();
+            } else {
+                if (this.wasMe()) {
+                    this.hightlightAsIncorrect();
+                }
             }
         }
 
-        highlightWrongAnswer() {
-            const answer = state.challenge.chosenAnswer;
-            if (this.isMe(answer)) {
-                this.choiceElement(answer).className = 'bg-orange-600';
-            }
+        hightlightAsCorrect() {
+            this.setClass('bg-green-600');
         }
-
-        choiceId(choice) {
-            return `choice-${choice.toLowerCase().replaceAll(' ', '-')}`;
+        hightlightAsIncorrect() {
+            this.setClass('bg-orange-600');
         }
-        choiceElement(choice) {
-            return this.querySelector(`#${this.choiceId(choice)}`);
+        setClass(className) {
+            this.choiceElement().className = className;
+        }
+        choiceElement() {
+            return this.querySelector(`#${this.choiceId()}`);
+        }
+        choiceId() {
+            return `choice-${this.choice.toLowerCase().replaceAll(' ', '-')}`;
         }
     }
 );

@@ -63,4 +63,14 @@ describe('GameChoice', () => {
             assert.match(wrong.className, /bg-orange-600/);
         });
     });
+
+    it('highlights correct answer even when playing wrong', async () => {
+        const correct = page.element('#choice-correct');
+        assert.equal(correct.className, '');
+        await page.window.play('wrong');
+
+        await eventually(page, async () => {
+            assert.match(correct.className, /bg-green-600/);
+        });
+    });
 });

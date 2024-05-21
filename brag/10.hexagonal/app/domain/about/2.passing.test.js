@@ -1,6 +1,6 @@
 import { describe, it, beforeEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { state, nextChallenge, play } from './sut.js';
+import { state, nextChallenge, play, eventBus } from './sut.js';
 
 describe('passing', () => {
     beforeEach(async () => {
@@ -27,5 +27,10 @@ describe('passing', () => {
         await play('correct');
         await play('correct');
         assert.equal(state.score, 1);
+    });
+
+    it('is shared', (_, done) => {
+        eventBus.register(done, 'challenge passed');
+        play('correct');
     });
 });

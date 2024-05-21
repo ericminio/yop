@@ -9,7 +9,7 @@ var nextChallenge = async () => {
 
 var setChallenge = (challenge) => {
     state.challenge = challenge;
-    eventBus.notify('question set', state.challenge);
+    eventBus.notify('challenge set');
 };
 
 var play = async (answer) => {
@@ -25,7 +25,7 @@ var play = async (answer) => {
 
 const passed = () => {
     state.score++;
-    eventBus.notify('challenge passed', state.score);
+    eventBus.notify('challenge passed');
     if (state.challenge.isLast) {
         eventBus.notify('you win!');
     }

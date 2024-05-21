@@ -13,8 +13,8 @@ customElements.define(
             this.updateScore(state.score);
         }
 
-        updateScore(score) {
-            this.querySelector('#score').innerHTML = score;
+        updateScore() {
+            this.querySelector('#score').innerHTML = state.score;
         }
     }
 );
