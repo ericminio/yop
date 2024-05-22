@@ -9,12 +9,17 @@ describe('GameChoice', () => {
         `
         <game-choice choice="correct"></game-choice>
         <game-choice choice="wrong"></game-choice>
+        <game-choice choice="neutral"></game-choice>
         `
     );
     const ports = {
         nextChallenge: async () => ({
             question: 'question?',
-            choices: [{ choice: 'wrong' }, { choice: 'correct' }],
+            choices: [
+                { choice: 'wrong' },
+                { choice: 'correct' },
+                { choice: 'neutral' },
+            ],
         }),
         validateAnswer: async ({ answer }) => ({
             isCorrect: answer === 'correct',
@@ -37,7 +42,7 @@ describe('GameChoice', () => {
         await page.window.nextChallenge();
 
         await eventually(page, async () => {
-            assert.match(page.html(), /choice-correct/);
+            assert.match(page.html(), /choice-neutral/);
         });
     });
     afterEach(async () => {
@@ -71,6 +76,16 @@ describe('GameChoice', () => {
 
         await eventually(page, async () => {
             assert.match(correct.className, /bg-green-600/);
+        });
+    });
+
+    it('stays not highlighted if not played and wrong answer', async () => {
+        const correct = page.element('#choice-neutral');
+        assert.equal(correct.className, '');
+        await page.window.play('correct');
+
+        await eventually(page, async () => {
+            assert.equal(correct.className, '');
         });
     });
 });
