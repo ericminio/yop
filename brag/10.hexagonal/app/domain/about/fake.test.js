@@ -51,6 +51,8 @@ describe('ChallengerFake', () => {
         assert.equal(first.question, 'What now?');
         const second = await stub.nextChallenge();
         assert.equal(second.question, 'First step?');
+        const third = await stub.nextChallenge();
+        assert.equal(third, undefined);
     });
 
     it('validates first answer as expected', async () => {

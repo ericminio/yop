@@ -12,11 +12,7 @@ export class ChallengerFake {
         this.challenges[this.challenges.length - 1].isLast = true;
     }
     async nextChallenge() {
-        const next = this.challenges[this.index];
-        if (this.index < this.challenges.length - 1) {
-            this.index += 1;
-        }
-        return next;
+        return this.challenges[this.index++];
     }
     async validateAnswer({ answer, question }) {
         const challenge = this.challenges.find(
