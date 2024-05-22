@@ -3,7 +3,6 @@ import {
     RouteAssetPrefix,
     RouteYop,
     Router,
-    css,
     html,
     scripts,
 } from '../../../../../dist/index.js';
@@ -25,10 +24,6 @@ export const routerForComponent = (componentClass, body) =>
         new RouteAssetPrefix(
             '/templates/',
             html(new URL(`../${componentClass}/index.html`, import.meta.url))
-        ),
-        new RouteAssetPrefix(
-            '/css/',
-            css(new URL(`../${componentClass}/index.css`, import.meta.url))
         ),
         new RouteYop(),
     ]);
