@@ -8,7 +8,7 @@ describe('GameChoice', () => {
         'GameChoice',
         `
         <game-choice choice="correct"></game-choice>
-        <game-choice choice="wrong"></game-choice>
+        <game-choice choice="very wrong"></game-choice>
         <game-choice choice="neutral"></game-choice>
         `
     );
@@ -16,7 +16,7 @@ describe('GameChoice', () => {
         nextChallenge: async () => ({
             question: 'question?',
             choices: [
-                { choice: 'wrong' },
+                { choice: 'very wrong' },
                 { choice: 'correct' },
                 { choice: 'neutral' },
             ],
@@ -60,9 +60,9 @@ describe('GameChoice', () => {
     });
 
     it('highlights wrong answer when played', async () => {
-        const wrong = page.element('#choice-wrong');
+        const wrong = page.element('#choice-very-wrong');
         assert.equal(wrong.className, '');
-        await page.window.play('wrong');
+        await page.window.play('very wrong');
 
         await eventually(page, async () => {
             assert.match(wrong.className, /bg-orange-600/);
@@ -72,7 +72,7 @@ describe('GameChoice', () => {
     it('highlights correct answer even when playing wrong', async () => {
         const correct = page.element('#choice-correct');
         assert.equal(correct.className, '');
-        await page.window.play('wrong');
+        await page.window.play('very wrong');
 
         await eventually(page, async () => {
             assert.match(correct.className, /bg-green-600/);
