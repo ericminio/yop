@@ -15,7 +15,6 @@ describe('hexagonal - vision', () => {
     let page;
     let baseUrl;
     before(async () => {
-        page = new Page();
         const port = await server.start();
         baseUrl = `http://localhost:${port}`;
     });
@@ -23,6 +22,7 @@ describe('hexagonal - vision', () => {
         await server.stop();
     });
     beforeEach(async () => {
+        page = new Page();
         await page.open(baseUrl);
         const fake = new ChallengerFake([
             {

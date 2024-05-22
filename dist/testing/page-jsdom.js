@@ -1,12 +1,17 @@
-import { JSDOM } from 'jsdom';
+import jsdom from 'jsdom';
+const { JSDOM } = jsdom;
+const virtualConsole = new jsdom.VirtualConsole();
 const config = {
     runScripts: 'dangerously',
     resources: 'usable',
+    virtualConsole,
 };
 const openWithJsdom = (isUrl) => (isUrl ? JSDOM.fromURL : JSDOM.fromFile);
 
 export class Page {
-    constructor() {}
+    constructor() {
+        this.errors = [];
+    }
 
     async open(spec, options) {
         const isUrl = typeof spec == 'string' && spec.indexOf('http') === 0;
@@ -26,8 +31,15 @@ export class Page {
                 const dom = await openWithJsdom(isUrl)(target, {
                     beforeParse: (window) => {
                         window.fetch = fetchImplementation;
+                        window.__stryker__ = {
+                            activeMutant: process.env.__STRYKER_ACTIVE_MUTANT__,
+                        };
                     },
                     ...config,
+                });
+
+                virtualConsole.on('jsdomError', (error) => {
+                    this.errors.push({ error });
                 });
                 this.window = dom.window;
                 this.document = dom.window.document;
