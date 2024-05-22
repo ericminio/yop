@@ -27,8 +27,8 @@ const router = new Router([
         )
     ),
     new RouteYop(),
-    new RouteTemplate(/^\/templates\/(.*)/, new URL('.', import.meta.url)),
-    new RouteCss(/^\/css\/(.*)/, new URL('.', import.meta.url)),
+    new RouteTemplate(/\/templates\/(.*)/, new URL('.', import.meta.url)),
+    new RouteCss(/\/css\/(.*)/, new URL('.', import.meta.url)),
     new RouteDefault(html(new URL('./index.html', import.meta.url))),
 ]);
 
