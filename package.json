@@ -9,6 +9,7 @@
     "private": false,
     "type": "module",
     "devDependencies": {
+        "@stryker-mutator/core": "^8.2.6",
         "jsdom": "^22.0.0",
         "playwright": "^1.40.0",
         "prettier": "2.8.4",
@@ -21,6 +22,7 @@
         "test:hexagonal-about": "node --test $(find brag/10.hexagonal/about -name '*.test.js')",
         "test:hexagonal-domain": "node --test $(find brag/10.hexagonal/app/domain -name '*.test.js')",
         "test:hexagonal-components": "node --test $(find brag/10.hexagonal/app/web -name '*.test.js')",
+        "stryker:hexagonal": "stryker run",
         "start:hexagonal": "node brag/10.hexagonal/app/start.mjs",
         "prettier:check": "npx prettier --check .",
         "prettier:write": "npx prettier --write .",
