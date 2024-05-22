@@ -10,10 +10,6 @@ describe('playing', () => {
                 question: '???',
                 choices: [{ choice: 'wrong' }, { choice: 'correct' }],
             }),
-            validateAnswer: async ({ answer, question }) => ({
-                isCorrect: answer === 'correct' && question === '???',
-                correctAnswer: 'correct',
-            }),
         };
     });
 
