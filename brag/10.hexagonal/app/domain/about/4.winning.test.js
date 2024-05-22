@@ -1,26 +1,39 @@
 import { describe, it, beforeEach } from 'node:test';
+import { strict as assert } from 'node:assert';
 import { eventBus, state, nextChallenge, play } from './sut.js';
-import { eventually } from '../../../../../dist/index.js';
+import { ChallengerFake } from './fake.js';
 
 describe('winning', () => {
     beforeEach(async () => {
-        state.score = 0;
-        state.ports = {
-            nextChallenge: async () => ({
+        state.ports = new ChallengerFake([
+            {
                 question: 'What now?',
-                choices: [{ choice: 'wrong' }, { choice: 'correct' }],
-                isLast: true,
-            }),
-            validateAnswer: async ({ answer }) => ({
-                isCorrect: answer === 'correct',
-                correctAnswer: 'correct',
-            }),
-        };
-        await nextChallenge();
+                choices: [{ choice: 'TDD' }, { choice: 'Waterfall' }],
+                correctAnswer: 'TDD',
+            },
+            {
+                question: 'First step?',
+                choices: [
+                    { choice: 'Test' },
+                    { choice: 'Code' },
+                    { choice: 'Refactor' },
+                ],
+                correctAnswer: 'Test',
+            },
+        ]);
     });
 
-    it('happens when answering the last question', (_, done) => {
-        eventBus.register(done, 'you win!');
-        play('correct');
+    it('does not happen when answering the first question', async () => {
+        let answer = '';
+        const counting = () => {
+            answer += state.challenge.chosenAnswer;
+        };
+        eventBus.register(counting, 'you win!');
+        await nextChallenge();
+        await play('TDD');
+        await nextChallenge();
+        await play('Test');
+
+        assert.equal(answer, 'Test');
     });
 });

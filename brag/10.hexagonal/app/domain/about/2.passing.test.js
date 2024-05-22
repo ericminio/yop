@@ -4,14 +4,13 @@ import { state, nextChallenge, play, eventBus } from './sut.js';
 
 describe('passing', () => {
     beforeEach(async () => {
-        state.score = 0;
         state.ports = {
             nextChallenge: async () => ({
                 question: '???',
                 choices: [{ choice: 'wrong' }, { choice: 'correct' }],
             }),
-            validateAnswer: async ({ answer, question }) => ({
-                isCorrect: answer === 'correct' && question === '???',
+            validateAnswer: async ({ answer }) => ({
+                isCorrect: answer === 'correct',
                 correctAnswer: 'correct',
             }),
         };
@@ -19,11 +18,13 @@ describe('passing', () => {
     });
 
     it('makes the score increase', async () => {
+        assert.equal(state.score, 0);
         await play('correct');
         assert.equal(state.score, 1);
     });
 
     it('calls for another question', async () => {
+        state.score = 0;
         await play('correct');
         await play('correct');
         assert.equal(state.score, 1);

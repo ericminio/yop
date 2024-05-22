@@ -4,7 +4,6 @@ import { state, nextChallenge, play } from './sut.js';
 
 describe('state', () => {
     beforeEach(async () => {
-        state.score = 0;
         state.ports = {
             nextChallenge: async () => ({
                 question: '???',
