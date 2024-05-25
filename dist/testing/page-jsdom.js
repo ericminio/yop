@@ -1,4 +1,5 @@
 import jsdom from 'jsdom';
+import { oneliner } from './oneliner.js';
 const { JSDOM } = jsdom;
 const virtualConsole = new jsdom.VirtualConsole();
 const config = {
@@ -6,7 +7,12 @@ const config = {
     resources: 'usable',
     virtualConsole,
 };
-const openWithJsdom = (isUrl) => (isUrl ? JSDOM.fromURL : JSDOM.fromFile);
+const openWithJsdom = (isUrl, isHtml) =>
+    isUrl
+        ? JSDOM.fromURL
+        : isHtml
+        ? (target, options) => new JSDOM(target, options)
+        : JSDOM.fromFile;
 
 export class Page {
     constructor() {
@@ -14,8 +20,9 @@ export class Page {
     }
 
     async open(spec, options) {
+        const isHtml = oneliner(spec).indexOf('<') === 0;
         const isUrl = typeof spec == 'string' && spec.indexOf('http') === 0;
-        const target = isUrl ? spec : spec.pathname;
+        const target = isUrl || isHtml ? spec : spec.pathname;
         const fetchImplementation =
             !!options && options.fetch
                 ? options.fetch
@@ -28,7 +35,7 @@ export class Page {
                   };
         return new Promise(async (resolve, reject) => {
             try {
-                const dom = await openWithJsdom(isUrl)(target, {
+                const dom = await openWithJsdom(isUrl, isHtml)(target, {
                     beforeParse: (window) => {
                         window.fetch = fetchImplementation;
                         window.__stryker__ = {
