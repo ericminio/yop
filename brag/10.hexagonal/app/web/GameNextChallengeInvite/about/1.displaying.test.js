@@ -1,28 +1,49 @@
-import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
+import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { Page, eventually } from '../../../../../../dist/index.js';
-import { serverForComponent } from '../../about/servers.js';
+import {
+    Page,
+    contentOfFile,
+    eventually,
+} from '../../../../../../dist/index.js';
 
 describe('GameNextChallengeInvite', () => {
-    const server = serverForComponent(
-        'GameNextChallengeInvite',
-        '<game-next-challenge-invite></game-next-challenge-invite>'
+    const domain =
+        contentOfFile('./dist/spa/event-bus.js') +
+        contentOfFile('./brag/10.hexagonal/app/domain/domain.js');
+    const template = contentOfFile(
+        './brag/10.hexagonal/app/web/GameNextChallengeInvite/index.html'
     );
-    let port;
+    const component = contentOfFile(
+        './brag/10.hexagonal/app/web/GameNextChallengeInvite/index.js'
+    );
+    const content = `
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <script>
+                    ${domain}
+                    ${component}
+                </script>
+            </head>
+            <body>
+                <game-next-challenge-invite></game-next-challenge-invite>
+            </body>
+        </html>
+    `;
     let page;
     const empty =
         '<game-next-challenge-invite>&nbsp;</game-next-challenge-invite>';
     const clean = (html) => html.replace(/\s\s+/g, ' ').trim();
 
-    before(async () => {
-        page = new Page();
-        port = await server.start();
-    });
-    after(async () => {
-        await server.stop();
-    });
     beforeEach(async () => {
-        await page.open(`http://localhost:${port}`);
+        page = new Page();
+        await page.open(content, {
+            fetch: () =>
+                Promise.resolve({
+                    status: 200,
+                    text: () => Promise.resolve(template),
+                }),
+        });
         page.window.state.ports = {
             nextChallenge: async () => ({
                 question: 'What now?',

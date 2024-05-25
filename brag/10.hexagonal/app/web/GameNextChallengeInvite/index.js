@@ -15,8 +15,10 @@ customElements.define(
 
         isVisible() {
             return (
+                state.challenge.chosenAnswer &&
                 state.challenge.chosenAnswer ===
-                    state.challenge.correctAnswer && !state.challenge.isLast
+                    state.challenge.correctAnswer &&
+                !state.challenge.isLast
             );
         }
 
