@@ -5,24 +5,18 @@ import {
     contentOfFile,
     eventually,
 } from '../../../../../../dist/index.js';
+import { domain } from '../../../domain/about/sut.js';
 
 describe('GameChoice', () => {
-    const domain =
-        contentOfFile('./dist/spa/event-bus.js') +
-        contentOfFile('./brag/10.hexagonal/app/domain/domain.js');
-    const template = contentOfFile(
-        './brag/10.hexagonal/app/web/GameChoice/index.html'
-    );
-    const component = contentOfFile(
-        './brag/10.hexagonal/app/web/GameChoice/index.js'
-    );
     const content = `
         <!DOCTYPE html>
         <html>
             <head>
                 <script>
                     ${domain}
-                    ${component}
+                    ${contentOfFile(
+                        './brag/10.hexagonal/app/web/GameChoice/index.js'
+                    )}
                 </script>
             </head>
             <body>
@@ -54,7 +48,12 @@ describe('GameChoice', () => {
             fetch: () =>
                 Promise.resolve({
                     status: 200,
-                    text: () => Promise.resolve(template),
+                    text: () =>
+                        Promise.resolve(
+                            contentOfFile(
+                                './brag/10.hexagonal/app/web/GameChoice/index.html'
+                            )
+                        ),
                 }),
         });
         page.window.state.ports = ports;

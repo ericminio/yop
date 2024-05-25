@@ -1,9 +1,16 @@
-import { exposex } from '../../../../../dist/index.js';
+import { contentOfFile, exposex } from '../../../../../dist/index.js';
+
+const files = [
+    './dist/spa/event-bus.js',
+    './brag/10.hexagonal/app/domain/domain.js',
+];
 
 export const { eventBus, state, nextChallenge, play } = exposex({
     symbol: '{eventBus, state, nextChallenge, play}',
-    files: [
-        './dist/spa/event-bus.js',
-        './brag/10.hexagonal/app/domain/domain.js',
-    ],
+    files,
 });
+
+export const domain = files.reduce(
+    (content, file) => content + contentOfFile(file),
+    ''
+);
