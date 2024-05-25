@@ -1,17 +1,37 @@
 import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { Page, eventually } from '../../../../../../dist/index.js';
-import { serverForComponent } from '../../about/servers.js';
+import {
+    Page,
+    contentOfFile,
+    eventually,
+} from '../../../../../../dist/index.js';
 
 describe('GameChoice', () => {
-    const server = serverForComponent(
-        'GameChoice',
-        `
-        <game-choice choice="correct"></game-choice>
-        <game-choice choice="very wrong"></game-choice>
-        <game-choice choice="neutral"></game-choice>
-        `
+    const domain =
+        contentOfFile('./dist/spa/event-bus.js') +
+        contentOfFile('./brag/10.hexagonal/app/domain/domain.js');
+    const template = contentOfFile(
+        './brag/10.hexagonal/app/web/GameChoice/index.html'
     );
+    const component = contentOfFile(
+        './brag/10.hexagonal/app/web/GameChoice/index.js'
+    );
+    const content = `
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <script>
+                    ${domain}
+                    ${component}
+                </script>
+            </head>
+            <body>
+                <game-choice choice="correct"></game-choice>
+                <game-choice choice="very wrong"></game-choice>
+                <game-choice choice="neutral"></game-choice>
+            </body>
+        </html>
+    `;
     const ports = {
         nextChallenge: async () => ({
             question: 'question?',
@@ -26,18 +46,17 @@ describe('GameChoice', () => {
             correctAnswer: 'correct',
         }),
     };
-    let port;
     let page;
 
-    before(async () => {
-        page = new Page();
-        port = await server.start();
-    });
-    after(async () => {
-        await server.stop();
-    });
     beforeEach(async () => {
-        await page.open(`http://localhost:${port}`);
+        page = new Page();
+        await page.open(content, {
+            fetch: () =>
+                Promise.resolve({
+                    status: 200,
+                    text: () => Promise.resolve(template),
+                }),
+        });
         page.window.state.ports = ports;
         await page.window.nextChallenge();
 
