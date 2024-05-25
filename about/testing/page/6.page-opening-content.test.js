@@ -21,13 +21,28 @@ describe('page opening content', () => {
                             }
                         }
                     );
+                    customElements.define(
+                        'yop-stubbed',
+                        class extends HTMLElement {
+                            constructor() {
+                                super();
+                            }
+
+                            async connectedCallback() {
+                                this.innerHTML = this.innerHTML = await fetch(
+                                    '/templates/Any/index.html'
+                                ).then((response) => response.text());
+                            }
+                        }
+                    );
                 </script>
             </head>
             <body>
                 <section>
                     page from raw content
                 </section>
-                <yop-component></<yop-component>
+                <yop-component></yop-component>
+                <yop-stubbed></yop-stubbed>
             </body>
         </html>
     `;
@@ -35,7 +50,14 @@ describe('page opening content', () => {
 
     beforeEach(async () => {
         page = new Page();
-        await page.open(content);
+        await page.open(content, {
+            fetch: () =>
+                Promise.resolve({
+                    status: 200,
+                    text: () =>
+                        Promise.resolve('<section>stubbed content</section>'),
+                }),
+        });
     });
     afterEach(async () => {
         await page.close();
@@ -47,5 +69,11 @@ describe('page opening content', () => {
 
     it('instantiates component as expected', async () => {
         assert.match(await page.section('component content'), /.*/);
+    });
+
+    it('uses stubbed template as expected', async () => {
+        await eventually(page, async () => {
+            assert.match(await page.section('stubbed content'), /.*/);
+        });
     });
 });
