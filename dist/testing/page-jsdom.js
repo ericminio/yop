@@ -20,7 +20,8 @@ export class Page {
     }
 
     async open(spec, options) {
-        const isHtml = oneliner(spec).indexOf('<') === 0;
+        const isHtml =
+            typeof spec == 'string' && oneliner(spec).indexOf('<') === 0;
         const isUrl = typeof spec == 'string' && spec.indexOf('http') === 0;
         const target = isUrl || isHtml ? spec : spec.pathname;
         const fetchImplementation =
