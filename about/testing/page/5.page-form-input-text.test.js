@@ -48,4 +48,12 @@ describe('page - setting input via label', () => {
             );
         }
     });
+
+    it('detect input change as expected', async () => {
+        await page.enter('Track Input Number', '42');
+
+        await eventually(async () => {
+            assert.match(await page.section('Track Input Demo'), /Result: 42/);
+        });
+    });
 });

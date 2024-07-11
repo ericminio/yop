@@ -23,6 +23,12 @@
             >
             <input />
         </section>
+        <section>
+            <h1>Track Input Demo</h1>
+            <label for="number-track-input">Track Input Number</label>
+            <input id="number-track-input" />
+            <div id="track-input-result"></div>
+        </section>
 
         <script>
             document
@@ -30,6 +36,13 @@
                 .addEventListener('click', () => {
                     document.getElementById('happy-path-result').innerHTML =
                         document.getElementById('number-happy-path').value;
+                });
+            document
+                .getElementById('number-track-input')
+                .addEventListener('input', (e) => {
+                    document.getElementById(
+                        'track-input-result'
+                    ).innerHTML = `Result: ${e.target.value}`;
                 });
         </script>
     </body>
