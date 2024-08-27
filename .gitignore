@@ -42,3 +42,4 @@ about/pyramid/incoming/situation/tests
 reports
 
 ignore.html
+.DS_Store

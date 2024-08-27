@@ -2,6 +2,7 @@ import jsdom from 'jsdom';
 import { oneliner } from './oneliner.js';
 const { JSDOM } = jsdom;
 const virtualConsole = new jsdom.VirtualConsole();
+virtualConsole.sendTo(console);
 const config = {
     runScripts: 'dangerously',
     resources: 'usable',
@@ -50,6 +51,9 @@ export class Page {
                     this.errors.push({ error });
                 });
                 this.window = dom.window;
+                this.window.yopReload = () => {
+                    this.open(spec, options);
+                };
                 this.document = dom.window.document;
                 if (this.document.readyState === 'loading') {
                     this.document.addEventListener('DOMContentLoaded', () =>
