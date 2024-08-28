@@ -20,7 +20,7 @@ jobs:
             - name: start db
               run: |
                   cd .github/workflows/support
-                  docker-compose up -d db
+                  docker compose up -d db
             - name: wait for db
               run: |
                   cd .github/workflows/support
@@ -28,8 +28,8 @@ jobs:
             - name: build dev environment
               run: |
                   cd .github/workflows/support
-                  docker-compose build dev
+                  docker compose build dev
             - name: tests
               run: |
                   cd .github/workflows/support
-                  docker-compose run --service-ports --rm --name ubuntu-yop dev ./run.sh
+                  docker compose run --service-ports --rm --name ubuntu-yop dev ./run.sh
