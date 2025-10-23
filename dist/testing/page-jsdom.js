@@ -161,8 +161,18 @@ export class Page {
                 `${options.tag} with text or name '${options.text}' not found`
             );
         }
-        return candidates.sort(
-            (a, b) => a.textContent.length - b.textContent.length
-        )[0];
+        return candidates.sort((a, b) => {
+            if (
+                a.getAttribute('name') === options.text &&
+                b.getAttribute('name') === options.text
+            ) {
+                throw new Error(
+                    `multiple sections with name '${options.text}' found`
+                );
+            }
+            if (a.getAttribute('name') === options.text) return -1;
+            if (b.getAttribute('name') === options.text) return 1;
+            return a.textContent.length - b.textContent.length;
+        })[0];
     }
 }

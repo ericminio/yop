@@ -33,4 +33,19 @@ describe('page section selection', () => {
             'Monitor Quantity - 2 + $ 300'
         );
     });
+
+    it('returns exact name match over smaller text', async () => {
+        assert.match(await page.section('agree'), /agree strongly/);
+    });
+
+    it('throws when multiple sections with same name exist being the searched term', async () => {
+        await assert.rejects(
+            async () => {
+                await page.section('results');
+            },
+            {
+                message: /multiple sections with name 'results' found/,
+            }
+        );
+    });
 });
