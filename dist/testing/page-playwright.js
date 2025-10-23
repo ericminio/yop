@@ -8,7 +8,7 @@ export class Page {
         if (!!this.browser) {
             await this.browser.close();
         }
-        this.browser = await firefox.launch({ headless: false });
+        this.browser = await firefox.launch({ headless: true });
         this.page = await this.browser.newPage();
 
         const isUrl = typeof spec == 'string' && spec.indexOf('http') === 0;
@@ -65,19 +65,18 @@ export class Page {
             const candidate = elements[i];
             const actualText = await candidate.textContent();
             const actualName = await candidate.getAttribute('name');
-            if (
-                actualText.indexOf(text) !== -1 ||
-                (actualName && actualName.indexOf(text) !== -1)
-            ) {
-                candidates.push({ element: candidate, text: actualText });
+            if (actualText.indexOf(text) !== -1 || actualName === text) {
+                candidates.push({
+                    element: candidate,
+                    text: actualText,
+                    name: actualName,
+                });
             }
         }
         if (candidates.length === 0) {
             throw new Error(`${tag} with text or name '${text}' not found`);
         }
-        const selected = candidates.sort(
-            (a, b) => a.text.length - b.text.length
-        )[0];
-        return selected;
+        candidates.sort(this.sortWithNameAndContent(tag, text));
+        return candidates[0];
     }
 }

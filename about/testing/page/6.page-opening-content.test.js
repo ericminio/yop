@@ -29,9 +29,8 @@ describe('page opening content', () => {
                             }
 
                             async connectedCallback() {
-                                this.innerHTML = this.innerHTML = await fetch(
-                                    '/templates/Any/index.html'
-                                ).then((response) => response.text());
+                                const response = await fetch('/stubbed-template');
+                                this.innerHTML = await response.text();                            
                             }
                         }
                     );

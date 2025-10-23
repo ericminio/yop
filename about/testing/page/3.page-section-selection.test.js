@@ -44,7 +44,8 @@ describe('page section selection', () => {
                 await page.section('results');
             },
             {
-                message: /multiple sections with name 'results' found/,
+                message:
+                    /multiple elements 'section' with name 'results' found/,
             }
         );
     });

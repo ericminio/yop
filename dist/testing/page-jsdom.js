@@ -90,12 +90,12 @@ export class Page {
 
     section(text) {
         return this.find({ tag: 'section', text })
-            .textContent.replace(/\s\s+/g, ' ')
+            .text.replace(/\s\s+/g, ' ')
             .trim();
     }
 
     color(text) {
-        const label = this.find({ tag: 'label', text });
+        const label = this.find({ tag: 'label', text }).element;
         const style = this.document.defaultView.getComputedStyle(label, null);
 
         return style.color;
@@ -118,7 +118,7 @@ export class Page {
     }
 
     click(text) {
-        this.find({ tag: 'button', text }).click();
+        this.find({ tag: 'button', text }).element.click();
     }
 
     enter(prompt, value) {
@@ -128,7 +128,7 @@ export class Page {
     }
 
     input(prompt) {
-        let label = this.find({ tag: 'label', text: prompt });
+        let label = this.find({ tag: 'label', text: prompt }).element;
         if (label.htmlFor.length === 0) {
             throw new Error(
                 `label with text '${prompt}' is missing for attribute`
@@ -141,35 +141,29 @@ export class Page {
         return candidate;
     }
 
-    find(options) {
+    find({ in: inDocument, tag, text }) {
         if (!this.document) {
             throw new Error('page.document must be defined');
         }
-        const document = options.in || this.document;
-        let candidates = Array.from(
-            document.querySelectorAll(options.tag)
-        ).filter(
-            (element) =>
-                element.textContent.indexOf(options.text) !== -1 ||
-                element.getAttribute('name') === options.text
-        );
-        if (candidates.length === 0) {
-            throw new Error(
-                `${options.tag} with text or name '${options.text}' not found`
-            );
-        }
-        return candidates.sort((a, b) => {
-            if (
-                a.getAttribute('name') === options.text &&
-                b.getAttribute('name') === options.text
-            ) {
-                throw new Error(
-                    `multiple sections with name '${options.text}' found`
-                );
+        const document = inDocument || this.document;
+        const elements = Array.from(document.querySelectorAll(tag));
+        const candidates = [];
+        for (let i = 0; i < elements.length; i++) {
+            const candidate = elements[i];
+            const actualText = candidate.textContent;
+            const actualName = candidate.getAttribute('name');
+            if (actualText.indexOf(text) !== -1 || actualName === text) {
+                candidates.push({
+                    element: candidate,
+                    text: actualText,
+                    name: actualName,
+                });
             }
-            if (a.getAttribute('name') === options.text) return -1;
-            if (b.getAttribute('name') === options.text) return 1;
-            return a.textContent.length - b.textContent.length;
-        })[0];
+        }
+        if (candidates.length === 0) {
+            throw new Error(`${tag} with text or name '${text}' not found`);
+        }
+        candidates.sort(this.sortWithNameAndContent(tag, text));
+        return candidates[0];
     }
 }

@@ -100,19 +100,18 @@ export class Page {
             const candidate = buttons[i];
             const actualText = await candidate.getText();
             const actualName = await candidate.getAttribute('name');
-            if (
-                actualText.indexOf(text) !== -1 ||
-                (actualName && actualName.indexOf(text) !== -1)
-            ) {
-                candidates.push({ element: candidate, text: actualText });
+            if (actualText.indexOf(text) !== -1 || actualName === text) {
+                candidates.push({
+                    element: candidate,
+                    text: actualText,
+                    name: actualName,
+                });
             }
         }
         if (candidates.length === 0) {
             throw new Error(`${tag} with text or name '${text}' not found`);
         }
-        const selected = candidates.sort(
-            (a, b) => a.text.length - b.text.length
-        )[0];
-        return selected;
+        candidates.sort(this.sortWithNameAndContent(tag, text));
+        return candidates[0];
     }
 }
