@@ -18,3 +18,14 @@ describe('exposing non-module code', () => {
         assert.equal(add(40, 2), 42);
     });
 });
+
+describe('exposing module code', () => {
+    it('is also available', () => {
+        const multiply = expose({
+            symbol: 'multiply',
+            file: './about/expose-sample-module.js',
+        });
+
+        assert.equal(multiply(21, 2), 42);
+    });
+});
