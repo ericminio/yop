@@ -51,9 +51,6 @@ export class Page {
                     this.errors.push({ error });
                 });
                 this.window = dom.window;
-                this.window.yopReload = () => {
-                    this.open(spec, options);
-                };
                 this.document = dom.window.document;
                 if (this.document.readyState === 'loading') {
                     this.document.addEventListener('DOMContentLoaded', () =>
