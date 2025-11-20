@@ -1,12 +1,9 @@
 import jsdom from 'jsdom';
 import { oneliner } from './oneliner.js';
 const { JSDOM } = jsdom;
-const virtualConsole = new jsdom.VirtualConsole();
-virtualConsole.sendTo(console);
 const config = {
     runScripts: 'dangerously',
     resources: 'usable',
-    virtualConsole,
 };
 const openWithJsdom = (isUrl, isHtml) =>
     isUrl
@@ -47,9 +44,6 @@ export class Page {
                     ...config,
                 });
 
-                virtualConsole.on('jsdomError', (error) => {
-                    this.errors.push({ error });
-                });
                 this.window = dom.window;
                 this.document = dom.window.document;
                 if (this.document.readyState === 'loading') {
@@ -167,3 +161,16 @@ export class Page {
         return candidates[0];
     }
 }
+
+Page.prototype.sortWithNameAndContent = function (tag, text) {
+    return (a, b) => {
+        if (a.name === text && b.name === text) {
+            throw new Error(
+                `multiple elements '${tag}' with name '${text}' found`
+            );
+        }
+        if (a.name === text) return -1;
+        if (b.name === text) return 1;
+        return a.text.length - b.text.length;
+    };
+};
