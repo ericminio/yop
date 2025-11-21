@@ -1,4 +1,4 @@
-class Store {
+class YopLocalStorage {
     constructor(window) {
         this.map = window.localStorage;
     }
@@ -21,4 +21,29 @@ class Store {
         return JSON.parse(this.get(id));
     }
 }
-var store = new Store(window);
+var yopLocalStorage = new YopLocalStorage(window);
+
+class YopDomainStorage {
+    constructor() {
+        this.map = {};
+    }
+    clear() {
+        this.map = {};
+    }
+    save(id, value) {
+        this.map[id] = value;
+    }
+    get(id) {
+        return this.map[id];
+    }
+    delete(id) {
+        delete this.map[id];
+    }
+    saveObject(id, value) {
+        this.save(id, value);
+    }
+    getObject(id) {
+        return this.get(id);
+    }
+}
+var yopDomainStorage = new YopDomainStorage();

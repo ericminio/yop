@@ -3,7 +3,8 @@ class YopElement extends HTMLElement {
         super();
         this.template = this.constructor.template;
         this.bus = eventBus;
-        this.store = store;
+        this.localStorage = yopLocalStorage;
+        this.store = yopDomainStorage;
         this.ids = [];
     }
     async connectedCallback() {
