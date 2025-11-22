@@ -4,6 +4,7 @@ export class EventBus {
         this.listeners = {};
         this.patterns = [];
         this.listenersForAll = [];
+        this.pauseNotifications = false;
     }
     isEmpty() {
         return (
@@ -13,6 +14,9 @@ export class EventBus {
         );
     }
     notify(key, value) {
+        if (this.pauseNotifications) {
+            return;
+        }
         if (this.listeners[key]) {
             for (const { listener } of this.listeners[key]) {
                 this.notifyListener(listener, key, value);
