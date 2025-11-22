@@ -11,7 +11,7 @@ class YopElement extends HTMLElement {
         this.innerHTML = await fetch(this.template).then((response) =>
             response.text()
         );
-        this.wire();
+        await this.wire();
     }
     async disconnectedCallback() {
         this.bus.unregisterAll(this.ids);
@@ -22,7 +22,7 @@ class YopElement extends HTMLElement {
     notify(key, value) {
         this.bus.notify(key, value);
     }
-    wire() {
+    async wire() {
         throw new Error('wire() method not implemented');
     }
 }
