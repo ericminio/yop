@@ -18,7 +18,8 @@ export class EventBus {
             return;
         }
         if (this.listeners[key]) {
-            for (const { listener } of this.listeners[key]) {
+            const beforeStart = [...this.listeners[key]];
+            for (const { listener } of beforeStart) {
                 this.notifyListener(listener, key, value);
             }
         }

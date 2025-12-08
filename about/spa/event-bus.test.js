@@ -174,6 +174,26 @@ describe('events bus', () => {
 
             assert.equal(spy, undefined);
         });
+        it('can happen from within listener', () => {
+            let firstSpy;
+            let id;
+            const firstCallback = (value) => {
+                eventBus.unregister(id);
+                firstSpy = value;
+            };
+            id = eventBus.register(firstCallback, 'event');
+
+            let secondSpy;
+            const secondCallback = (value) => {
+                secondSpy = value;
+            };
+            eventBus.register(secondCallback, 'event');
+
+            eventBus.notify('event', 42);
+
+            assert.equal(firstSpy, 42);
+            assert.equal(secondSpy, 42);
+        });
     });
 
     describe('emptyness', () => {
