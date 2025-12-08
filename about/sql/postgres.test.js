@@ -3,7 +3,7 @@ import { strict as assert } from 'node:assert';
 
 import { Postgres } from '../../dist/sql/postgres.js';
 
-describe.skip('Postgres', () => {
+describe('Postgres', () => {
     it('can execute one select', async () => {
         const database = new Postgres();
         const rows = await database.execute("select 'Joe' as name");
