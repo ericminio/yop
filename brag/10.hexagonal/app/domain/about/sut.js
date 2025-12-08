@@ -12,6 +12,6 @@ export const { eventBus, state, nextChallenge, play } = exposex({
 });
 
 export const domain = files.reduce(
-    (content, file) => content + contentOfFile(file),
+    (content, file) => content + contentOfFile(file).replace(/export /g, ' '),
     ''
 );
