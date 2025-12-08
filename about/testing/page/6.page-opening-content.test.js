@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { Page, eventually } from '../../../dist/index.js';
+import { Page, eventually } from '../../../dist/testing/index.js';
 
 describe('page opening content', () => {
     const content = `

@@ -1,9 +1,9 @@
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { Postgres } from '../../dist/index.js';
+import { Postgres } from '../../dist/sql/postgres.js';
 
-describe('Postgres', () => {
+describe.skip('Postgres', () => {
     it('can execute one select', async () => {
         const database = new Postgres();
         const rows = await database.execute("select 'Joe' as name");

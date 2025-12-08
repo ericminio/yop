@@ -3,7 +3,7 @@ import { strict as assert } from 'node:assert';
 
 import { Server, html, serveContent } from '../../../dist/index.js';
 import { URL } from 'url';
-import { Page } from '../../../dist/index.js';
+import { Page } from '../../../dist/testing/index.js';
 
 describe('page opening url', () => {
     const file = new URL('./page-index.html', import.meta.url);

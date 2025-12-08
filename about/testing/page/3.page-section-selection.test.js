@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 
 import { URL } from 'url';
-import { Page } from '../../../dist/index.js';
+import { Page } from '../../../dist/testing/index.js';
 
 describe('page section selection', () => {
     let page;

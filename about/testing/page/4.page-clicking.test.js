@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
 
 import { URL } from 'url';
-import { Page, eventually } from '../../../dist/index.js';
+import { Page, eventually } from '../../../dist/testing/index.js';
 
 describe('page - clicking on element', () => {
     const file = new URL('./page-buttons.html', import.meta.url);
