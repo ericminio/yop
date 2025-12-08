@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { Page, eventually, wait } from '../../dist/index.js';
+import { Page, eventually, wait } from '../../dist/testing/index.js';
 import { clearRegistrations } from './notification-service.js';
 import { server } from './start.mjs';
 

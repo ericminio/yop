@@ -1,6 +1,6 @@
 import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { eventually, Page } from '../../../dist/index.js';
+import { eventually, Page } from '../../../dist/testing/index.js';
 import { server } from '../app/web/server.js';
 import { ChallengerFake } from '../app/domain/about/fake.js';
 

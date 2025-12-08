@@ -1,10 +1,7 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
-import {
-    Page,
-    contentOfFile,
-    eventually,
-} from '../../../../../../dist/index.js';
+import { contentOfFile } from '../../../../../../dist/index.js';
+import { Page, eventually } from '../../../../../../dist/testing/index.js';
 import { domain } from '../../../domain/about/sut.js';
 
 describe('GameNextChallengeInvite', () => {

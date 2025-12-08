@@ -1,6 +1,6 @@
 import { describe, it, before, after } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { Page, eventually } from '../../dist/index.js';
+import { Page, eventually } from '../../dist/testing/index.js';
 import { server } from './start.mjs';
 
 describe('Web component', () => {
