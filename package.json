@@ -16,8 +16,8 @@
         "selenium-webdriver": "^4.14.0"
     },
     "scripts": {
-        "test": "node --test --experimental-test-coverage $(find about brag -name '*.test.js')",
-        "test:hexagonal-coverage": "node --test --experimental-test-coverage $(find brag/10.hexagonal -name '*.test.js')",
+        "test": "node --test --experimental-test-coverage --test-coverage-exclude '**/*.html' --test-coverage-exclude '**/*.test.js' $(find about brag -name '*.test.js')",
+        "test:hexagonal-coverage": "node --test --experimental-test-coverage --test-coverage-exclude 'dist/**/*' $(find brag/10.hexagonal -name '*.test.js')",
         "test:hexagonal": "node --test $(find brag/10.hexagonal -name '*.test.js')",
         "test:hexagonal-about": "node --test $(find brag/10.hexagonal/about -name '*.test.js')",
         "test:hexagonal-domain": "node --test $(find brag/10.hexagonal/app/domain -name '*.test.js')",
