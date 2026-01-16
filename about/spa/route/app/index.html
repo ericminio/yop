@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>About routes</title>
+        <script src="/yop.js"></script>
+        <script>
+            customElements.define(
+                'home-page',
+                class extends HTMLElement {
+                    connectedCallback() {
+                        this.innerHTML = `
+                        <section>
+                          <h1>Home Page</h1>
+                          <p>Welcome</p>
+                        </section>`;
+                    }
+                }
+            );
+        </script>
+    </head>
+
+    <body>
+        <yop-route when="/" then="home-page"></yop-route>
+    </body>
+</html>
