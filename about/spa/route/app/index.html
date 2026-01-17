@@ -12,26 +12,16 @@
                           <section>
                             <h1>Home Page</h1>
                             <p>Welcome</p>
-                            <button id="about">about link</button>
-                            <button id="search">search</button>
-                            <button id="product">product</button>
+                            <label for="navigate">Navigate to</label>
+                            <input id="navigate" type="text" />
+                            <button id="go">go</button>
                           </section>`;
-                        this.querySelector('#about').addEventListener(
+                        this.querySelector('#go').addEventListener(
                             'click',
                             () => {
-                                navigate.to('/about');
-                            }
-                        );
-                        this.querySelector('#search').addEventListener(
-                            'click',
-                            () => {
-                                navigate.to('/search?criteria=shoes');
-                            }
-                        );
-                        this.querySelector('#product').addEventListener(
-                            'click',
-                            () => {
-                                navigate.to('/product/42');
+                                const path =
+                                    this.querySelector('#navigate').value;
+                                navigate.to(path);
                             }
                         );
                     }

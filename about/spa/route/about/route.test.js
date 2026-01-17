@@ -28,7 +28,8 @@ describe('route', () => {
         await eventually(page, async () => {
             assert.match(await page.section('Home'), /Welcome/);
         });
-        await page.click('about link');
+        await page.enter('Navigate to', '/about');
+        await page.click('go');
         await eventually(page, async () => {
             assert.match(await page.section('About'), /We are magicians/);
         });
@@ -38,7 +39,8 @@ describe('route', () => {
         await eventually(page, async () => {
             assert.match(await page.section('Home'), /Welcome/);
         });
-        await page.click('search');
+        await page.enter('Navigate to', '/search?criteria=shoes');
+        await page.click('go');
         await eventually(page, async () => {
             assert.match(await page.section('Results'), /Criteria was: shoes/);
         });
@@ -48,7 +50,8 @@ describe('route', () => {
         await eventually(page, async () => {
             assert.match(await page.section('Home'), /Welcome/);
         });
-        await page.click('product');
+        await page.enter('Navigate to', '/product/42');
+        await page.click('go');
         await eventually(page, async () => {
             assert.match(await page.section('Product'), /id: 42/);
         });
