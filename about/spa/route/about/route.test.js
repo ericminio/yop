@@ -1,4 +1,4 @@
-import { describe, it, before, after } from 'node:test';
+import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { eventually, Page } from '../../../../dist/testing/index.js';
 
@@ -7,13 +7,13 @@ import { server } from '../app/start.mjs';
 describe('route', () => {
     let page;
     let baseUrl;
-    before(async () => {
+    beforeEach(async () => {
         page = new Page();
         const port = await server.start();
         baseUrl = `http://localhost:${port}`;
         await page.open(baseUrl);
     });
-    after(async () => {
+    afterEach(async () => {
         await page.close();
         await server.stop();
     });
@@ -31,6 +31,16 @@ describe('route', () => {
         await page.click('about link');
         await eventually(page, async () => {
             assert.match(await page.section('About'), /We are magicians/);
+        });
+    });
+
+    it('exposes searchParams as attributes', async () => {
+        await eventually(page, async () => {
+            assert.match(await page.section('Home'), /Welcome/);
+        });
+        await page.click('search');
+        await eventually(page, async () => {
+            assert.match(await page.section('Results'), /Criteria was: shoes/);
         });
     });
 });

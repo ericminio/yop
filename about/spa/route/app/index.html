@@ -9,15 +9,22 @@
                 class extends HTMLElement {
                     connectedCallback() {
                         this.innerHTML = `
-                        <section>
-                          <h1>Home Page</h1>
-                          <p>Welcome</p>
-                          <button>about link</button>
-                        </section>`;
-                        this.querySelector('button').addEventListener(
+                          <section>
+                            <h1>Home Page</h1>
+                            <p>Welcome</p>
+                            <button id="about">about link</button>
+                            <button id="search">search</button>
+                          </section>`;
+                        this.querySelector('#about').addEventListener(
                             'click',
                             () => {
                                 navigate.to('/about');
+                            }
+                        );
+                        this.querySelector('#search').addEventListener(
+                            'click',
+                            () => {
+                                navigate.to('/search?criteria=shoes');
                             }
                         );
                     }
@@ -28,10 +35,26 @@
                 class extends HTMLElement {
                     connectedCallback() {
                         this.innerHTML = `
-                        <section>
-                          <h1>About Page</h1>
-                          <p>We are magicians</p>
-                        </section>`;
+                          <section>
+                            <h1>About Page</h1>
+                            <p>We are magicians</p>
+                          </section>`;
+                    }
+                }
+            );
+            customElements.define(
+                'search-page',
+                class extends HTMLElement {
+                    connectedCallback() {
+                        const params = new URLSearchParams(
+                            this.getAttribute('searchParams')
+                        );
+                        const criteria = params.get('criteria');
+                        this.innerHTML = `
+                          <section>
+                            <h1>Results</h1>
+                            <p>Criteria was: ${criteria}</p>
+                          </section>`;
                     }
                 }
             );
@@ -41,5 +64,6 @@
     <body>
         <yop-route when="/" then="home-page"></yop-route>
         <yop-route when="/about" then="about-page"></yop-route>
+        <yop-route when="/search" then="search-page"></yop-route>
     </body>
 </html>
