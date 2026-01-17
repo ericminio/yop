@@ -12,6 +12,25 @@
                         <section>
                           <h1>Home Page</h1>
                           <p>Welcome</p>
+                          <button>about link</button>
+                        </section>`;
+                        this.querySelector('button').addEventListener(
+                            'click',
+                            () => {
+                                navigate.to('/about');
+                            }
+                        );
+                    }
+                }
+            );
+            customElements.define(
+                'about-page',
+                class extends HTMLElement {
+                    connectedCallback() {
+                        this.innerHTML = `
+                        <section>
+                          <h1>About Page</h1>
+                          <p>We are magicians</p>
                         </section>`;
                     }
                 }
@@ -21,5 +40,6 @@
 
     <body>
         <yop-route when="/" then="home-page"></yop-route>
+        <yop-route when="/about" then="about-page"></yop-route>
     </body>
 </html>

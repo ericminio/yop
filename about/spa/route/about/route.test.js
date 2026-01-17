@@ -23,4 +23,14 @@ describe('route', () => {
             assert.match(await page.section('Home'), /Welcome/);
         });
     });
+
+    it('allows navigation', async () => {
+        await eventually(page, async () => {
+            assert.match(await page.section('Home'), /Welcome/);
+        });
+        await page.click('about link');
+        await eventually(page, async () => {
+            assert.match(await page.section('About'), /We are magicians/);
+        });
+    });
 });
