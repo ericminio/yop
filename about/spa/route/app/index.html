@@ -14,6 +14,7 @@
                             <p>Welcome</p>
                             <button id="about">about link</button>
                             <button id="search">search</button>
+                            <button id="product">product</button>
                           </section>`;
                         this.querySelector('#about').addEventListener(
                             'click',
@@ -25,6 +26,12 @@
                             'click',
                             () => {
                                 navigate.to('/search?criteria=shoes');
+                            }
+                        );
+                        this.querySelector('#product').addEventListener(
+                            'click',
+                            () => {
+                                navigate.to('/product/42');
                             }
                         );
                     }
@@ -58,6 +65,19 @@
                     }
                 }
             );
+            customElements.define(
+                'product-page',
+                class extends HTMLElement {
+                    connectedCallback() {
+                        const id = this.getAttribute('id');
+                        this.innerHTML = `
+                          <section>
+                            <h1>Product</h1>
+                            <p>id: ${id}</p>
+                          </section>`;
+                    }
+                }
+            );
         </script>
     </head>
 
@@ -65,5 +85,6 @@
         <yop-route when="/" then="home-page"></yop-route>
         <yop-route when="/about" then="about-page"></yop-route>
         <yop-route when="/search" then="search-page"></yop-route>
+        <yop-route when="/product/:id" then="product-page"></yop-route>
     </body>
 </html>

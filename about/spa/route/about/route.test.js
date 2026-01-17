@@ -34,13 +34,23 @@ describe('route', () => {
         });
     });
 
-    it('exposes searchParams as attributes', async () => {
+    it('exposes searchParams as attribute', async () => {
         await eventually(page, async () => {
             assert.match(await page.section('Home'), /Welcome/);
         });
         await page.click('search');
         await eventually(page, async () => {
             assert.match(await page.section('Results'), /Criteria was: shoes/);
+        });
+    });
+
+    it('exposes url segment variable as attribute', async () => {
+        await eventually(page, async () => {
+            assert.match(await page.section('Home'), /Welcome/);
+        });
+        await page.click('product');
+        await eventually(page, async () => {
+            assert.match(await page.section('Product'), /id: 42/);
         });
     });
 });

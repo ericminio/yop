@@ -14,10 +14,24 @@ customElements.define(
             this.update();
         }
         update() {
-            if (window.location.pathname == this.getAttribute('when')) {
+            const path = window.location.pathname;
+            const when = this.getAttribute('when');
+            if (path == when) {
                 const searchParams = window.location.search;
                 if (this.thenAttributeSet && searchParams) {
                     this.then = `<${this.thenAttribute} searchParams="${searchParams}"></${this.thenAttribute}>`;
+                }
+                this.innerHTML = this.then;
+            } else if (when.includes('/:')) {
+                if (this.thenAttributeSet) {
+                    const whenParts = when.split('/');
+                    const pathParts = path.split('/');
+                    const varNameIndex = whenParts.findIndex((part) =>
+                        part.startsWith(':')
+                    );
+                    const varName = whenParts[varNameIndex].substring(1);
+                    const varValue = pathParts[varNameIndex];
+                    this.then = `<${this.thenAttribute} ${varName}="${varValue}"></${this.thenAttribute}>`;
                 }
                 this.innerHTML = this.then;
             } else {
