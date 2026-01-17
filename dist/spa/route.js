@@ -26,12 +26,23 @@ customElements.define(
                 if (this.thenAttributeSet) {
                     const whenParts = when.split('/');
                     const pathParts = path.split('/');
-                    const varNameIndex = whenParts.findIndex((part) =>
-                        part.startsWith(':')
-                    );
-                    const varName = whenParts[varNameIndex].substring(1);
-                    const varValue = pathParts[varNameIndex];
-                    this.then = `<${this.thenAttribute} ${varName}="${varValue}"></${this.thenAttribute}>`;
+                    const variables = [];
+                    for (let i = 0; i < whenParts.length; i++) {
+                        if (whenParts[i].startsWith(':')) {
+                            variables.push({
+                                name: whenParts[i].substring(1),
+                                value: pathParts[i],
+                            });
+                        }
+                    }
+                    const attributes = variables.reduce((acc, curr) => {
+                        const varName = curr.name;
+                        const varValue = curr.value;
+                        acc += ` ${varName}="${varValue}"`;
+                        return acc;
+                    }, '');
+
+                    this.then = `<${this.thenAttribute}${attributes}></${this.thenAttribute}>`;
                 }
                 this.innerHTML = this.then;
             } else {

@@ -56,4 +56,18 @@ describe('route', () => {
             assert.match(await page.section('Product'), /id: 42/);
         });
     });
+
+    it('exposes several variables as attributes', async () => {
+        await eventually(page, async () => {
+            assert.match(await page.section('Home'), /Welcome/);
+        });
+        await page.enter('Navigate to', '/orders/42/items/15');
+        await page.click('go');
+        await eventually(page, async () => {
+            assert.match(
+                await page.section('Order item'),
+                /order_id: 42.*item_id: 15/
+            );
+        });
+    });
 });

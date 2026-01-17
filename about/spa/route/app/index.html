@@ -68,6 +68,21 @@
                     }
                 }
             );
+            customElements.define(
+                'order-item-page',
+                class extends HTMLElement {
+                    connectedCallback() {
+                        const orderId = this.getAttribute('order_id');
+                        const itemId = this.getAttribute('item_id');
+                        this.innerHTML = `
+                          <section>
+                            <h1>Order item</h1>
+                            <p>order_id: ${orderId}</p>
+                            <p>item_id: ${itemId}</p>
+                          </section>`;
+                    }
+                }
+            );
         </script>
     </head>
 
@@ -76,5 +91,9 @@
         <yop-route when="/about" then="about-page"></yop-route>
         <yop-route when="/search" then="search-page"></yop-route>
         <yop-route when="/product/:id" then="product-page"></yop-route>
+        <yop-route
+            when="/orders/:order_id/items/:item_id"
+            then="order-item-page"
+        ></yop-route>
     </body>
 </html>
