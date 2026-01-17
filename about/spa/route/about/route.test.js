@@ -70,4 +70,25 @@ describe('route', () => {
             );
         });
     });
+
+    it('renders only the matching route', async () => {
+        await eventually(page, async () => {
+            assert.match(await page.section('Home'), /Welcome/);
+        });
+        await page.enter('Navigate to', '/orders/42/items/15');
+        await page.click('go');
+        await eventually(page, async () => {
+            assert.match(
+                await page.section('Order item'),
+                /order_id: 42.*item_id: 15/
+            );
+        });
+
+        try {
+            await page.section('Product');
+            assert.fail('should not be visible');
+        } catch (e) {
+            assert.equal(e.message == 'should not be visible', false);
+        }
+    });
 });
