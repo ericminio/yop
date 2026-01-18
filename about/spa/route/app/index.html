@@ -59,7 +59,7 @@
                 'product-page',
                 class extends HTMLElement {
                     connectedCallback() {
-                        const id = this.getAttribute('id');
+                        const id = this.getAttribute('data-id');
                         this.innerHTML = `
                           <section>
                             <h1>Product</h1>
@@ -72,8 +72,8 @@
                 'order-item-page',
                 class extends HTMLElement {
                     connectedCallback() {
-                        const orderId = this.getAttribute('order_id');
-                        const itemId = this.getAttribute('item_id');
+                        const orderId = this.getAttribute('data-order-id');
+                        const itemId = this.getAttribute('data-item-id');
                         this.innerHTML = `
                           <section>
                             <h1>Order item</h1>
@@ -92,7 +92,7 @@
         <yop-route when="/search" then="search-page"></yop-route>
         <yop-route when="/product/:id" then="product-page"></yop-route>
         <yop-route
-            when="/orders/:order_id/items/:item_id"
+            when="/orders/:order-id/items/:item-id"
             then="order-item-page"
         ></yop-route>
     </body>

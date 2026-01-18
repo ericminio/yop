@@ -25,15 +25,8 @@ customElements.define(
                 this.innerHTML = this.then;
             } else if (this.pathMatchesRoute(path, when)) {
                 if (this.thenAttributeSet) {
-                    const variables = this.extractVariables(path, when);
-                    const attributes = variables.reduce(
-                        (acc, { name, value }) => {
-                            acc += ` ${name}="${value}"`;
-                            return acc;
-                        },
-                        ''
-                    );
-                    this.then = `<${this.thenAttribute}${attributes}></${this.thenAttribute}>`;
+                    const attributes = this.buildAttributes(path, when);
+                    this.then = `<${this.thenAttribute} ${attributes}></${this.thenAttribute}>`;
                 }
                 this.innerHTML = this.then;
             } else {
@@ -58,7 +51,7 @@ customElements.define(
             return true;
         }
 
-        extractVariables(path, route) {
+        buildAttributes(path, route) {
             const routeParts = route.split('/');
             const pathParts = path.split('/');
             const variables = [];
@@ -70,7 +63,9 @@ customElements.define(
                     });
                 }
             }
-            return variables;
+            return variables
+                .map((variable) => `data-${variable.name}="${variable.value}"`)
+                .join(' ');
         }
     }
 );
